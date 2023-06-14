@@ -22,8 +22,8 @@ function Dropdown({ name, children }: {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        {Array.isArray(children) ? children.map((e) =>
-          <DropdownMenuItem>{e}</DropdownMenuItem>
+        {Array.isArray(children) ? children.map((e, i) =>
+          <DropdownMenuItem key={i}>{e}</DropdownMenuItem>
         ) : children
         }
       </DropdownMenuContent>
