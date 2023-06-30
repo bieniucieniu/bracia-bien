@@ -1,4 +1,4 @@
-'use client'
+// "use client"
 
 import {
   DropdownMenu,
@@ -10,29 +10,28 @@ import { Button } from "./ui/button"
 import Link from "next/link"
 import { twMerge } from "tailwind-merge"
 
-function Dropdown({ name, children }: {
-  name: string,
+function Dropdown({
+  name,
+  children,
+}: {
+  name: string
   children: React.ReactNode
 }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Button className="select-none">
-          {name}
-        </Button>
+        <Button className="select-none">{name}</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        {Array.isArray(children) ? children.map((e, i) =>
-          <DropdownMenuItem key={i}>{e}</DropdownMenuItem>
-        ) : children
-        }
+        {Array.isArray(children)
+          ? children.map((e, i) => (
+              <DropdownMenuItem key={i}>{e}</DropdownMenuItem>
+            ))
+          : children}
       </DropdownMenuContent>
     </DropdownMenu>
   )
 }
-
-
-
 
 export default function Navbar({ className }: { className?: string }) {
   return (
