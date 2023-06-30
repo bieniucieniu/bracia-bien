@@ -19,7 +19,7 @@ function Dropdown({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
         <Button className="select-none">{name}</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
