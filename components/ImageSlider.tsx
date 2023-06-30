@@ -45,7 +45,6 @@ const variants = {
 export default function ImageSlider({ className }: { className?: string }) {
   const [img, dispach] = useReducer(reducer, { idx: 0, path: ImgPath[0] })
   useEffect(() => {
-    let i = 0
     const intervalId = setInterval(() => {
       dispach("next")
     }, 1000 * 5)
