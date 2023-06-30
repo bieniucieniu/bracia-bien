@@ -35,7 +35,12 @@ function Dropdown({
 
 export default function Navbar({ className }: { className?: string }) {
   return (
-    <nav className={twMerge("flex justify-around p-2 bg-orange-50", className)}>
+    <nav
+      className={twMerge(
+        "flex justify-around p-2 bg-orange-50 z-10",
+        className
+      )}
+    >
       <Dropdown name="Bielizna Meska">
         <Link href="/">wszystko</Link>
         <Link href="/">wszystko</Link>

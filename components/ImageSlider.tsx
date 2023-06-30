@@ -1,54 +1,74 @@
 // "use clinet"
-import Image from "next/image"
-import * as ScrollArea from "@radix-ui/react-scroll-area"
-import { useEffect, useRef } from "react"
-
+import { useEffect, useReducer } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { twMerge } from "tailwind-merge"
 const ImgPath = [
   "/images/slider/fotob-33.jpg",
   "/images/slider/fotob-39.jpg",
   "/images/slider/fotob-40.jpg",
 ]
 
+type Action = "next" | "previous"
+type State = { idx: number; path: string }
+function reducer(state: State, action: Action): State {
+  let i = state.idx
+  switch (action) {
+    case "next":
+      i = (i + 1) % ImgPath.length
+    case "previous":
+      i = state.idx === 0 ? ImgPath.length : i - 1
+  }
+  return { idx: i, path: ImgPath[i] }
+}
+
+const variants = {
+  enter: (direction: number) => {
+    return {
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+    }
+  },
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => {
+    return {
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+    }
+  },
+}
+
 export default function ImageSlider({ className }: { className?: string }) {
-  const img = ImgPath.map((path) => ({
-    ref: useRef<HTMLDivElement>(null!),
-    path,
-  }))
+  const [img, dispach] = useReducer(reducer, { idx: 0, path: ImgPath[0] })
   useEffect(() => {
     let i = 0
     const intervalId = setInterval(() => {
-      img[i].ref.current.scrollIntoView({ behavior: "smooth" })
-      i++
-      if (i > 2) i = 0
+      dispach("next")
     }, 1000 * 5)
     return () => clearInterval(intervalId)
   })
 
   return (
-    <div className={className}>
-      <ScrollArea.Root className="w-full h-full overflow-hidden">
-        <ScrollArea.Viewport className="w-full h-full">
-          <div className="flex flex-row">
-            {img.map((e) => (
-              <div
-                key={e.path}
-                ref={e.ref}
-                className="h-screen w-[240vh] relative"
-              >
-                <Image
-                  className="object-cover"
-                  src={e.path}
-                  alt={e.path}
-                  fill
-                />
-              </div>
-            ))}
-          </div>
-        </ScrollArea.Viewport>
-        <ScrollArea.Scrollbar orientation="horizontal">
-          <ScrollArea.Thumb />
-        </ScrollArea.Scrollbar>
-      </ScrollArea.Root>
+    <div className={twMerge(className, "relative")}>
+      <AnimatePresence>
+        <motion.img
+          key={img.path}
+          src={img.path}
+          custom={1}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{
+            x: { type: "spring", stiffness: 300, damping: 30 },
+            opacity: { duration: 0.2 },
+          }}
+        />
+      </AnimatePresence>
     </div>
   )
 }
