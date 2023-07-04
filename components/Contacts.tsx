@@ -1,4 +1,5 @@
 import { playfair } from "@/app/fonts"
+import { warn } from "console"
 import { motion, useMotionValue } from "framer-motion"
 import { type MouseEvent, ReactNode, useState, useRef } from "react"
 import { twMerge } from "tailwind-merge"
@@ -9,6 +10,7 @@ const items: {
   name: string
   href?: string
   className?: string
+  newTab?: boolean
 }[] = [
   { id: "tel", name: "+48 502 896 299", href: "tel:+48502896299" },
   { id: "mail", name: "braciabien@gmail.com", href: "tel:+48502896299" },
@@ -16,6 +18,7 @@ const items: {
     id: "adress",
     name: "Stawiszyńska 125, 62-800 Kalisz",
     href: "https://goo.gl/maps/BfMbTwFQTeVjVR717",
+    newTab: true,
   },
 ]
 
@@ -26,18 +29,30 @@ type TItem = {
   setActive: (id: Ids) => void
   href?: string
   className?: string
+  newTab?: boolean
 }
 
-function Item({ id, active, href, setActive, children, className }: TItem) {
+function Item({
+  id,
+  active,
+  setActive,
+  children,
+  className,
+  newTab,
+  ...props
+}: TItem) {
   const ref = useRef<HTMLAnchorElement>(null!)
 
   return (
     <a
-      href={href}
+      target={newTab ? "_blank" : undefined}
+      {...props}
       ref={ref}
       onMouseOver={() => setActive(id)}
-      onMouseLeave={() => setActive("default")}
-      className={twMerge(className, "relative p-2 rounded-lg z-10 w-fit")}
+      className={twMerge(
+        className,
+        "relative px-3 py-2 rounded-lg z-10 w-fit hover:underline"
+      )}
     >
       {active === id ? (
         <motion.div
@@ -47,9 +62,9 @@ function Item({ id, active, href, setActive, children, className }: TItem) {
             position: "absolute",
             zIndex: -10,
             inset: 0,
-            borderRadius: 9999,
+            borderRadius: 700,
           }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.2 }}
         ></motion.div>
       ) : null}
       {children}
@@ -59,19 +74,11 @@ function Item({ id, active, href, setActive, children, className }: TItem) {
 
 export default function Contacts() {
   const [active, setActive] = useState<Ids>("default")
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
 
-  function handleMouse(event: MouseEvent) {
-    const rect = event.currentTarget.getBoundingClientRect()
-
-    x.set(event.clientX - rect.left - 100 / 2)
-    y.set(event.clientY - rect.top - 100 / 2)
-  }
   return (
     <div
       className="flex justify-center relative overflow-hidden bg-red-500"
-      onMouseMove={handleMouse}
+      onMouseLeave={() => setActive("default")}
     >
       {active === "default" ? (
         <motion.div
@@ -79,15 +86,9 @@ export default function Contacts() {
           className="bg-blue-400"
           style={{
             position: "absolute",
-            top: 0,
-            left: 0,
-            x,
-            y,
-            width: 100,
-            height: 100,
-            borderRadius: 9999,
+            inset: 0,
           }}
-          transition={{ duration: 1, from: { x, y } }}
+          transition={{ duration: 0.3 }}
         ></motion.div>
       ) : null}
       <div className="max-w-fit m-auto flex flex-col gap-0">
