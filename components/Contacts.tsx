@@ -1,19 +1,22 @@
 import { playfair } from "@/app/fonts"
-import { warn } from "console"
-import { motion, useMotionValue } from "framer-motion"
-import { type MouseEvent, ReactNode, useState, useRef } from "react"
+import { motion } from "framer-motion"
+import { ReactNode, useState, useRef } from "react"
 import { twMerge } from "tailwind-merge"
 
 type Ids = "default" | "tel" | "mail" | "adress"
 const items: {
-  id: Ids
   name: string
+  id: Ids
   href?: string
   className?: string
   newTab?: boolean
 }[] = [
   { id: "tel", name: "+48 502 896 299", href: "tel:+48502896299" },
-  { id: "mail", name: "braciabien@gmail.com", href: "tel:+48502896299" },
+  {
+    id: "mail",
+    name: "braciabien@gmail.com",
+    href: "mailto:braciabien@gmail.com",
+  },
   {
     id: "adress",
     name: "Stawiszyńska 125, 62-800 Kalisz",
@@ -24,9 +27,9 @@ const items: {
 
 type TItem = {
   active: Ids
-  id: Ids
   children: ReactNode
   setActive: (id: Ids) => void
+  id: Ids
   href?: string
   className?: string
   newTab?: boolean
@@ -51,7 +54,7 @@ function Item({
       onMouseOver={() => setActive(id)}
       className={twMerge(
         className,
-        "relative px-3 py-2 rounded-lg z-10 w-fit hover:underline"
+        "relative px-4 py-2 rounded-lg z-10 w-fit hover:underline"
       )}
     >
       {active === id ? (
