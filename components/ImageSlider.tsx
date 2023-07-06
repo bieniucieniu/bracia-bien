@@ -32,9 +32,8 @@ function reducer(idx: number, action: "next" | "previous"): number {
   switch (action) {
     case "next":
       return (idx + 1) % ImgPaths.length
-    case "previous": {
+    case "previous":
       return idx ? ImgPaths.length - 1 : idx - 1
-    }
   }
 }
 export default function ImageSlider({ className }: { className?: string }) {
@@ -51,6 +50,7 @@ export default function ImageSlider({ className }: { className?: string }) {
         <motion.div
           key={`imgs-slid-${idx}`}
           variants={variants}
+          className="absolute"
           initial="enter"
           animate="center"
           exit="exit"
