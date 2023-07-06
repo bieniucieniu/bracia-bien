@@ -3,10 +3,11 @@ import { useEffect, useReducer } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { twMerge } from "tailwind-merge"
 import Image from "next/image"
+
 const ImgPaths = [
-  "/images/slider/fotob-33.jpg",
-  "/images/slider/fotob-39.jpg",
-  "/images/slider/fotob-40.jpg",
+  "/images/fotob-33.jpg",
+  "/images/fotob-39.jpg",
+  "/images/fotob-40.jpg",
 ]
 
 const variants = {
@@ -37,12 +38,6 @@ function reducer(idx: number, action: "next" | "previous"): number {
   }
 }
 export default function ImageSlider({ className }: { className?: string }) {
-  const ImgPaths = [
-    "/images/fotob-33.jpg",
-    "/images/fotob-39.jpg",
-    "/images/fotob-40.jpg",
-  ]
-
   const [idx, setIdx] = useReducer(reducer, 0)
 
   useEffect(() => {
