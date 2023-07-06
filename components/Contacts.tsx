@@ -65,7 +65,7 @@ function Item({
             position: "absolute",
             zIndex: -10,
             inset: 0,
-            borderRadius: 700,
+            borderRadius: "var(--radius)",
           }}
           transition={{ duration: 0.2 }}
         ></motion.div>
