@@ -15,8 +15,8 @@ import Image from "next/image"
 export default function NavigationMenuDemo() {
     return (
         <NavigationMenu className="flex-none p-1">
-            <NavigationMenuList className="grid grid-cols-4">
-                <NavigationMenuItem className="col-span-4">
+            <NavigationMenuList className="grid grid-cols-4 sm:grid-cols-5">
+                <NavigationMenuItem className="col-span-4 sm:col-span-1">
                     <NavigationMenuLink
                         href="/"
                         className={"relative w-60 h-6 "}
