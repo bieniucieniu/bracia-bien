@@ -1,3 +1,4 @@
+"use client"
 import { playfair } from "@/app/fonts"
 import { motion } from "framer-motion"
 import { ReactNode, useState, useRef } from "react"
