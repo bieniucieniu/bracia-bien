@@ -21,16 +21,16 @@ type ItemDrop = {
     trigger: ReactNode
     content: { href: string; children: ReactNode }[]
 
-    children: never
-    href: never
+    children?: never
+    href?: never
 }
 
 type ItemLink = {
     children: ReactNode
     href: string
 
-    trigger: never
-    content: never
+    trigger?: never
+    content?: never
 }
 export default function NavigationMenuDemo({
     className,
@@ -83,7 +83,7 @@ export default function NavigationMenuDemo({
                                     </>
                                 ) : (
                                     <Link
-                                        href={item.href}
+                                        href={item?.href || "/"}
                                         legacyBehavior
                                         passHref
                                     >
