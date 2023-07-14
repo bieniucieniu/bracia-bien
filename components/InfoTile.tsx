@@ -11,19 +11,12 @@ type ItemBase = {
     setActive: (id: number) => void
     className?: string
     classNameMotion?: string
-} & (ItemLink | ItemButton)
 
-type ItemLink = {
     newTab?: boolean
     href?: string
-    onClick?: never
-}
-type ItemButton = {
     onClick?: () => void
-    newTab?: never
-    href?: never
+    rel?: string
 }
-
 function Item({
     id,
     active,
@@ -35,7 +28,7 @@ function Item({
     layoutId,
     ...props
 }: ItemBase & { id: number; layoutId: string }) {
-    const Comp: "a" | "div" = props.href !== undefined ? "a" : "div"
+    const Comp: "a" | "button" = props.href !== undefined ? "a" : "button"
     return (
         <Comp
             target={newTab ? "_blank" : undefined}
@@ -79,8 +72,10 @@ export default function Contacts({
     data: {
         name: string
         href?: string
+        onClick?: () => void
         className?: string
         newTab?: boolean
+        rel?: string
     }[]
 }) {
     const [active, setActive] = useState<number>(0)

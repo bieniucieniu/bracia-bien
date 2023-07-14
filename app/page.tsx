@@ -1,17 +1,7 @@
-import Contacts from "@/components/Contacts"
+import InfoTile from "@/components/InfoTile"
 import ImageSlider from "@/components/ImageSlider"
 import InfoCards from "@/components/InfoCards"
-import Informations from "@/components/Informations"
 import Navbar from "@/components/MainNavbar"
-import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet"
-import Link from "next/link"
 
 const imgPaths: string[] = [
     "/images/fotob-33.jpg",
@@ -23,14 +13,14 @@ const cardsData: Parameters<typeof InfoCards>[0] = {
     cards: [{ className: "m-auto" }],
 }
 
-const contactsData: Parameters<typeof Contacts>[0] = {
+const contactsData: Parameters<typeof InfoTile>[0] = {
     title: (
         <>
             Skontaktuj się
             <br /> z nami
         </>
     ),
-    contacts: [
+    data: [
         { name: "+48 502 896 299", href: "tel:+48502896299" },
         {
             name: "braciabien@gmail.com",
@@ -40,6 +30,17 @@ const contactsData: Parameters<typeof Contacts>[0] = {
             name: "Stawiszyńska 125, 62-800 Kalisz",
             href: "https://goo.gl/maps/BfMbTwFQTeVjVR717",
             newTab: true,
+        },
+    ],
+}
+const infoData: Parameters<typeof InfoTile>[0] = {
+    title: "informacje",
+    className: { fg: "bg-red-500", bg: "bg-blue-400" },
+    data: [
+        {
+            name: "Polityka Prywatnosci",
+            href: "/pdf/polityka_prywatnosci.pdf",
+            rel: "noopener noreferrer",
         },
     ],
 }
@@ -58,8 +59,8 @@ export default function Home() {
                 </div>
             </div>
             <footer className="min-h-screen grid grid-cols-1 xl:grid-cols-2">
-                <Contacts {...contactsData} />
-                <Informations />
+                <InfoTile {...contactsData} />
+                <InfoTile {...infoData} />
             </footer>
         </main>
     )
