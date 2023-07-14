@@ -10,6 +10,7 @@ type ItemBase = {
     children: ReactNode
     setActive: (id: number) => void
     className?: string
+    classNameMotion?: string
 } & (ItemLink | ItemButton)
 
 type ItemLink = {
@@ -29,6 +30,7 @@ function Item({
     setActive,
     children,
     className,
+    classNameMotion,
     newTab,
     layoutId,
     ...props
@@ -47,7 +49,7 @@ function Item({
             {active === id ? (
                 <motion.div
                     layoutId={layoutId}
-                    className="bg-blue-400 "
+                    className={twMerge("bg-blue-400 ", classNameMotion)}
                     style={{
                         position: "absolute",
                         zIndex: -10,
@@ -63,15 +65,18 @@ function Item({
 }
 
 export default function Contacts({
-    className,
     title,
-    contacts,
+    data,
     children,
+    className,
 }: {
-    className?: string
     title: ReactNode
     children?: ReactNode
-    contacts: {
+    className?: {
+        fg?: string
+        bg?: string
+    }
+    data: {
         name: string
         href?: string
         className?: string
@@ -86,14 +91,14 @@ export default function Contacts({
         <div
             className={twMerge(
                 "flex justify-center relative overflow-hidden bg-red-500",
-                className
+                className?.bg
             )}
             onMouseLeave={() => setActive(0)}
         >
             {active === 0 ? (
                 <motion.div
                     layoutId={layoutId}
-                    className="bg-blue-400"
+                    className={twMerge("bg-blue-400", className?.fg)}
                     style={{
                         position: "absolute",
                         inset: 0,
@@ -110,7 +115,7 @@ export default function Contacts({
                 >
                     {title}
                 </h1>
-                {contacts.map(({ name: name, ...props }, i) => (
+                {data.map(({ name: name, ...props }, i) => (
                     <Item
                         layoutId={layoutId}
                         key={name}
@@ -118,13 +123,14 @@ export default function Contacts({
                         {...props}
                         active={active}
                         setActive={setActive}
+                        classNameMotion={className?.fg}
                     >
                         {name}
                     </Item>
                 ))}
                 <Item
                     layoutId={layoutId}
-                    id={contacts.length + 1}
+                    id={data.length + 1}
                     active={active}
                     setActive={setActive}
                 >
