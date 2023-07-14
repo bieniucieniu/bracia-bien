@@ -58,35 +58,8 @@ export default function Home() {
                 </div>
             </div>
             <footer className="min-h-screen grid grid-cols-1 xl:grid-cols-2">
-                <Contacts {...contactsData}>
-                    <Sheet>
-                        <SheetTrigger className="text-sm">
-                            wiecej informacji
-                        </SheetTrigger>
-                        <SheetContent side={"left"} className="min-w-[50vw]">
-                            <SheetHeader>
-                                <SheetTitle>
-                                    <Link
-                                        href="info"
-                                        className="hover:underline"
-                                    >
-                                        Informacje
-                                    </Link>
-                                </SheetTitle>
-                                <SheetDescription>
-                                    <Link
-                                        target="_blank"
-                                        href="info"
-                                        className="hover:underline"
-                                    >
-                                        otworz w nowej karcie {">>"}
-                                    </Link>
-                                </SheetDescription>
-                                <Informations />
-                            </SheetHeader>
-                        </SheetContent>
-                    </Sheet>
-                </Contacts>
+                <Contacts {...contactsData} />
+                <Informations />
             </footer>
         </main>
     )
