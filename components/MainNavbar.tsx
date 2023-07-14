@@ -44,7 +44,7 @@ export default function NavigationMenuDemo({
             <Link href="/" className="">
                 <Image
                     src="/logo.png"
-                    className="m-auto object-contain h-[50px]"
+                    className="m-auto object-contain h-[100px]"
                     alt="logo"
                     width={638}
                     height={189}
