@@ -40,22 +40,22 @@ const infoData: Parameters<typeof InfoTile>[0] = {
     data: [
         {
             name: "Polityka Prywatnosci",
-            href: "/downlaods/polityka_prywatnosci.pdf",
+            href: "/pdf/polityka_prywatnosci.pdf",
             rel: "noopener noreferrer",
         },
         {
             name: "Platnosc",
-            href: "/downlaods/platnosc.pdf",
+            href: "/pdf/platnosc.pdf",
             rel: "noopener noreferrer",
         },
         {
             name: "regulamin sklepu",
-            href: "/downlaods/regulamin_sklepu.pdf",
+            href: "/pdf/regulamin_sklepu.pdf",
             rel: "noopener noreferrer",
         },
         {
             name: "wysylka",
-            href: "/downlaods/wysylka.pdf",
+            href: "/pdf/wysylka.pdf",
             rel: "noopener noreferrer",
         },
     ],
