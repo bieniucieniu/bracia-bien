@@ -28,7 +28,8 @@ function Item({
     layoutId,
     ...props
 }: ItemBase & { id: number; layoutId: string }) {
-    const Comp: "a" | "button" = props.href !== undefined ? "a" : "button"
+    const Comp: "a" | "button" | "div" =
+        props.href !== undefined ? "a" : props.onClick ? "button" : "div"
     return (
         <Comp
             target={newTab ? "_blank" : undefined}
@@ -70,7 +71,7 @@ export default function Contacts({
         bg?: string
     }
     data: {
-        name: string
+        name: ReactNode
         href?: string
         onClick?: () => void
         className?: string
@@ -110,10 +111,10 @@ export default function Contacts({
                 >
                     {title}
                 </h1>
-                {data.map(({ name: name, ...props }, i) => (
+                {data.map(({ name, ...props }, i) => (
                     <Item
                         layoutId={layoutId}
-                        key={name}
+                        key={i + 1}
                         id={i + 1}
                         {...props}
                         active={active}

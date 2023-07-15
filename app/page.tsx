@@ -51,13 +51,13 @@ const infoData: Parameters<typeof InfoTile>[0] = {
             newTab: true,
         },
         {
-            name: "Polityka Prywatnosci",
+            name: "regulamin sklepu",
             href: "/downlaods/regulamin_sklepu.pdf",
             rel: "noopener noreferrer",
             newTab: true,
         },
         {
-            name: "Polityka Prywatnosci",
+            name: "wysylka",
             href: "/downlaods/wysylka.pdf",
             rel: "noopener noreferrer",
             newTab: true,
