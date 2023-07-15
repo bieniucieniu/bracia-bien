@@ -2,6 +2,7 @@ import InfoTile from "@/components/InfoTile"
 import ImageSlider from "@/components/ImageSlider"
 import InfoCards from "@/components/InfoCards"
 import Navbar from "@/components/MainNavbar"
+import { trace } from "console"
 
 const imgPaths: string[] = [
     "/images/fotob-33.jpg",
@@ -39,8 +40,27 @@ const infoData: Parameters<typeof InfoTile>[0] = {
     data: [
         {
             name: "Polityka Prywatnosci",
-            href: "/pdf/polityka_prywatnosci.pdf",
+            href: "/downlaods/polityka_prywatnosci.pdf",
             rel: "noopener noreferrer",
+            newTab: true,
+        },
+        {
+            name: "Platnosc",
+            href: "/downlaods/platnosc.pdf",
+            rel: "noopener noreferrer",
+            newTab: true,
+        },
+        {
+            name: "Polityka Prywatnosci",
+            href: "/downlaods/regulamin_sklepu.pdf",
+            rel: "noopener noreferrer",
+            newTab: true,
+        },
+        {
+            name: "Polityka Prywatnosci",
+            href: "/downlaods/wysylka.pdf",
+            rel: "noopener noreferrer",
+            newTab: true,
         },
     ],
 }
