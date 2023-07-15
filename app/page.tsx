@@ -42,25 +42,21 @@ const infoData: Parameters<typeof InfoTile>[0] = {
             name: "Polityka Prywatnosci",
             href: "/downlaods/polityka_prywatnosci.pdf",
             rel: "noopener noreferrer",
-            newTab: true,
         },
         {
             name: "Platnosc",
             href: "/downlaods/platnosc.pdf",
             rel: "noopener noreferrer",
-            newTab: true,
         },
         {
             name: "regulamin sklepu",
             href: "/downlaods/regulamin_sklepu.pdf",
             rel: "noopener noreferrer",
-            newTab: true,
         },
         {
             name: "wysylka",
             href: "/downlaods/wysylka.pdf",
             rel: "noopener noreferrer",
-            newTab: true,
         },
     ],
 }
