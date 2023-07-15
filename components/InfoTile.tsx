@@ -63,13 +63,12 @@ export default function Contacts({
     data,
     children,
     className,
+    classNameMotion,
 }: {
     title: ReactNode
     children?: ReactNode
-    className?: {
-        fg?: string
-        bg?: string
-    }
+    className?: string
+    classNameMotion?: string
     data: {
         name: ReactNode
         href?: string
@@ -87,14 +86,14 @@ export default function Contacts({
         <div
             className={twMerge(
                 "flex justify-center relative overflow-hidden bg-red-500",
-                className?.bg
+                className
             )}
             onMouseLeave={() => setActive(0)}
         >
             {active === 0 ? (
                 <motion.div
                     layoutId={layoutId}
-                    className={twMerge("bg-blue-400", className?.fg)}
+                    className={twMerge("bg-blue-400 ", classNameMotion)}
                     style={{
                         position: "absolute",
                         inset: 0,
@@ -119,19 +118,11 @@ export default function Contacts({
                         {...props}
                         active={active}
                         setActive={setActive}
-                        classNameMotion={className?.fg}
+                        classNameMotion={classNameMotion}
                     >
                         {name}
                     </Item>
                 ))}
-                <Item
-                    layoutId={layoutId}
-                    id={data.length + 1}
-                    active={active}
-                    setActive={setActive}
-                >
-                    {children}
-                </Item>
             </div>
         </div>
     )

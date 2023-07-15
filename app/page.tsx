@@ -2,7 +2,6 @@ import InfoTile from "@/components/InfoTile"
 import ImageSlider from "@/components/ImageSlider"
 import InfoCards from "@/components/InfoCards"
 import Navbar from "@/components/MainNavbar"
-import { trace } from "console"
 
 const imgPaths: string[] = [
     "/images/fotob-33.jpg",
@@ -11,7 +10,7 @@ const imgPaths: string[] = [
 ]
 
 const cardsData: Parameters<typeof InfoCards>[0] = {
-    cards: [{ className: "m-auto" }],
+    cards: [{ className: "w-full" }],
 }
 
 const contactsData: Parameters<typeof InfoTile>[0] = {
@@ -36,7 +35,8 @@ const contactsData: Parameters<typeof InfoTile>[0] = {
 }
 const infoData: Parameters<typeof InfoTile>[0] = {
     title: "informacje",
-    className: { fg: "bg-red-500", bg: "bg-blue-400" },
+    className: "bg-blue-400",
+    classNameMotion: "bg-red-500",
     data: [
         {
             name: "Polityka Prywatnosci",
@@ -74,8 +74,8 @@ export default function Home() {
                     <InfoCards {...cardsData} />
                 </div>
             </div>
-            <footer className="min-h-screen grid grid-cols-1 xl:grid-cols-2">
-                <InfoTile {...contactsData} />
+            <footer className="min-h-screen grid grid-cols-1 xl:grid-cols-3">
+                <InfoTile className={"col-span-2"} {...contactsData} />
                 <InfoTile {...infoData} />
             </footer>
         </main>
