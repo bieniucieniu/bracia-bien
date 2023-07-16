@@ -63,17 +63,20 @@ const infoData: Parameters<typeof InfoTile>[0] = {
 
 export default function Home() {
     return (
-        <main style={{ scrollbarGutter: "stable" }}>
-            <div className="flex flex-col min-h-screen relative bg-yellow-200">
+        <main
+            style={{ scrollbarGutter: "stable" }}
+            className="snap-y snap-proximity overflow-auto h-screen"
+        >
+            <div className="flex flex-col min-h-screen relative bg-yellow-200 snap-center">
                 <Navbar items={[]} />
             </div>
-            <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
-                <ImageSlider className="flex-1" imgPaths={imgPaths} />
+            <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center">
+                <ImageSlider className="flex-1 m-2 " imgPaths={imgPaths} />
                 <div className="bg-red-600 flex p-10">
                     <InfoCards {...cardsData} />
                 </div>
             </div>
-            <footer className="min-h-screen grid grid-cols-1 xl:grid-cols-3">
+            <footer className="min-h-screen grid grid-cols-1 xl:grid-cols-3 snap-center">
                 <InfoTile className={"col-span-2"} {...contactsData} />
                 <InfoTile {...infoData} />
             </footer>
