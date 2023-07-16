@@ -91,7 +91,7 @@ export default function ImageSlider({
                 >
                     <Image
                         src={imgPaths[state.idx]}
-                        className="object-cover h-full w-full"
+                        className="object-contain h-full w-full"
                         alt={`imgs-slid-${state.idx}`}
                         width={1920}
                         height={800}

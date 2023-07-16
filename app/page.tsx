@@ -66,10 +66,9 @@ export default function Home() {
         <main style={{ scrollbarGutter: "stable" }}>
             <div className="flex flex-col min-h-screen relative bg-yellow-200">
                 <Navbar items={[]} />
-                <ImageSlider className="flex-1" imgPaths={imgPaths} />
             </div>
             <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
-                <div className="bg-orange-50"></div>
+                <ImageSlider className="flex-1" imgPaths={imgPaths} />
                 <div className="bg-red-600 flex p-10">
                     <InfoCards {...cardsData} />
                 </div>
