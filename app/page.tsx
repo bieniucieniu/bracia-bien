@@ -58,6 +58,21 @@ const infoData: Parameters<typeof InfoTile>[0] = {
             href: "/downlaods/wysylka.pdf",
             rel: "noopener noreferrer",
         },
+        {
+            name: "Platnosc",
+            href: "/pdf/platnosc.pdf",
+            rel: "noopener noreferrer",
+        },
+        {
+            name: "regulamin sklepu",
+            href: "/pdf/regulamin_sklepu.pdf",
+            rel: "noopener noreferrer",
+        },
+        {
+            name: "wysylka",
+            href: "/pdf/wysylka.pdf",
+            rel: "noopener noreferrer",
+        },
     ],
 }
 
