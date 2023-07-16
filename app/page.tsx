@@ -39,23 +39,8 @@ const infoData: Parameters<typeof InfoTile>[0] = {
     classNameMotion: "bg-red-500",
     data: [
         {
-            name: "Polityka Prywatnosci",
-            href: "/downlaods/polityka_prywatnosci.pdf",
-            rel: "noopener noreferrer",
-        },
-        {
-            name: "Platnosc",
-            href: "/downlaods/platnosc.pdf",
-            rel: "noopener noreferrer",
-        },
-        {
-            name: "regulamin sklepu",
-            href: "/downlaods/regulamin_sklepu.pdf",
-            rel: "noopener noreferrer",
-        },
-        {
-            name: "wysylka",
-            href: "/downlaods/wysylka.pdf",
+            name: "Polityka prywatnosci",
+            href: "/pdf/polityka_prywatnosci.pdf",
             rel: "noopener noreferrer",
         },
         {
