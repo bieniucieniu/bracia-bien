@@ -17,26 +17,26 @@ const navData: Parameters<typeof Navbar>[0] = {
     {
       trigger: "Ona",
       content: [
-        { href: "", children: "bielzna " },
-        { href: "", children: "rajstopy" },
-        { href: "", children: "skarpetki" },
-        { href: "", children: "pizamy" },
+        { href: "", name: "bielzna" },
+        { href: "", name: "rajstopy" },
+        { href: "", name: "skarpetki" },
+        { href: "", name: "pizamy" },
       ],
     },
     {
       trigger: "On",
       content: [
-        { href: "", children: "bielzna " },
-        { href: "", children: "skarpetki" },
-        { href: "", children: "pizamy" },
+        { href: "", name: "bielzna" },
+        { href: "", name: "skarpetki" },
+        { href: "", name: "pizamy" },
       ],
     },
     {
       trigger: "dzieci",
       content: [
-        { href: "", children: "bielzna " },
-        { href: "", children: "skarpetki" },
-        { href: "", children: "pizamy" },
+        { href: "", name: "bielzna" },
+        { href: "", name: "skarpetki" },
+        { href: "", name: "pizamy" },
       ],
     },
     { trigger: "inne", href: "" },
@@ -55,13 +55,13 @@ const contactsData: Parameters<typeof InfoTile>[0] = {
     </>
   ),
   data: [
-    { name: "+48 502 896 299", href: "tel:+48502896299" },
+    { children: "+48 502 896 299", href: "tel:+48502896299" },
     {
-      name: "braciabien@gmail.com",
+      children: "braciabien@gmail.com",
       href: "mailto:braciabien@gmail.com",
     },
     {
-      name: "Stawiszyńska 125, 62-800 Kalisz",
+      children: "Stawiszyńska 125, 62-800 Kalisz",
       href: "https://goo.gl/maps/BfMbTwFQTeVjVR717",
       newTab: true,
     },
@@ -73,22 +73,22 @@ const infoData: Parameters<typeof InfoTile>[0] = {
   classNameMotion: "bg-red-500",
   data: [
     {
-      name: "Polityka prywatnosci",
+      children: "Polityka prywatnosci",
       href: "/pdf/polityka_prywatnosci.pdf",
       rel: "noopener noreferrer",
     },
     {
-      name: "Platnosc",
+      children: "Platnosc",
       href: "/pdf/platnosc.pdf",
       rel: "noopener noreferrer",
     },
     {
-      name: "regulamin sklepu",
+      children: "regulamin sklepu",
       href: "/pdf/regulamin_sklepu.pdf",
       rel: "noopener noreferrer",
     },
     {
-      name: "wysylka",
+      children: "wysylka",
       href: "/pdf/wysylka.pdf",
       rel: "noopener noreferrer",
     },

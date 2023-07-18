@@ -19,7 +19,7 @@ type Item = {
 } & (ItemLink | ItemDrop)
 
 type ItemDrop = {
-  content: { href: string; children: ReactNode }[]
+  content: { href: string; name: string }[]
 
   href?: never
 }
@@ -47,19 +47,19 @@ export default function MainNavbar({
                 <>
                   <NavigationMenuTrigger>{item.trigger}</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="flex flex-row w-[300px]">
+                    <div className="flex flex-row">
                       <ul className="flex-1 grid gap-3 p-4 max-w-fit">
                         {item.content.map((e, i) => (
                           <li className="row-span-3" key={i}>
                             <Link href={e.href} passHref legacyBehavior>
-                              <NavigationMenuLink className="select-none group inline-flex min-h-9 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none">
-                                {e.children}
+                              <NavigationMenuLink className="select-none inline-flex min-h-9 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none">
+                                {e.name}
                               </NavigationMenuLink>
                             </Link>
                           </li>
                         ))}
                       </ul>
-                      <div className="bg-red-500 flex-1">1</div>
+                      <div className="bg-red-500 flex-1 w-[300px]">1</div>
                     </div>
                   </NavigationMenuContent>
                 </>
