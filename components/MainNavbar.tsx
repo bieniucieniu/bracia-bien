@@ -77,7 +77,7 @@ export default function NavigationMenuDemo({
 									<NavigationMenuLink
 										className={navigationMenuTriggerStyle()}
 									>
-										{item.triger}
+										{item.trigger}
 									</NavigationMenuLink>
 								</Link>
 							)}

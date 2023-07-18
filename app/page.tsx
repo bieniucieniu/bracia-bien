@@ -11,6 +11,37 @@ const imgPaths: string[] = [
 	"/images/fotob-40.jpg",
 ]
 
+const navData: Parameters<typeof Navbar>[0] = {
+	items: [
+		{
+			trigger: "Ona",
+			content: [
+				{ href: "", children: "bielzna " },
+				{ href: "", children: "rajstopy" },
+				{ href: "", children: "skarpetki" },
+				{ href: "", children: "pizamy" },
+			],
+		},
+		{
+			trigger: "On",
+			content: [
+				{ href: "", children: "bielzna " },
+				{ href: "", children: "skarpetki" },
+				{ href: "", children: "pizamy" },
+			],
+		},
+		{
+			trigger: "dzieci",
+			content: [
+				{ href: "", children: "bielzna " },
+				{ href: "", children: "skarpetki" },
+				{ href: "", children: "pizamy" },
+			],
+		},
+		{ trigger: "inne", href: "" },
+	],
+}
+
 const cardsData: Parameters<typeof InfoCards>[0] = {
 	cards: [{ className: "w-full" }],
 }
@@ -70,7 +101,7 @@ export default function Home() {
 			className="snap-y snap-proximity overflow-auto h-screen"
 		>
 			<div className="flex flex-col min-h-screen relative bg-yellow-200 snap-center">
-				<nav className="bg-white grid grid-cols-3">
+				<nav className="bg-white grid grid-cols-3 grid-rows-[100px_1fr]">
 					<div className="flex flex-row gap-8 px-8">
 						<Link
 							href="https://www.instagram.com/braciabien/"
@@ -108,8 +139,11 @@ export default function Home() {
 							height={189}
 						></Image>
 					</Link>
+					<Navbar
+						{...navData}
+						className="row-start-2 row-end-2 col-span-3"
+					/>
 				</nav>
-				<Navbar items={[]} />
 			</div>
 			<div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center">
 				<ImageSlider className="flex-1 m-2 " imgPaths={imgPaths} />
