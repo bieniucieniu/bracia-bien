@@ -120,7 +120,7 @@ export default function Home() {
                 </nav>
             </div>
             <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center">
-                <ImageSlider className="flex-1 m-2 " imgPaths={imgPaths} />
+                <ImageSlider className="flex-1" imgPaths={imgPaths} />
                 <div className="bg-red-600 flex p-10">
                     <InfoCards {...cardsData} />
                 </div>
