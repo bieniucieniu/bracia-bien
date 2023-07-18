@@ -1,4 +1,3 @@
-import { StringToBoolean } from "class-variance-authority/dist/types"
 import Image from "next/image"
 import Link from "next/link"
 import { twMerge } from "tailwind-merge"
@@ -16,7 +15,7 @@ export default function SocialLinks({
             >
                 <Image
                     src="/instagram.svg"
-                    className="m-auto object-contain h-[100px]"
+                    className="m-auto object-contain select-none h-[100px]"
                     alt="instagram"
                     width={50}
                     height={50}
@@ -29,7 +28,7 @@ export default function SocialLinks({
             >
                 <Image
                     src="/facebook.svg"
-                    className="m-auto object-contain h-[100px]"
+                    className="m-auto object-contain select-none h-[100px]"
                     alt="facebook"
                     width={50}
                     height={50}
