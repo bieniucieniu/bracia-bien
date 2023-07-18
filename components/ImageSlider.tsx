@@ -86,31 +86,31 @@ export default function ImageSlider({
                         priority
                     />
                 </motion.div>
-                <button
-                    className="absolute z-10 top-[calc(50%_-_20px)] left-[10px] w-[40px] h-[40px] rounded-full bg-white opacity-50 hover:opacity-100 transition-all"
-                    onClick={() => dispach("previous")}
-                >
-                    <Image
-                        src="/angle-left.svg"
-                        alt="left arrow"
-                        className="object-contain absolute top-[calc(50%_-_15px)] left-[3px]"
-                        width={30}
-                        height={30}
-                    ></Image>
-                </button>
-                <button
-                    className="absolute z-10 top-[calc(50%_-_20px)] right-[10px] w-[40px] h-[40px] rounded-full bg-white opacity-50 hover:opacity-100 transition-all"
-                    onClick={() => dispach("next")}
-                >
-                    <Image
-                        src="/angle-right.svg"
-                        alt="left right"
-                        className="object-contain absolute top-[calc(50%_-_15px)] right-[3px]"
-                        width={30}
-                        height={30}
-                    ></Image>
-                </button>
             </AnimatePresence>
+            <button
+                className="absolute z-10 top-[calc(50%_-_20px)] left-[15px] w-[40px] h-[40px] rounded-full bg-white opacity-50 hover:opacity-100 transition-all"
+                onClick={() => dispach("previous")}
+            >
+                <Image
+                    src="/angle-left.svg"
+                    alt="left arrow"
+                    className="object-contain absolute top-[calc(50%_-_15px)] left-[3px]"
+                    width={30}
+                    height={30}
+                ></Image>
+            </button>
+            <button
+                className="absolute z-10 top-[calc(50%_-_20px)] right-[15px] w-[40px] h-[40px] rounded-full bg-white opacity-50 hover:opacity-100 transition-all"
+                onClick={() => dispach("next")}
+            >
+                <Image
+                    src="/angle-right.svg"
+                    alt="left right"
+                    className="object-contain absolute top-[calc(50%_-_15px)] right-[3px]"
+                    width={30}
+                    height={30}
+                ></Image>
+            </button>
         </div>
     )
 }
