@@ -4,40 +4,21 @@ import { AnimatePresence, motion } from "framer-motion"
 import Image from "next/image"
 import { twMerge } from "tailwind-merge"
 const variants = {
-    right: {
-        enter: {
-            zindex: 0,
-            x: 1920,
-            opacity: 0,
-        },
-        center: {
-            zIndex: 1,
-            x: 0,
-            opacity: 1,
-        },
-        exit: {
-            zIndex: 0,
-            x: -1920,
-            opacity: 0,
-        },
+    enter: (direction: "left" | "right") => ({
+        zIndex: 0,
+        x: { left: -1920, right: 1920 }[direction],
+        opacity: 0,
+    }),
+    center: {
+        zIndex: 1,
+        x: 0,
+        opacity: 1,
     },
-    left: {
-        enter: {
-            zindex: 0,
-            x: -1920,
-            opacity: 0,
-        },
-        center: {
-            zIndex: 1,
-            x: 0,
-            opacity: 1,
-        },
-        exit: {
-            zIndex: 0,
-            x: 1920,
-            opacity: 0,
-        },
-    },
+    exit: (direction: "left" | "right") => ({
+        zindex: 0,
+        x: { left: 1920, right: -1920 }[direction],
+        opacity: 0,
+    }),
 }
 
 export default function ImageSlider({
@@ -78,13 +59,14 @@ export default function ImageSlider({
 
     return (
         <div className={twMerge("overflow-hidden relative", className)}>
-            <AnimatePresence>
+            <AnimatePresence custom={state.direction}>
                 <motion.div
+                    custom={state.direction}
                     key={`imgs-slid-${state.idx}`}
-                    variants={variants[state.direction]}
                     className={`absolute inset-0 flex  items-center transition-all ${
                         full ? "" : "p-2"
                     } `}
+                    variants={variants}
                     initial="enter"
                     animate="center"
                     exit="exit"
@@ -107,11 +89,27 @@ export default function ImageSlider({
                 <button
                     className="absolute z-10 top-[calc(50%_-_20px)] left-[10px] w-[40px] h-[40px] rounded-full bg-white opacity-50 hover:opacity-100 transition-all"
                     onClick={() => dispach("previous")}
-                ></button>
+                >
+                    <Image
+                        src="/angle-left.svg"
+                        alt="left arrow"
+                        className="object-contain absolute top-[calc(50%_-_15px)] left-[3px]"
+                        width={30}
+                        height={30}
+                    ></Image>
+                </button>
                 <button
                     className="absolute z-10 top-[calc(50%_-_20px)] right-[10px] w-[40px] h-[40px] rounded-full bg-white opacity-50 hover:opacity-100 transition-all"
                     onClick={() => dispach("next")}
-                ></button>
+                >
+                    <Image
+                        src="/angle-right.svg"
+                        alt="left right"
+                        className="object-contain absolute top-[calc(50%_-_15px)] right-[3px]"
+                        width={30}
+                        height={30}
+                    ></Image>
+                </button>
             </AnimatePresence>
         </div>
     )
