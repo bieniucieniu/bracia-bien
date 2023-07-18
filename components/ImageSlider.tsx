@@ -43,9 +43,11 @@ const variants = {
 export default function ImageSlider({
     className,
     imgPaths,
+    full,
 }: {
     className?: string
     imgPaths: string[]
+    full?: boolean
 }) {
     type Slide = { idx: number; direction: "left" | "right" }
 
@@ -80,7 +82,9 @@ export default function ImageSlider({
                 <motion.div
                     key={`imgs-slid-${state.idx}`}
                     variants={variants[state.direction]}
-                    className="absolute inset-0"
+                    className={`absolute inset-0 flex  items-center transition-all ${
+                        full ? "" : "p-2"
+                    } `}
                     initial="enter"
                     animate="center"
                     exit="exit"
@@ -91,22 +95,24 @@ export default function ImageSlider({
                 >
                     <Image
                         src={imgPaths[state.idx]}
-                        className="object-contain h-full w-full"
+                        className={`object-contain transition-all h-fit w-fit flex-1 ${
+                            full ? "" : "rounded-xl"
+                        }`}
                         alt={`imgs-slid-${state.idx}`}
                         width={1920}
                         height={800}
                         priority
                     />
                 </motion.div>
+                <button
+                    className="absolute z-10 top-[calc(50%_-_20px)] left-[10px] w-[40px] h-[40px] rounded-full bg-white opacity-50 hover:opacity-100 transition-all"
+                    onClick={() => dispach("previous")}
+                ></button>
+                <button
+                    className="absolute z-10 top-[calc(50%_-_20px)] right-[10px] w-[40px] h-[40px] rounded-full bg-white opacity-50 hover:opacity-100 transition-all"
+                    onClick={() => dispach("next")}
+                ></button>
             </AnimatePresence>
-            <button
-                className="absolute z-10 top-[calc(50%_-_20px)] left-[10px] w-[48px] h-[48px] rounded-full bg-white opacity-50 hover:opacity-100 transition-all"
-                onClick={() => dispach("previous")}
-            ></button>
-            <button
-                className="absolute z-10 top-[calc(50%_-_20px)] right-[10px] w-[48px] h-[48px] rounded-full bg-white opacity-50 hover:opacity-100 transition-all"
-                onClick={() => dispach("next")}
-            ></button>
         </div>
     )
 }
