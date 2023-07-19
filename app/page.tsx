@@ -5,7 +5,6 @@ import Navbar from "@/components/MainNavbar"
 import SocialLinks from "@/components/SocialLinks"
 import Link from "next/link"
 import Image from "next/image"
-import { ScrollArea } from "@/components/ui/scroll-area"
 const imgPaths: string[] = [
   "/images/fotob-33.jpg",
   "/images/fotob-39.jpg",
