@@ -2,6 +2,10 @@ import InfoTile from "@/components/InfoTile"
 import ImageSlider from "@/components/ImageSlider"
 import InfoCards from "@/components/InfoCards"
 import Navbar from "@/components/MainNavbar"
+import SocialLinks from "@/components/SocialLinks"
+import Link from "next/link"
+import Image from "next/image"
+import { ScrollArea } from "@/components/ui/scroll-area"
 const imgPaths: string[] = [
   "/images/fotob-33.jpg",
   "/images/fotob-39.jpg",
@@ -87,7 +91,22 @@ export default function Home() {
       className="snap-y snap-proximity overflow-auto h-screen"
     >
       <div className="flex flex-col min-h-screen relative bg-yellow-200 snap-center">
-        <nav className="bg-white grid grid-cols-3 grid-rows-[100px_1fr]"></nav>
+        <nav className="bg-white grid grid-cols-3 grid-rows-[60px_1fr] xl:grid-rows-[100px_1fr]">
+          <SocialLinks className=" items-center xl:row-span-2" />
+          <Link href="/">
+            <Image
+              src="/logo.png"
+              className="mx-auto object-contain h-[60px] xl:h-[100px]"
+              alt="logo"
+              width={638}
+              height={189}
+            />
+          </Link>
+          <Navbar
+            {...navData}
+            className="row-start-2 col-span-3 items-center xl:col-start-2 xl:col-span-1"
+          />
+        </nav>
       </div>
       <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center">
         <ImageSlider className="flex-1 m-2 " imgPaths={imgPaths} />
