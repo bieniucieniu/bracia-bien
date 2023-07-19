@@ -2,6 +2,9 @@ import InfoTile from "@/components/InfoTile"
 import ImageSlider from "@/components/ImageSlider"
 import InfoCards from "@/components/InfoCards"
 import Navbar from "@/components/MainNavbar"
+import SocialLinks from "@/components/SocialLinks"
+import Link from "next/link"
+import Image from "next/image"
 const imgPaths: string[] = [
   "/images/fotob-33.jpg",
   "/images/fotob-39.jpg",
@@ -87,7 +90,19 @@ export default function Home() {
       className="snap-y snap-proximity overflow-auto h-screen"
     >
       <div className="flex flex-col min-h-screen relative bg-yellow-200 snap-center">
-        <nav className="bg-white grid grid-cols-3 grid-rows-[100px_1fr]"></nav>
+        <nav className="bg-white grid grid-cols-3 grid-rows-[100px_1fr]">
+          <SocialLinks />
+          <Link href="/">
+            <Image
+              src="/logo.png"
+              className="m-auto object-contain h-[100px]"
+              alt="logo"
+              width={638}
+              height={189}
+            />
+          </Link>
+          <Navbar {...navData} className="row-start-2 col-span-3" />
+        </nav>
       </div>
       <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center">
         <ImageSlider className="flex-1 m-2 " imgPaths={imgPaths} />
