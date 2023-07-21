@@ -1,10 +1,12 @@
-import InfoTile from "@/components/InfoTile"
 import ImageSlider from "@/components/ImageSlider"
 import InfoCards from "@/components/InfoCards"
 import Navbar from "@/components/MainNavbar"
 import SocialLinks from "@/components/SocialLinks"
 import Link from "next/link"
 import Image from "next/image"
+import { MenuItem, MenuRoot } from "@/components/PillMenu"
+import { playfair } from "./fonts"
+
 const imgPaths: string[] = [
   "/images/fotob-33.jpg",
   "/images/fotob-39.jpg",
@@ -114,28 +116,55 @@ export default function Home() {
         </div>
       </div>
       <footer className="min-h-screen grid grid-cols-1 xl:grid-cols-3 snap-center">
-        <InfoTile
-          className={"col-span-2 bg-blue-400"}
-          classNameMotion={"bg-red-500"}
-          title={
-            <>
-              Skontaktuj się <br /> z nami
-            </>
-          }
+        <MenuRoot
+          className="flex bg-red-500 justify-center relative overflow-hidden"
+          styleMotion={{ backgroundColor: "lightblue" }}
         >
-          {contactsData.map(({ name, ...props }, i) => (
-            <a key={i} {...props}>
-              {name}
-            </a>
-          ))}
-        </InfoTile>
-        <InfoTile title={"informacje"}>
-          {infoData.map(({ name, ...props }, i) => (
-            <a key={i} {...props}>
-              {name}
-            </a>
-          ))}
-        </InfoTile>
+          <div className="max-w-fit m-auto flex flex-col gap-0">
+            <h1
+              className={playfair.className + " text-4xl font-bold z-10 mb-8"}
+            >
+              Skontaktuj się <br /> z nami
+            </h1>
+
+            {contactsData.map(({ name, ...props }, i) => (
+              <MenuItem
+                key={i}
+                className="relative px-4 py-2 rounded-lg z-10 w-fit hover:underline"
+                styleMotion={{
+                  backgroundColor: "lightblue",
+                  borderRadius: "10px",
+                }}
+              >
+                <a {...props}>{name}</a>
+              </MenuItem>
+            ))}
+          </div>
+        </MenuRoot>
+        <MenuRoot
+          className="flex bg-red-500 justify-center relative overflow-hidden"
+          styleMotion={{ backgroundColor: "lightblue" }}
+        >
+          <div className="max-w-fit m-auto flex flex-col gap-0">
+            <h1
+              className={playfair.className + " text-4xl font-bold z-10 mb-8"}
+            >
+              informacje
+            </h1>
+            {infoData.map(({ name, ...props }, i) => (
+              <MenuItem
+                key={i}
+                className="relative px-4 py-2 rounded-lg z-10 w-fit hover:underline"
+                styleMotion={{
+                  backgroundColor: "lightblue",
+                  borderRadius: "10px",
+                }}
+              >
+                <a {...props}>{name}</a>
+              </MenuItem>
+            ))}
+          </div>
+        </MenuRoot>
       </footer>
     </main>
   )
