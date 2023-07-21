@@ -28,7 +28,7 @@ const MenuRoot = forwardRef<
 >(
   (
     { className, children, styleMotion = { backgroundColor: "red" }, ...props },
-    ref
+    ref,
   ) => {
     const [state, setState] = useState<string>("")
     const layoutId = useId()
@@ -57,8 +57,10 @@ const MenuRoot = forwardRef<
         </PillContext.Provider>
       </div>
     )
-  }
+  },
 )
+
+MenuRoot.displayName = "PillMenuRoot"
 
 interface ItemProps extends React.HTMLAttributes<HTMLDivElement> {
   classNameMotion?: string
@@ -97,7 +99,9 @@ const MenuItem = forwardRef<HTMLDivElement, ItemProps>(
         {children}
       </div>
     )
-  }
+  },
 )
+
+MenuItem.displayName = "PillMenuItem"
 
 export { MenuRoot, MenuItem }
