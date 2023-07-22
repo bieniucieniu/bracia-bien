@@ -27,6 +27,7 @@ export default function ImageSlider({
   full,
 }: {
   className?: string
+  children?: React.ReactNode[]
   imgPaths: string[]
   full?: boolean
 }) {

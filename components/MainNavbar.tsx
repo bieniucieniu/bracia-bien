@@ -12,23 +12,23 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { twMerge } from "tailwind-merge"
-import { type ReactNode } from "react"
 
-type Item = {
-  trigger: ReactNode
+export type Item = {
+  trigger: React.ReactNode
 } & (ItemLink | ItemDrop)
 
 type ItemDrop = {
-  content: { href: string; name: string }[]
+  content?: { href?: string; name?: string }[]
 
   href?: never
 }
 
 type ItemLink = {
-  href: string
+  href?: string
 
   content?: never
 }
+
 export default function MainNavbar({
   className,
   items,
@@ -39,7 +39,7 @@ export default function MainNavbar({
 } & Parameters<typeof NavigationMenu>[0]) {
   return (
     <NavigationMenu className={twMerge("m-auto p-1", className)} {...props}>
-      <NavigationMenuList className="flex flex-row flex-nowrap justify-around w-full text-4xl">
+      <NavigationMenuList>
         {items.map((item, i) => {
           return (
             <NavigationMenuItem key={i}>
@@ -51,7 +51,7 @@ export default function MainNavbar({
                       <ul className="flex-1 grid gap-3 p-4 max-w-fit">
                         {item.content.map((e, i) => (
                           <li className="row-span-3" key={i}>
-                            <Link href={e.href} passHref legacyBehavior>
+                            <Link href={e.href || "/"} passHref legacyBehavior>
                               <NavigationMenuLink className="select-none inline-flex min-h-9 w-full items-center justify-start rounded-md px-4 py-2 text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none">
                                 {e.name}
                               </NavigationMenuLink>
@@ -59,7 +59,7 @@ export default function MainNavbar({
                           </li>
                         ))}
                       </ul>
-                      <div className="bg-red-500 flex-1 w-[300px]">1</div>
+                      <div className="bg-red-500 flex-1 w-[300px]"></div>
                     </div>
                   </NavigationMenuContent>
                 </>
@@ -73,7 +73,6 @@ export default function MainNavbar({
             </NavigationMenuItem>
           )
         })}
-        <NavigationMenuItem></NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   )
