@@ -1,11 +1,17 @@
 import ImageSlider from "@/components/ImageSlider"
-import InfoCards from "@/components/InfoCards"
 import Navbar from "@/components/MainNavbar"
-import SocialLinks from "@/components/SocialLinks"
 import Link from "next/link"
 import Image from "next/image"
 import { MenuItem, MenuRoot } from "@/components/PillMenu"
 import { playfair } from "./fonts"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 const imgPaths: string[] = [
   "/images/fotob-33.jpg",
@@ -13,40 +19,13 @@ const imgPaths: string[] = [
   "/images/fotob-40.jpg",
 ]
 
-const navData: Parameters<typeof Navbar>[0] = {
-  items: [
-    {
-      trigger: "Ona",
-      content: [
-        { href: "", name: "bielzna" },
-        { href: "", name: "rajstopy" },
-        { href: "", name: "skarpetki" },
-        { href: "", name: "pizamy" },
-      ],
-    },
-    {
-      trigger: "On",
-      content: [
-        { href: "", name: "bielzna" },
-        { href: "", name: "skarpetki" },
-        { href: "", name: "pizamy" },
-      ],
-    },
-    {
-      trigger: "dzieci",
-      content: [
-        { href: "", name: "bielzna" },
-        { href: "", name: "skarpetki" },
-        { href: "", name: "pizamy" },
-      ],
-    },
-    { trigger: "inne", href: "" },
-  ],
-}
+const cardsData: {
+  title?: string
+  description?: string
+  children?: React.ReactNode
+  footer?: React.ReactNode
+}[] = [{}]
 
-const cardsData: Parameters<typeof InfoCards>[0] = {
-  cards: [{ className: "w-full" }],
-}
 type LinkData = { name: string; href: string; target?: string; rel?: string }[]
 
 const contactsData: LinkData = [
@@ -92,32 +71,34 @@ export default function Home() {
       className="snap-y snap-proximity overflow-auto h-screen"
     >
       <div className="flex flex-col min-h-screen relative bg-yellow-200 snap-center">
-        <nav className="bg-white grid grid-cols-3 grid-rows-[60px_1fr] xl:grid-rows-[100px_1fr]">
-          <SocialLinks className=" items-center xl:row-span-2" />
-          <Link href="/">
-            <Image
-              src="/logo.png"
-              className="mx-auto object-contain h-[60px] xl:h-[100px]"
-              alt="logo"
-              width={638}
-              height={189}
-            />
-          </Link>
-          <Navbar
-            {...navData}
-            className="row-start-2 col-span-3 items-center xl:col-start-2 xl:col-span-1"
+        <Link href="/">
+          <Image
+            src="/logo.png"
+            className="m-auto object-contain"
+            alt="logo"
+            width={638}
+            height={189}
           />
-        </nav>
+        </Link>
       </div>
       <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center">
         <ImageSlider className="flex-1 m-2 " imgPaths={imgPaths} />
         <div className="bg-red-600 flex p-10">
-          <InfoCards {...cardsData} />
+          {cardsData.map(({ title, description, children, footer }) => (
+            <Card>
+              <CardHeader>
+                <CardTitle>{title}</CardTitle>
+                <CardDescription>{description}</CardDescription>
+              </CardHeader>
+              <CardContent>{children}</CardContent>
+              <CardFooter>{footer}</CardFooter>
+            </Card>
+          ))}
         </div>
       </div>
       <footer className="min-h-screen grid grid-cols-1 xl:grid-cols-3 snap-center">
         <MenuRoot
-          className="flex bg-red-500 justify-center relative overflow-hidden"
+          className="flex bg-red-500 justify-center relative overflow-hidden col-span-2"
           styleMotion={{ backgroundColor: "lightblue" }}
         >
           <div className="max-w-fit m-auto flex flex-col gap-0">
@@ -142,8 +123,8 @@ export default function Home() {
           </div>
         </MenuRoot>
         <MenuRoot
-          className="flex bg-red-500 justify-center relative overflow-hidden"
-          styleMotion={{ backgroundColor: "lightblue" }}
+          className="flex bg-sky-100 justify-center relative overflow-hidden"
+          styleMotion={{ backgroundColor: "pink" }}
         >
           <div className="max-w-fit m-auto flex flex-col gap-0">
             <h1
@@ -156,7 +137,6 @@ export default function Home() {
                 key={i}
                 className="relative px-4 py-2 rounded-lg z-10 w-fit hover:underline"
                 styleMotion={{
-                  backgroundColor: "lightblue",
                   borderRadius: "10px",
                 }}
               >
