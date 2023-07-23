@@ -1,5 +1,4 @@
 import ImageSlider from "@/components/ImageSlider"
-import Navbar from "@/components/MainNavbar"
 import Link from "next/link"
 import Image from "next/image"
 import { MenuItem, MenuRoot } from "@/components/PillMenu"
@@ -84,8 +83,8 @@ export default function Home() {
       <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center">
         <ImageSlider className="flex-1 m-2 " imgPaths={imgPaths} />
         <div className="bg-red-600 flex p-10">
-          {cardsData.map(({ title, description, children, footer }) => (
-            <Card>
+          {cardsData.map(({ title, description, children, footer }, i) => (
+            <Card key={i}>
               <CardHeader>
                 <CardTitle>{title}</CardTitle>
                 <CardDescription>{description}</CardDescription>
