@@ -15,13 +15,7 @@ import {
   useMainLayoutContext,
   useMainLayoutManager,
 } from "./MainLayoutContext"
-import {
-  Root,
-  Viewport,
-  Scrollbar,
-  Thumb,
-  Corner,
-} from "@radix-ui/react-scroll-area"
+
 export default function MainLayout({
   children,
 }: {
@@ -32,10 +26,7 @@ export default function MainLayout({
   return (
     <MainLayoutContext.Provider value={context}>
       <Topbar />
-      <main
-        style={{ scrollbarGutter: "stable" }}
-        className="snap-y snap-proximity overflow-auto h-screen"
-      >
+      <main className="snap-y snap-proximity overflow-auto h-screen">
         {children}
       </main>
     </MainLayoutContext.Provider>
@@ -45,8 +36,11 @@ export default function MainLayout({
 function Topbar() {
   const { navigation } = useMainLayoutContext()
   return (
-    <nav className="bg-white fixed top-0 left-0 right-0 z-40">
-      <NavigationMenu className="m-auto p-1">
+    <nav
+      style={{ scrollbarGutter: "stable" }}
+      className="bg-white fixed top-0 left-0 right-0 z-40 grid grid-cols-3 drop-shadow-sm"
+    >
+      <NavigationMenu className="m-auto p-1 col-start-2">
         <NavigationMenuList>
           {navigation.main.map((item, i) => (
             <NavigationMenuItem key={i}>
@@ -81,7 +75,7 @@ function Topbar() {
           ))}
         </NavigationMenuList>
       </NavigationMenu>
-      <div className="flex flex-row gap-8 px-8">
+      <div className="flex mr-8 my-auto flex-row gap-8 justify-end">
         <Link
           href="https://www.instagram.com/braciabien/"
           target="_blank"
@@ -89,7 +83,7 @@ function Topbar() {
         >
           <Image
             src="/instagram.svg"
-            className="m-auto object-contain select-none transition-opacity opacity-60 hover:opacity-100"
+            className="m-auto object-contain select-none transition-opacity opacity-60 hover:opacity-100 h-8"
             alt="instagram"
             width={50}
             height={50}
@@ -102,7 +96,7 @@ function Topbar() {
         >
           <Image
             src="/facebook.svg"
-            className="m-auto object-contain select-none transition-opacity opacity-60 hover:opacity-100"
+            className="m-auto object-contain select-none transition-opacity opacity-60 hover:opacity-100 h-8"
             alt="facebook"
             width={50}
             height={50}
