@@ -3,6 +3,7 @@ import { useEffect, useMemo, useReducer, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import Image from "next/image"
 import { twMerge } from "tailwind-merge"
+import { v4 as uuidv4 } from "uuid"
 const variants = {
   enter: ({
     direction,
@@ -80,10 +81,6 @@ export default function ImageSlider({
       x: ref.current.clientWidth,
       y: ref.current.clientHeight,
     })
-    console.log({
-      x: ref.current.clientWidth,
-      y: ref.current.clientHeight,
-    })
   }, [state.idx, state.direction])
 
   return (
@@ -100,7 +97,7 @@ export default function ImageSlider({
             direction: state.direction,
             dim,
           }}
-          key={`imgs-slid-${state.idx}`}
+          key={uuidv4()}
           className={`absolute inset-0 flex  items-center ${
             full ? "" : "p-2"
           } `}
