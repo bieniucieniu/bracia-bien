@@ -1,12 +1,18 @@
 "use client"
-import { useEffect, useReducer } from "react"
+import { useEffect, useMemo, useReducer, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import Image from "next/image"
 import { twMerge } from "tailwind-merge"
 const variants = {
-  enter: (direction: "left" | "right") => ({
+  enter: ({
+    direction,
+    dim,
+  }: {
+    direction: "left" | "right"
+    dim: { x: number; y: number }
+  }) => ({
     zIndex: 0,
-    x: { left: -1920, right: 1920 }[direction],
+    x: { left: -dim.x, right: dim.x }[direction],
     opacity: 0,
   }),
   center: {
@@ -14,9 +20,15 @@ const variants = {
     x: 0,
     opacity: 1,
   },
-  exit: (direction: "left" | "right") => ({
+  exit: ({
+    direction,
+    dim,
+  }: {
+    direction: "left" | "right"
+    dim: { x: number; y: number }
+  }) => ({
     zindex: 0,
-    x: { left: 1920, right: -1920 }[direction],
+    x: { left: dim.x, right: -dim.x }[direction],
     opacity: 0,
   }),
 }
@@ -58,13 +70,38 @@ export default function ImageSlider({
     return () => clearInterval(interval)
   }, [state])
 
+  const ref = useRef<HTMLDivElement>(null!)
+  const [dim, setDim] = useState({
+    x: 0,
+    y: 0,
+  })
+  useEffect(() => {
+    setDim({
+      x: ref.current.clientWidth,
+      y: ref.current.clientHeight,
+    })
+    console.log({
+      x: ref.current.clientWidth,
+      y: ref.current.clientHeight,
+    })
+  }, [state.idx, state.direction])
+
   return (
     <div className={twMerge("overflow-hidden relative", className)}>
-      <AnimatePresence custom={state.direction}>
+      <AnimatePresence
+        custom={{
+          direction: state.direction,
+          dim,
+        }}
+      >
         <motion.div
-          custom={state.direction}
+          ref={ref}
+          custom={{
+            direction: state.direction,
+            dim,
+          }}
           key={`imgs-slid-${state.idx}`}
-          className={`absolute inset-0 flex  items-center transition-all ${
+          className={`absolute inset-0 flex  items-center ${
             full ? "" : "p-2"
           } `}
           variants={variants}
