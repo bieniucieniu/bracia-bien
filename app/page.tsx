@@ -69,7 +69,7 @@ export default function Home() {
       style={{ scrollbarGutter: "stable" }}
       className="snap-y snap-proximity overflow-auto h-screen"
     >
-      <div className="flex flex-col min-h-screen relative bg-yellow-200 snap-center">
+      <div className="flex flex-col min-h-screen snap-center justify-center">
         <Link href="/">
           <Image
             src="/logo.png"
