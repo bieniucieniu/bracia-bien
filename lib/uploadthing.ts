@@ -1,30 +1,36 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next"
+import { getServerSession } from "next-auth"
+import authOptions from "./auth"
 
 const f = createUploadthing()
 
-const auth = async (req: Request) => ({ id: "fakeId" }) // Fake auth function
+const auth = async (_req: Request) => {
+	const session = await getServerSession(authOptions)
+	if (!session) return
+	switch (session.user?.email) {
+		case "bienmikolaj@gmail.com":
+		case "braciabien@gmail.com":
+			return { id: session.user.email }
 
-// FileRouter for your app, can contain multiple FileRoutes
+		default:
+			return undefined
+	}
+}
+
 export const fileRouter = {
-  // Define as many FileRoutes as you like, each with a unique routeSlug
-  imageUploader: f({ image: { maxFileSize: "4MB" } })
-    // Set permissions and file types for this FileRoute
-    .middleware(async ({ req }) => {
-      // This code runs on your server before upload
-      const user = await auth(req)
+	imageUploader: f({ image: { maxFileSize: "4MB" } })
+		.middleware(async ({ req }) => {
+			const user = await auth(req)
 
-      // If you throw, the user will not be able to upload
-      if (!user) throw new Error("Unauthorized")
+			if (!user) throw new Error("Unauthorized")
 
-      // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { userId: user.id }
-    })
-    .onUploadComplete(async ({ metadata, file }) => {
-      // This code RUNS ON YOUR SERVER after upload
-      console.log("Upload complete for userId:", metadata.userId)
+			return { userId: user.id }
+		})
+		.onUploadComplete(async ({ metadata, file }) => {
+			console.log("Upload complete for userId:", metadata.userId)
 
-      console.log("file url", file.url)
-    }),
+			console.log("file url", file.url)
+		}),
 } satisfies FileRouter
 
 export type TFileRouter = typeof fileRouter
