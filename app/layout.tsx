@@ -14,7 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${roboto.className} max-h-screen overflow-hidden`}>
+      <body
+        className={`${roboto.className} overflow-hidden snap-y snap-proximity h-screen`}
+      >
         <MainLayout>{children}</MainLayout>
       </body>
     </html>

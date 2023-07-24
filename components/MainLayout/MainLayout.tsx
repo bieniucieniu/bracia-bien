@@ -26,9 +26,7 @@ export default function MainLayout({
   return (
     <MainLayoutContext.Provider value={context}>
       <Topbar />
-      <main className="snap-y snap-proximity overflow-auto h-screen">
-        {children}
-      </main>
+      {children}
     </MainLayoutContext.Provider>
   )
 }
