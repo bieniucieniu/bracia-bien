@@ -1,5 +1,5 @@
-import NextAuthProvider from "./providers"
+import { AuthProvider } from "./providers"
 
 export default function layout({ children }: { children: React.ReactNode }) {
-  return <NextAuthProvider>{children}</NextAuthProvider>
+  return <AuthProvider>{children}</AuthProvider>
 }
