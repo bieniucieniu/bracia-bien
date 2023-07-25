@@ -10,14 +10,14 @@ export default async function Upload() {
     <main className="pt-20">
       <AuthButton />
       <UploadZone />
-      {files.map((e) => (
-        <li>
+      {files.map((e, i) => (
+        <li key={i}>
           <p>{e.id}</p>
           <p>{e.key}</p>
         </li>
       ))}
-      {paths.map((e) => (
-        <li>
+      {paths.map((e, i) => (
+        <li key={i}>
           <p>{e.url}</p>
           <p>{e.key}</p>
         </li>
