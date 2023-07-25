@@ -1,24 +1,58 @@
 "use client"
 
-import { generateComponents } from "@uploadthing/react"
+import { generateReactHelpers } from "@uploadthing/react/hooks"
 
-import type { TFileRouter } from "@/lib/uploadthing"
+import type { FileRouter } from "@/lib/uploadthing"
+import { Button } from "./ui/button"
 
-const { UploadButton, UploadDropzone, Uploader } =
-  generateComponents<TFileRouter>()
+import { useDropzone, type FileWithPath } from "react-dropzone"
+import { useCallback, useState } from "react"
+import ErrorAlert from "./ErrorAlert"
 
-export default function Home() {
+const { useUploadThing } = generateReactHelpers<FileRouter>()
+
+export function UploadZone({ endpoint }: { endpoint?: keyof FileRouter }) {
+  const [files, setFiles] = useState<File[]>([])
+  const onDrop = useCallback(
+    (acceptedFiles: FileWithPath[]) => {
+      setFiles([...files, ...acceptedFiles])
+    },
+    [files],
+  )
+  const [error, setError] = useState<Error | undefined>({
+    name: "sadasda",
+    message: "asdsda",
+  })
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+  })
+
+  const { isUploading, startUpload } = useUploadThing(endpoint ?? "image", {
+    onClientUploadComplete: () => {
+      setFiles([])
+    },
+    onUploadError: (error) => {
+      setError(error)
+    },
+    onUploadProgress: (p) => {
+      console.log(p)
+    },
+  })
+
   return (
-    <UploadButton
-      endpoint="imageUploader"
-      onClientUploadComplete={(res) => {
-        // Do something with the response
-        console.log("Files: ", res)
-      }}
-      onUploadError={(error: Error) => {
-        // Do something with the error.
-        alert(`ERROR! ${error.message}`)
-      }}
-    />
+    <div>
+      <div {...getRootProps({ className: "bg-red-400" })}>
+        <input {...getInputProps({ disabled: isUploading })} />
+        Drop files here!
+      </div>
+      <Button
+        onClick={() => startUpload(files)}
+        disabled={files.length <= 0 || isUploading}
+      >
+        Upload {files.length} files
+      </Button>
+      <ErrorAlert error={error} onAccept={() => setError(undefined)} />
+    </div>
   )
 }

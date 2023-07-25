@@ -1,5 +1,5 @@
 import AuthButton from "@/components/Auth"
-import UploadButton from "@/components/Upload"
+import { UploadZone } from "@/components/Upload"
 import { listFiles } from "@/utils/uploadthing"
 import { utapi } from "uploadthing/server"
 
@@ -9,7 +9,7 @@ export default async function Upload() {
   return (
     <main className="pt-20">
       <AuthButton />
-      <UploadButton />
+      <UploadZone />
       {files.map((e) => (
         <li>
           <p>{e.id}</p>
