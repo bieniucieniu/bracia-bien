@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import Image from "next/image"
 import { twMerge } from "tailwind-merge"
 import { v4 as uuidv4 } from "uuid"
-const variants = {
+const variants: Parameters<typeof motion.div>[0]["variants"] = {
   enter: ({
     direction,
     dim,
@@ -14,6 +14,7 @@ const variants = {
     zIndex: 0,
     x: { left: -dim.x, right: dim.x }[direction],
     opacity: 0,
+    position: "absolute",
   }),
   center: {
     zIndex: 1,
@@ -30,6 +31,7 @@ const variants = {
     zindex: 0,
     x: { left: dim.x, right: -dim.x }[direction],
     opacity: 0,
+    position: "absolute",
   }),
 }
 
@@ -97,8 +99,8 @@ export default function Slider({
             dim,
           }}
           key={uuidv4()}
-          className={"absolute inset-0 flex items-center"}
           variants={variants}
+          className="w-full h-full flex justify-center items-center"
           initial="enter"
           animate="center"
           exit="exit"

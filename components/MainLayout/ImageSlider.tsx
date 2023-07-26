@@ -7,7 +7,7 @@ export default function ImageSlider() {
   const { imgPaths } = useMainLayoutContext()
   return (
     <Slider
-      className="p-2"
+      className="m-2"
       renderer={(i) => (
         <Image alt={`image-${i}`} src={imgPaths[i]} width={1920} height={800} />
       )}
