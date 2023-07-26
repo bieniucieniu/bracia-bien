@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useMemo, useReducer, useRef, useState } from "react"
+import { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import Image from "next/image"
 import { twMerge } from "tailwind-merge"
@@ -34,54 +34,54 @@ const variants = {
   }),
 }
 
-export default function ImageSlider({
+export default function Slider({
   className,
-  imgPaths,
-  full,
+  length,
+  renderer,
 }: {
   className?: string
-  children?: React.ReactNode[]
-  imgPaths: string[]
-  full?: boolean
+  renderer: (idx: number) => JSX.Element
+  length: number
 }) {
   type Slide = { idx: number; direction: "left" | "right" }
 
-  function reducer(state: Slide, action: "next" | "previous"): Slide {
-    switch (action) {
-      case "next":
-        return {
-          idx: (state.idx + 1) % imgPaths.length,
-          direction: "right",
-        }
-      case "previous":
-        return {
-          idx: state.idx === 0 ? imgPaths.length - 1 : state.idx - 1,
-          direction: "left",
-        }
-    }
-  }
+  const reducer = useCallback(
+    (state: Slide, action: "next" | "previous"): Slide => {
+      switch (action) {
+        case "next":
+          return {
+            idx: (state.idx + 1) % length,
+            direction: "right",
+          }
+        case "previous":
+          return {
+            idx: state.idx === 0 ? length - 1 : state.idx - 1,
+            direction: "left",
+          }
+      }
+    },
+    [length],
+  )
 
   const [state, dispach] = useReducer(reducer, {
     idx: 0,
     direction: "right",
   })
 
-  useEffect(() => {
-    const interval = setInterval(() => dispach("next"), 1000 * 6)
-    return () => clearInterval(interval)
-  }, [state])
-
   const ref = useRef<HTMLDivElement>(null!)
   const [dim, setDim] = useState({
     x: 0,
     y: 0,
   })
+
   useEffect(() => {
+    const interval = setInterval(() => dispach("next"), 1000 * 6)
     setDim({
       x: ref.current.clientWidth,
       y: ref.current.clientHeight,
     })
-  }, [state.idx, state.direction])
+    return () => clearInterval(interval)
+  }, [state])
 
   return (
     <div className={twMerge("overflow-hidden relative", className)}>
@@ -98,9 +98,7 @@ export default function ImageSlider({
             dim,
           }}
           key={uuidv4()}
-          className={`absolute inset-0 flex  items-center ${
-            full ? "" : "p-2"
-          } `}
+          className={"absolute inset-0 flex items-center"}
           variants={variants}
           initial="enter"
           animate="center"
@@ -110,16 +108,7 @@ export default function ImageSlider({
             opacity: { duration: 0.2 },
           }}
         >
-          <Image
-            src={imgPaths[state.idx]}
-            className={`object-contain transition-all h-fit w-fit flex-1 ${
-              full ? "" : "rounded-xl"
-            }`}
-            alt={`imgs-slid-${state.idx}`}
-            width={1920}
-            height={800}
-            priority
-          />
+          {renderer(state.idx)}
         </motion.div>
       </AnimatePresence>
       <button

@@ -1,4 +1,3 @@
-import ImageSlider from "@/components/ImageSlider"
 import Link from "next/link"
 import Image from "next/image"
 import { MenuItem, MenuRoot } from "@/components/PillMenu"
@@ -11,12 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
-const imgPaths: string[] = [
-  "/images/fotob-33.jpg",
-  "/images/fotob-39.jpg",
-  "/images/fotob-40.jpg",
-]
+import ImageSlider from "@/components/MainLayout/ImageSlider"
 
 const cardsData: {
   title?: string
@@ -81,7 +75,7 @@ export default function Home() {
         </Link>
       </div>
       <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center">
-        <ImageSlider className="flex-1 m-2 " imgPaths={imgPaths} />
+        <ImageSlider />
         <div className="bg-red-600 flex p-10">
           {cardsData.map(({ title, description, children, footer }, i) => (
             <Card key={i}>
