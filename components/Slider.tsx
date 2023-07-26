@@ -1,4 +1,3 @@
-"use client"
 import { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import Image from "next/image"
