@@ -21,7 +21,7 @@ export default function ErrorAlert({
   onAccept?: () => void
 }) {
   return error ? (
-    <AlertDialog defaultOpen={Boolean(error)}>
+    <AlertDialog defaultOpen={true}>
       <AlertDialogTrigger asChild>
         <Button variant="destructive">Show Error</Button>
       </AlertDialogTrigger>
