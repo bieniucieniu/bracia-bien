@@ -1,5 +1,20 @@
-import type { Item } from "@/components/MainNavbar"
 import { createContext, useContext } from "react"
+type Item = {
+  trigger: React.ReactNode
+} & (ItemLink | ItemDrop)
+
+type ItemDrop = {
+  content?: { href?: string; name?: string }[]
+
+  href?: never
+}
+
+type ItemLink = {
+  href?: string
+
+  content?: never
+}
+
 type MainLayoutContext = {
   navigation: {
     main: Item[]
