@@ -5,6 +5,6 @@ type edgeConfig = {
 
 type edgePOST = {
   delete: edgeConfig
-  change: edgeConfig
+  add: edgeConfig
   set: edgeConfig
 }
