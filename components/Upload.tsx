@@ -19,10 +19,7 @@ export function UploadZone({ endpoint }: { endpoint?: keyof FileRouter }) {
     },
     [files],
   )
-  const [error, setError] = useState<Error | undefined>({
-    name: "sadasda",
-    message: "asdsda",
-  })
+  const [error, setError] = useState<Error | undefined>(undefined)
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
