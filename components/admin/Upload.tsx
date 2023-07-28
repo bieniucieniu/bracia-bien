@@ -3,11 +3,11 @@
 import { generateReactHelpers } from "@uploadthing/react/hooks"
 
 import type { FileRouter } from "@/lib/uploadthing"
-import { Button } from "./ui/button"
+import { Button } from "../ui/button"
 
 import { useDropzone, type FileWithPath } from "react-dropzone"
 import { useCallback, useState } from "react"
-import ErrorAlert from "./ErrorAlert"
+import ErrorAlert from "../ErrorAlert"
 import { twMerge } from "tailwind-merge"
 
 const { useUploadThing } = generateReactHelpers<FileRouter>()

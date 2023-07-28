@@ -1,5 +1,5 @@
 import AuthButton from "@/components/Auth"
-import { UploadZone } from "@/components/Upload"
+import { UploadZone } from "@/components/admin/Upload"
 import { getAll } from "@vercel/edge-config"
 import { utapi } from "uploadthing/server"
 
@@ -13,7 +13,7 @@ import {
 import { getServerSession } from "next-auth"
 import authOptions from "@/lib/auth"
 import { ArrowUpIcon } from "@radix-ui/react-icons"
-import ImageSelesctor from "@/components/ImageSelector"
+import ImageSelesctor from "@/components/admin/ImageSelector"
 import { listFiles } from "@/utils/uploadthing"
 import { edgeConfigType } from "@/lib/edgeconfig"
 
