@@ -1,10 +1,10 @@
-type edgeConfig = {
+export type edgeConfigType = {
   mainImgKeys?: string[]
   currentImgKeys?: string[]
 }
 
-type edgePOST = {
-  delete: edgeConfig
-  add: edgeConfig
-  set: edgeConfig
+export type edgePOST = {
+  delete: edgeConfigType
+  add: edgeConfigType
+  set: edgeConfigType
 }
