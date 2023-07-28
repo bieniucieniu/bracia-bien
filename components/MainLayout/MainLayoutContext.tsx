@@ -19,7 +19,7 @@ type MainLayoutContext = {
   navigation: {
     main: Item[]
   }
-  imgPaths: string[]
+  imgs: { main: string[]; current: string[] }
   cards: {
     title?: string
     description?: string
@@ -42,12 +42,18 @@ export function useMainLayoutContext() {
   return context
 }
 
-export function useMainLayoutManager(): MainLayoutContext {
-  const imgPaths: MainLayoutContext["imgPaths"] = [
-    "/images/fotob-33.jpg",
-    "/images/fotob-39.jpg",
-    "/images/fotob-40.jpg",
-  ]
+export function useMainLayoutManager(imgs?: {
+  main: string[]
+  current: string[]
+}): MainLayoutContext {
+  const imgPaths: MainLayoutContext["imgs"] = {
+    main: [
+      "/images/fotob-33.jpg",
+      "/images/fotob-39.jpg",
+      "/images/fotob-40.jpg",
+    ],
+    current: [],
+  }
 
   const main: MainLayoutContext["navigation"]["main"] = [
     {
@@ -84,7 +90,7 @@ export function useMainLayoutManager(): MainLayoutContext {
     navigation: {
       main,
     },
-    imgPaths,
+    imgs: imgs || imgPaths,
     cards,
   }
 }
