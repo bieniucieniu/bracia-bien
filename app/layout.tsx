@@ -2,9 +2,6 @@ import "./globals.css"
 import { roboto } from "./fonts"
 import MainLayout from "@/components/MainLayout/MainLayout"
 import { AuthProvider } from "./providers"
-import { edgeConfigType } from "@/lib/edgeconfig"
-import { getAll } from "@vercel/edge-config"
-import { utapi } from "uploadthing/server"
 
 export const metadata = {
   title: "Create Next App",
@@ -17,9 +14,10 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body
-        className={`${roboto.className} overflow-hidden snap-y snap-proximity h-screen`}
+        className={`${roboto.className} scroll-smooth overflow-auto snap-y snap-proximity h-screen`}
+        style={{ scrollbarGutter: "stable" }}
       >
         <AuthProvider>
           <MainLayout>{children}</MainLayout>

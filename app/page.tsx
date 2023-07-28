@@ -56,10 +56,7 @@ export default async function Home() {
     : []
 
   return (
-    <main
-      style={{ scrollbarGutter: "stable" }}
-      className="snap-y snap-proximity overflow-auto h-screen"
-    >
+    <>
       <div className="flex flex-col min-h-screen snap-center justify-center">
         <Link href="/">
           <Image
@@ -71,13 +68,19 @@ export default async function Home() {
           />
         </Link>
       </div>
-      <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center">
+      <div
+        id="about"
+        className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center"
+      >
         <ImageSlider urls={mainImgUrls} />
         <div className="bg-red-500">
           <AboutCards />
         </div>
       </div>
-      <footer className="min-h-screen grid grid-cols-1 xl:grid-cols-3 snap-center">
+      <footer
+        id="info"
+        className="min-h-screen grid grid-cols-1 xl:grid-cols-3 snap-center"
+      >
         <MenuRoot
           className="flex bg-red-500 justify-center relative overflow-hidden col-span-2"
           styleMotion={{ backgroundColor: "lightblue" }}
@@ -127,6 +130,6 @@ export default async function Home() {
           </div>
         </MenuRoot>
       </footer>
-    </main>
+    </>
   )
 }
