@@ -20,7 +20,7 @@ export default function ImageSelesctor({
             alt={img.key}
             src={img.url}
             width={400}
-            height={400}
+            height={300}
             className="object-contain"
           />
           <section className="flex justify-around">
