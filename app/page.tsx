@@ -2,22 +2,12 @@ import Link from "next/link"
 import Image from "next/image"
 import { MenuItem, MenuRoot } from "@/components/PillMenu"
 import { playfair } from "./fonts"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { ImageSliderMain } from "@/components/HomePage/ImageSlider"
 
-const cardsData: {
-  title?: string
-  description?: string
-  children?: React.ReactNode
-  footer?: React.ReactNode
-}[] = [{}]
+import { ImageSlider } from "@/components/HomePage/ImageSlider"
+import { AboutCards } from "@/components/HomePage/About"
+import { edgeConfigType } from "@/lib/edgeconfig"
+import { get } from "@vercel/edge-config"
+import { utapi } from "uploadthing/server"
 
 type LinkData = { name: string; href: string; target?: string; rel?: string }[]
 
@@ -57,7 +47,14 @@ const infoData: LinkData = [
   },
 ]
 
-export default function Home() {
+export default async function Home() {
+  const mainImgKeys = (
+    await get("mainImgKeys")
+  )?.valueOf() as edgeConfigType["mainImgKeys"]
+  const mainImgUrls = mainImgKeys
+    ? (await utapi.getFileUrls(mainImgKeys)).map((e) => e.url)
+    : []
+
   return (
     <main
       style={{ scrollbarGutter: "stable" }}
@@ -75,18 +72,9 @@ export default function Home() {
         </Link>
       </div>
       <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center">
-        <ImageSliderMain />
-        <div className="bg-red-600 flex p-10">
-          {cardsData.map(({ title, description, children, footer }, i) => (
-            <Card key={i}>
-              <CardHeader>
-                <CardTitle>{title}</CardTitle>
-                <CardDescription>{description}</CardDescription>
-              </CardHeader>
-              <CardContent>{children}</CardContent>
-              <CardFooter>{footer}</CardFooter>
-            </Card>
-          ))}
+        <ImageSlider urls={mainImgUrls} />
+        <div className="bg-red-500">
+          <AboutCards />
         </div>
       </div>
       <footer className="min-h-screen grid grid-cols-1 xl:grid-cols-3 snap-center">
