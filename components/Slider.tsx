@@ -39,10 +39,12 @@ export default function Slider({
   className,
   length,
   renderer,
+  autoSlide = 6000,
 }: {
   className?: string
   renderer: (idx: number) => JSX.Element
   length: number
+  autoSlide?: number | false
 }) {
   type Slide = { idx: number; direction: "left" | "right" }
 
@@ -76,16 +78,20 @@ export default function Slider({
   })
 
   useEffect(() => {
-    const interval = setInterval(() => dispach("next"), 1000 * 6)
     setDim({
       x: ref.current.clientWidth,
       y: ref.current.clientHeight,
     })
-    return () => clearInterval(interval)
   }, [state])
 
+  useEffect(() => {
+    if (!autoSlide) return
+    const interval = setInterval(() => dispach("next"), 1000 * 6)
+    return () => clearInterval(interval)
+  }, [state, autoSlide])
+
   return (
-    <div className={twMerge("overflow-hidden relative", className)}>
+    <div className={twMerge("overflow-hidden relative h-full", className)}>
       <AnimatePresence
         custom={{
           direction: state.direction,
