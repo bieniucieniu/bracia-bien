@@ -5,15 +5,15 @@ import Image from "next/image"
 import { Button } from "../ui/button"
 
 export default function ImageSelesctor({
-  imgs,
+  imgsData,
   config,
 }: {
-  imgs: { url: string; key: string }[]
+  imgsData: { url: string; key: string }[]
   config: edgeConfigType
 }) {
   return (
     <ul className="w-full h-full flex flex-row flex-wrap p-2 gap-2">
-      {imgs.map((img) => (
+      {imgsData.map((img) => (
         <li className="flex flex-col gap-2">
           <Image
             key={img.key}
