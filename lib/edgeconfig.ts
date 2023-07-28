@@ -4,7 +4,14 @@ export type edgeConfigType = {
 }
 
 export type edgePOST = {
-  delete: edgeConfigType
-  add: edgeConfigType
-  set: edgeConfigType
+  mainImgKeys: {
+    delete: string[]
+    add: string[]
+    set: string[]
+  }
+  currentImgKeys?: {
+    delete: string[]
+    add: string[]
+    set: string[]
+  }
 }
