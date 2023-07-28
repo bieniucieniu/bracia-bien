@@ -1,12 +1,11 @@
 import AuthButton from "@/components/Auth"
 import { UploadZone } from "@/components/Upload"
-import { get } from "@vercel/edge-config"
+import { getAll } from "@vercel/edge-config"
 import { utapi } from "uploadthing/server"
 
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -14,13 +13,16 @@ import {
 import { getServerSession } from "next-auth"
 import authOptions from "@/lib/auth"
 import { ArrowUpIcon } from "@radix-ui/react-icons"
+import ImageSelesctor from "@/components/ImageSelector"
+import { listFiles } from "@/utils/uploadthing"
+import { edgeConfigType } from "@/lib/edgeconfig"
 
 export default async function Upload() {
-  const filesKeys = await get("mainImgKeys")
+  const currentEdgeConifg: edgeConfigType = await getAll()
   const session = await getServerSession(authOptions)
-
-  const filelinks = filesKeys
-    ? utapi.getFileUrls(filesKeys.valueOf() as string[])
+  const keys = await listFiles()
+  const imgs = keys
+    ? await utapi.getFileUrls(keys.map((k) => k.key))
     : undefined
 
   return (
@@ -48,6 +50,11 @@ export default async function Upload() {
           </CardContent>
         )}
       </Card>
+      {imgs ? (
+        <ImageSelesctor imgs={imgs} config={currentEdgeConifg} />
+      ) : (
+        "no imgs"
+      )}
     </main>
   )
 }
