@@ -21,7 +21,7 @@ export default async function Upload() {
   const currentEdgeConifg: edgeConfigType = await getAll()
   const session = await getServerSession(authOptions)
   const keys = await listFiles()
-  const imgs = keys
+  const imgsData = keys
     ? await utapi.getFileUrls(keys.map((k) => k.key))
     : undefined
 
@@ -50,8 +50,8 @@ export default async function Upload() {
           </CardContent>
         )}
       </Card>
-      {imgs ? (
-        <ImageSelesctor imgs={imgs} config={currentEdgeConifg} />
+      {imgsData ? (
+        <ImageSelesctor imgsData={imgsData} config={currentEdgeConifg} />
       ) : (
         "no imgs"
       )}
