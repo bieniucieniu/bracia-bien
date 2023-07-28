@@ -19,13 +19,6 @@ type MainLayoutContext = {
   navigation: {
     main: Item[]
   }
-  imgs: { main: string[]; current: string[] }
-  cards: {
-    title?: string
-    description?: string
-    children?: React.ReactNode
-    footer?: React.ReactNode
-  }[]
 }
 
 export const MainLayoutContext = createContext<MainLayoutContext | null>(null)
@@ -42,19 +35,7 @@ export function useMainLayoutContext() {
   return context
 }
 
-export function useMainLayoutManager(imgs?: {
-  main: string[]
-  current: string[]
-}): MainLayoutContext {
-  const imgPaths: MainLayoutContext["imgs"] = {
-    main: [
-      "/images/fotob-33.jpg",
-      "/images/fotob-39.jpg",
-      "/images/fotob-40.jpg",
-    ],
-    current: [],
-  }
-
+export function useMainLayoutManager(): MainLayoutContext {
   const main: MainLayoutContext["navigation"]["main"] = [
     {
       trigger: "Ona",
@@ -84,13 +65,9 @@ export function useMainLayoutManager(imgs?: {
     { trigger: "inne", href: "" },
   ]
 
-  const cards: MainLayoutContext["cards"] = [{}]
-
   return {
     navigation: {
       main,
     },
-    imgs: imgs || imgPaths,
-    cards,
   }
 }

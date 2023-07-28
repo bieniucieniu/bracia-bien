@@ -18,10 +18,8 @@ import {
 
 export default function MainLayout({
   children,
-  imgs,
 }: {
   children: React.ReactNode
-  imgs?: { main: string[]; current: string[] }
 }) {
   const context = useMainLayoutManager()
   return (
