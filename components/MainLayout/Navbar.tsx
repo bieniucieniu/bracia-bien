@@ -8,20 +8,8 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-export default function MainLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  return (
-    <>
-      <Topbar />
-      {children}
-    </>
-  )
-}
 
-function Topbar() {
+export function Topbar() {
   return (
     <nav
       style={{ scrollbarGutter: "stable" }}
@@ -42,7 +30,7 @@ function Topbar() {
               asChild
               className={navigationMenuTriggerStyle()}
             >
-              <Link href="/#about">on nas</Link>
+              <Link href="/#info">informacje</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenuList>
