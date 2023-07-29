@@ -1,6 +1,5 @@
 "use client"
 import Link from "next/link"
-import { useMainLayoutContext } from "../MainLayout/MainLayoutContext"
 import Slider from "../Slider"
 import {
   Card,
@@ -51,6 +50,7 @@ export function AboutCards() {
   return (
     <Slider
       className="m-2"
+      autoSlide={false}
       length={cards.length}
       renderer={(i) => <Card className="mx-16">{cards[i]}</Card>}
     />
