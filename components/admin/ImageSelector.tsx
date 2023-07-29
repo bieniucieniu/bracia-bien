@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card"
+import Link from "next/link"
 
 export default function ImageSelesctor({
   imgsData,
@@ -51,8 +52,10 @@ export default function ImageSelesctor({
     [current],
   )
 
+  const setSelected = useCallback(() => {}, [main, current])
+
   return (
-    <Card className="flex flex-col w-fit m-auto max-w-6xl">
+    <Card className="flex flex-col w-fit m-auto" id="imgSel">
       <CardHeader>
         <CardTitle>Select Module</CardTitle>
         <CardDescription></CardDescription>
@@ -88,8 +91,13 @@ export default function ImageSelesctor({
           ))}
         </ul>
       </CardContent>
-      <CardFooter>
-        <Button>Set Selected</Button>
+      <CardFooter className="justify-end">
+        <div className="sticky bottom-2 flex gap-1 bg-white shadow-sm rounded-xl p-2">
+          <Button>Set Selected</Button>
+          <Button asChild>
+            <Link href="#imgSel">go to top</Link>
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   )

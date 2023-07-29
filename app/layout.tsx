@@ -1,6 +1,6 @@
 import "./globals.css"
 import { roboto } from "./fonts"
-import MainLayout from "@/components/MainLayout/MainLayout"
+import { Topbar } from "@/components/MainLayout/Navbar"
 import { AuthProvider } from "./providers"
 
 export const metadata = {
@@ -14,15 +14,16 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body
-        className={`${roboto.className} scroll-smooth overflow-auto snap-y snap-proximity h-screen`}
-        style={{ scrollbarGutter: "stable" }}
-      >
-        <AuthProvider>
-          <MainLayout>{children}</MainLayout>
-        </AuthProvider>
-      </body>
+    <html lang="en">
+      <AuthProvider>
+        <body
+          className={`${roboto.className} scroll-smooth overflow-auto snap-y snap-proximity h-screen`}
+          style={{ scrollbarGutter: "stable" }}
+        >
+          <Topbar />
+          {children}
+        </body>
+      </AuthProvider>
     </html>
   )
 }
