@@ -8,9 +8,7 @@ export async function setConfig(
 ) {
   const res = await fetch("/api/edgeconfig", {
     method: "POST",
-    body: JSON.stringify({
-      config: newConfig,
-    }),
+    body: JSON.stringify(newConfig),
   })
 
   onComplete && onComplete(res)
