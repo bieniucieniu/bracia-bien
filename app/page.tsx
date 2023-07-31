@@ -51,7 +51,7 @@ export default async function Home() {
   const mainImgKeys = (
     await get("mainImgKeys")
   )?.valueOf() as edgeConfigType["mainImgKeys"]
-  const mainImgUrls = mainImgKeys
+  const mainImgUrls = mainImgKeys?.length
     ? (await utapi.getFileUrls(mainImgKeys)).map((e) => e.url)
     : []
 
