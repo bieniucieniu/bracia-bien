@@ -26,7 +26,7 @@ export default async function Upload() {
     : undefined
 
   return (
-    <main className="pt-20">
+    <main className="pt-20 pb-4 flex flex-col gap-4 relative">
       <Card className="flex flex-col w-fit m-auto max-w-6xl">
         <CardHeader>
           <CardTitle>Upload Module</CardTitle>
