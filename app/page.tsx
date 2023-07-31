@@ -55,6 +55,13 @@ export default async function Home() {
     ? (await utapi.getFileUrls(mainImgKeys)).map((e) => e.url)
     : []
 
+  const currentImgKeys = (
+    await get("currentImgKeys")
+  )?.valueOf() as edgeConfigType["currentImgKeys"]
+  const currentImgUrls = currentImgKeys?.length
+    ? (await utapi.getFileUrls(currentImgKeys)).map((e) => e.url)
+    : []
+
   return (
     <>
       <div className="flex flex-col min-h-screen snap-center justify-center">
@@ -72,7 +79,7 @@ export default async function Home() {
         id="about"
         className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center"
       >
-        <ImageSlider urls={mainImgUrls} />
+        <ImageSlider urls={currentImgUrls} />
         <div className="bg-red-500">
           <AboutCards />
         </div>
