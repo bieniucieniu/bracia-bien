@@ -12,6 +12,17 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import Link from "next/link"
 import { setConfig } from "@/lib/edgeconfig"
 
@@ -27,7 +38,6 @@ export default function ImageSelesctor({
 
   const addDeleteMain = useCallback(
     (key: string) => {
-      console.log(key)
       if (main.includes(key)) {
         const newItems = main.filter((k) => k !== key)
         setMain(newItems)
@@ -53,8 +63,14 @@ export default function ImageSelesctor({
     [current],
   )
 
-  const setSelected = () =>
-    setConfig({ mainImgKeys: main, currentImgKeys: current })
+  const setSelected = () => {
+    setConfig({ mainImgKeys: main, currentImgKeys: current }, async (res) => {
+      const body = await res.json()
+      if (body.error) {
+        console.log(body)
+      }
+    })
+  }
 
   return (
     <Card className="flex flex-col w-fit m-auto" id="imgSel">
@@ -63,7 +79,7 @@ export default function ImageSelesctor({
         <CardDescription></CardDescription>
       </CardHeader>
       <CardContent>
-        <ul className="w-full h-full flex flex-row flex-wrap p-2 gap-2">
+        <ul className="flex flex-row flex-wrap p-2 gap-2">
           {imgsData.map((img) => (
             <li className="flex flex-col gap-2" key={img.key}>
               <Image
@@ -95,7 +111,23 @@ export default function ImageSelesctor({
       </CardContent>
       <CardFooter className="justify-end">
         <div className="sticky bottom-2 flex gap-1 bg-white shadow-sm rounded-xl p-2">
-          <Button onClick={setSelected}>Set Selected</Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button>Set Selected</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Set Selected</AlertDialogTitle>
+                <AlertDialogDescription>are you sure</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={setSelected}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <Button asChild>
             <Link href="#imgSel">go to top</Link>
           </Button>
