@@ -50,10 +50,14 @@ export default async function Upload() {
           </CardContent>
         )}
       </Card>
-      {imgsData ? (
-        <ImageSelesctor imgsData={imgsData} config={currentEdgeConifg} />
+      {session ? (
+        imgsData ? (
+          <ImageSelesctor imgsData={imgsData} config={currentEdgeConifg} />
+        ) : (
+          "no imgs"
+        )
       ) : (
-        "no imgs"
+        "log in"
       )}
     </main>
   )

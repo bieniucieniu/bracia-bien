@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "../ui/card"
 import Link from "next/link"
+import { setConfig } from "@/lib/edgeconfig"
 
 export default function ImageSelesctor({
   imgsData,
@@ -52,7 +53,8 @@ export default function ImageSelesctor({
     [current],
   )
 
-  const setSelected = useCallback(() => {}, [main, current])
+  const setSelected = () =>
+    setConfig({ mainImgKeys: main, currentImgKeys: current })
 
   return (
     <Card className="flex flex-col w-fit m-auto" id="imgSel">
@@ -93,7 +95,7 @@ export default function ImageSelesctor({
       </CardContent>
       <CardFooter className="justify-end">
         <div className="sticky bottom-2 flex gap-1 bg-white shadow-sm rounded-xl p-2">
-          <Button>Set Selected</Button>
+          <Button onClick={setSelected}>Set Selected</Button>
           <Button asChild>
             <Link href="#imgSel">go to top</Link>
           </Button>
