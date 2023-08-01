@@ -25,7 +25,7 @@ export default function PhotoGalery({
         <ScrollArea>
           <ul className="flex flex-row flex-wrap space-x-4 pb-4">
             {urls.map((e, i) => (
-              <li>
+              <li key={i}>
                 <Image src={e} alt={`photo-${i}`} height={300} width={400} />
               </li>
             ))}
