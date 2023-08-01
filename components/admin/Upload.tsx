@@ -26,7 +26,17 @@ export function UploadZone({
   const [files, setFiles] = useState<File[]>([])
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[]) => {
-      setFiles([...files, ...acceptedFiles])
+      const f = acceptedFiles.map((e) => {
+        console.log(e)
+        if (e.name.includes(" ")) {
+          return new File([e], e.name.replaceAll(" ", "_"), {
+            type: e.type,
+          })
+        }
+        return e
+      })
+
+      setFiles([...files, ...f])
     },
     [files],
   )
@@ -61,7 +71,7 @@ export function UploadZone({
             width,
             height,
           },
-          className: `border-2  border-dashed border-black rounded-xl p-5 w-fill h-fill`,
+          className: `border-2 border-dashed border-black rounded-xl p-5 w-fill h-fill`,
         })}
       >
         <input {...getInputProps({ disabled: isUploading })} />
