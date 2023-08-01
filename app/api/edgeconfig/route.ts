@@ -12,22 +12,15 @@ export async function POST(req: Request) {
 
   const url = `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`
   const apiKey = process.env.VERCEL_API_TOKEN
-  const data: edgeConfigType & { [key: string]: any } = await req.json()
-  console.log(data)
+  const data: z.infer<typeof edgeConfig> = await req.json()
 
   if (!url) return NextResponse.json("no config url", { status: 401 })
   if (!apiKey) return NextResponse.json("no api key", { status: 401 })
-  if (data.currentImgKeys && !Array.isArray(data.currentImgKeys))
+  if (!edgeConfig.safeParse(data).success)
     return NextResponse.json(
-      { message: "invalid current data", data: data.currentImgKeys },
+      { message: "invalid data", data: data },
       { status: 401 },
     )
-  if (data.mainImgKeys && !Array.isArray(data.mainImgKeys))
-    return NextResponse.json(
-      { message: "invalid main data", data: data.mainImgKeys },
-      { status: 401 },
-    )
-
   try {
     const items: {
       operation: "update"
@@ -35,14 +28,14 @@ export async function POST(req: Request) {
       value: string[]
     }[] = []
 
-    if (data.mainImgKeys)
+    if (data.mainImgKeys?.length)
       items.push({
         operation: "update",
         key: "mainImgKeys",
         value: data.mainImgKeys.filter((e) => Boolean(e)),
       })
 
-    if (data.currentImgKeys)
+    if (data.currentImgKeys?.length)
       items.push({
         operation: "update",
         key: "currentImgKeys",
