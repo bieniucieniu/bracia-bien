@@ -1,5 +1,5 @@
 import authOptions from "@/lib/auth"
-import { edgeConfig } from "@/lib/edgeconfig"
+import { edgeConfigSchema } from "@/lib/edgeconfig"
 import { getServerSession } from "next-auth"
 import { NextResponse } from "next/server"
 import { z } from "zod"
@@ -12,11 +12,11 @@ export async function POST(req: Request) {
 
   const url = `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`
   const apiKey = process.env.VERCEL_API_TOKEN
-  const data: z.infer<typeof edgeConfig> = await req.json()
+  const data: z.infer<typeof edgeConfigSchema> = await req.json()
 
   if (!url) return NextResponse.json("no config url", { status: 401 })
   if (!apiKey) return NextResponse.json("no api key", { status: 401 })
-  if (!edgeConfig.safeParse(data).success)
+  if (!edgeConfigSchema.safeParse(data).success)
     return NextResponse.json(
       { message: "invalid data", data: data },
       { status: 401 },

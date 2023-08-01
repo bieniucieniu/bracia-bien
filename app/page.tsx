@@ -5,11 +5,12 @@ import { playfair } from "./fonts"
 
 import { ImageSlider } from "@/components/HomePage/ImageSlider"
 import { AboutCards } from "@/components/HomePage/About"
-import { edgeConfigType } from "@/lib/edgeconfig"
+import { edgeConfigSchema } from "@/lib/edgeconfig"
 import { get } from "@vercel/edge-config"
 import { utapi } from "uploadthing/server"
 import PhotoGalery from "@/components/HomePage/PhotoGallery"
 import { listFiles } from "@/utils/uploadthing"
+import { z } from "zod"
 
 type LinkData = { name: string; href: string; target?: string; rel?: string }[]
 
@@ -50,16 +51,16 @@ const infoData: LinkData = [
 ]
 
 export default async function Home() {
-  const mainImgKeys = (
-    await get("mainImgKeys")
-  )?.valueOf() as edgeConfigType["mainImgKeys"]
+  const mainImgKeys = (await get("mainImgKeys"))?.valueOf() as z.infer<
+    typeof edgeConfigSchema
+  >["mainImgKeys"]
   const mainImgUrls = mainImgKeys?.length
     ? (await utapi.getFileUrls(mainImgKeys)).map((e) => e.url)
     : []
 
-  const currentImgKeys = (
-    await get("currentImgKeys")
-  )?.valueOf() as edgeConfigType["currentImgKeys"]
+  const currentImgKeys = (await get("currentImgKeys"))?.valueOf() as z.infer<
+    typeof edgeConfigSchema
+  >["currentImgKeys"]
   const currentImgUrls = currentImgKeys?.length
     ? (await utapi.getFileUrls(currentImgKeys)).map((e) => e.url)
     : []
