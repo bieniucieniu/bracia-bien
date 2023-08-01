@@ -1,6 +1,6 @@
 "use client"
 
-import { edgeConfigType } from "@/lib/edgeconfig"
+import { edgeConfigSchema } from "@/lib/edgeconfig"
 import Image from "next/image"
 import { Button } from "../ui/button"
 import { useCallback, useState } from "react"
@@ -25,13 +25,14 @@ import {
 } from "@/components/ui/alert-dialog"
 import Link from "next/link"
 import { setConfig } from "@/lib/edgeconfig"
+import { z } from "zod"
 
 export default function ImageSelesctor({
   imgsData,
   config,
 }: {
   imgsData: { url: string; key: string }[]
-  config: edgeConfigType
+  config: z.infer<typeof edgeConfigSchema>
 }) {
   const [main, setMain] = useState<string[]>(config.mainImgKeys ?? [])
   const [current, setCurrent] = useState<string[]>(config.currentImgKeys ?? [])
