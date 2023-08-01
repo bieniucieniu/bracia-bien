@@ -29,7 +29,6 @@ export function UploadZone({
       const f = acceptedFiles.map((e) => {
         console.log(e)
         if (e.name.includes(" ")) {
-          // const blob = e.slice(0, e.size)
           return new File([e], e.name.replaceAll(" ", "_"), {
             type: e.type,
           })
