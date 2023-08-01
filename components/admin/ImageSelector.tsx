@@ -87,7 +87,7 @@ export default function ImageSelesctor({
                 src={img.url}
                 width={400}
                 height={300}
-                className="object-contain"
+                className="object-contain h-auto"
               />
               <section className="flex justify-around">
                 <Button
