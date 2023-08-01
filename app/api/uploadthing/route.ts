@@ -1,6 +1,6 @@
 import { createNextRouteHandler } from "uploadthing/next"
 
-import { fileRouter } from "@/lib/uploadthing"
+import { deleteSchema, fileRouter } from "@/lib/uploadthing"
 import { getServerSession } from "next-auth"
 import authOptions from "@/lib/auth"
 import { NextResponse } from "next/server"
@@ -12,8 +12,6 @@ export const { GET, POST } = createNextRouteHandler({
   router: fileRouter,
 })
 
-const deleteSchema = z.string().array()
-
 export async function DELETE(req: Request) {
   const allowed = ["bienmikolaj@gmail.com", "braciabien@gmail.com"]
   const session = await getServerSession(authOptions)
@@ -21,14 +19,13 @@ export async function DELETE(req: Request) {
     return NextResponse.json("Unauthorized", { status: 401 })
 
   const data: z.infer<typeof deleteSchema> = await req.json()
-
   if (!deleteSchema.safeParse(data).success)
     return NextResponse.json(
       { message: "invalid data", data: data },
       { status: 401 },
     )
 
-  const res = await utapi.deleteFiles(data)
+  const res = await utapi.deleteFiles(data.items)
 
   return NextResponse.json(res)
 }

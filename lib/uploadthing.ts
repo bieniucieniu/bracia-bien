@@ -4,8 +4,13 @@ import {
 } from "uploadthing/next"
 import { getServerSession } from "next-auth"
 import authOptions from "./auth"
+import { z } from "zod"
 
 const f = createUploadthing()
+
+export const deleteSchema = z.object({
+  items: z.string().array().nonempty(),
+})
 
 const auth = async (_req: Request) => {
   const allowedEmails = ["bienmikolaj@gmail.com", "braciabien@gmail.com"]
