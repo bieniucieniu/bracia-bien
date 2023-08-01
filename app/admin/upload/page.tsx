@@ -15,10 +15,11 @@ import authOptions from "@/lib/auth"
 import { ArrowUpIcon } from "@radix-ui/react-icons"
 import ImageSelesctor from "@/components/admin/ImageSelector"
 import { listFiles } from "@/utils/uploadthing"
-import { edgeConfigType } from "@/lib/edgeconfig"
+import { edgeConfig } from "@/lib/edgeconfig"
+import { z } from "zod"
 
 export default async function Upload() {
-  const currentEdgeConifg: edgeConfigType = await getAll()
+  const currentEdgeConifg: z.infer<typeof edgeConfig> = await getAll()
   const session = await getServerSession(authOptions)
   const keys = await listFiles()
   const imgsData = keys
