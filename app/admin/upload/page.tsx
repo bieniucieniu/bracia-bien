@@ -22,9 +22,9 @@ export default async function Upload() {
   const currentEdgeConifg: z.infer<typeof edgeConfigSchema> = await getAll()
   const session = await getServerSession(authOptions)
   const keys = await listFiles()
-  const imgsData = keys
+  const imgsData = keys.length
     ? await utapi.getFileUrls(keys.map((k) => k.key))
-    : undefined
+    : []
 
   return (
     <main className="pt-20 pb-4 flex flex-col gap-4 relative">
@@ -52,7 +52,7 @@ export default async function Upload() {
         )}
       </Card>
       {session ? (
-        imgsData ? (
+        imgsData.length ? (
           <ImageSelesctor imgsData={imgsData} config={currentEdgeConifg} />
         ) : (
           "no imgs"
