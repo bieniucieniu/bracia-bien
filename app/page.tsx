@@ -98,8 +98,8 @@ export default async function Home() {
           <AboutCards />
         </div>
       </div>
-      <div className="max-h-screen">
-        <PhotoGalery urls={elseImgUrls} />
+      <div className="min-h-screen relative flex items-center">
+        <PhotoGalery urls={elseImgUrls} className="m-4" />
       </div>
       <footer
         id="info"
