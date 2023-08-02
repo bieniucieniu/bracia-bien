@@ -32,11 +32,9 @@ export async function deleteFiles(
   items: string[],
   onCompleat?: (res: Response) => void,
 ) {
-  const data = { items }
-  deleteSchema.parse(data)
-  const res = await fetch("/api/uplaodthing", {
-    method: "DELETE",
-    body: JSON.stringify(data),
+  const res = await fetch("/api/uploadthing", {
+    method: "PATCH",
+    body: JSON.stringify({ items }),
   })
 
   onCompleat && onCompleat(res)
