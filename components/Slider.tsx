@@ -91,7 +91,7 @@ export default function Slider({
   }, [state, autoSlide])
 
   return (
-    <div className={twMerge("relative h-full overflow-x-hidden", className)}>
+    <div className={twMerge("relative h-full", className)}>
       <AnimatePresence
         custom={{
           direction: state.direction,

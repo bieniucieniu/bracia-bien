@@ -1,5 +1,3 @@
-import Link from "next/link"
-import Image from "next/image"
 import { MenuItem, MenuRoot } from "@/components/PillMenu"
 import { playfair } from "./fonts"
 
@@ -11,6 +9,7 @@ import { utapi } from "uploadthing/server"
 import PhotoGalery from "@/components/HomePage/PhotoGallery"
 import { listFiles } from "@/utils/uploadthing"
 import { z } from "zod"
+import Banner from "@/components/HomePage/Banner"
 
 type LinkData = { name: string; href: string; target?: string; rel?: string }[]
 
@@ -78,29 +77,23 @@ export default async function Home() {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen snap-center justify-center">
-        <Link href="/">
-          <Image
-            src="/logo.png"
-            className="m-auto object-contain"
-            alt="logo"
-            width={638}
-            height={189}
-          />
-        </Link>
+      <div className="min-h-screen relative grid overflow-x-hidden pt-4">
+        <Banner urls={mainImgUrls} />
       </div>
       <div
         id="about"
         className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center"
       >
-        <ImageSlider urls={currentImgUrls} />
+        <ImageSlider urls={currentImgUrls} className="m-2 overflow-x-hidden" />
         <div className="bg-red-500">
           <AboutCards />
         </div>
       </div>
-      <div className="min-h-screen relative flex items-center">
-        <PhotoGalery urls={elseImgUrls} className="m-4" />
-      </div>
+      {elseImgUrls.length > 0 ? (
+        <div className="min-h-screen relative flex items-center">
+          <PhotoGalery urls={elseImgUrls} className="m-4" />
+        </div>
+      ) : null}
       <footer
         id="info"
         className="min-h-screen grid grid-cols-1 xl:grid-cols-3 snap-center"
