@@ -28,7 +28,9 @@ export async function edgeConfigHandler(req: Request) {
 
   const data: z.infer<typeof edgeConfigSchema> = await req.json()
 
-  return setEdgeConfig(data)
+  const res = await setEdgeConfig(data)
+
+  return res
 }
 
 export async function setEdgeConfig(
