@@ -7,12 +7,10 @@ import authOptions from "./auth"
 import { z } from "zod"
 import { NextResponse } from "next/server"
 import { utapi } from "uploadthing/server"
+import { getAll } from "@vercel/edge-config"
+import { edgeConfigSchema, setEdgeConfig } from "./edgeconfig"
 
 const f = createUploadthing()
-
-export const deleteSchema = z.object({
-  items: z.string().array().nonempty(),
-})
 
 const auth = async (_req: Request) => {
   const allowedEmails = ["bienmikolaj@gmail.com", "braciabien@gmail.com"]
@@ -44,18 +42,36 @@ export const fileRouter = {
 
 export type FileRouter = typeof fileRouter
 
-export async function PATCH(req: Request) {
+export const deleteSchema = z.object({
+  items: z.string().array().nonempty(),
+})
+
+export async function deleteHandler(req: Request) {
   const allowed = ["bienmikolaj@gmail.com", "braciabien@gmail.com"]
   const session = await getServerSession(authOptions)
   if (!session || !session.user?.email || !allowed.includes(session.user.email))
     return NextResponse.json("Unauthorized", { status: 401 })
 
-  const body = await req.json()
+  const body: z.infer<typeof deleteSchema> = await req.json()
   if (!deleteSchema.safeParse(body).success)
     return NextResponse.json(
       { message: "invalid data", data: body },
       { status: 401 },
     )
+
+  const edgeConfig: z.infer<typeof edgeConfigSchema> = await getAll()
+
+  const newMain = edgeConfig.mainImgKeys?.filter((e) => {
+    if (body.items.includes(e)) return false
+    return true
+  })
+
+  const newCurrent = edgeConfig.currentImgKeys?.filter((e) => {
+    if (body.items.includes(e)) return false
+    return true
+  })
+
+  await setEdgeConfig({ currentImgKeys: newCurrent, mainImgKeys: newMain })
 
   const res = await utapi.deleteFiles(body.items)
 
