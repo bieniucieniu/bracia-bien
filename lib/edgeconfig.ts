@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth"
-import { z } from "zod"
+import { set, z } from "zod"
 import authOptions from "./auth"
 import { NextResponse } from "next/server"
 
@@ -26,17 +26,26 @@ export async function edgeConfigHandler(req: Request) {
   if (!session || !session.user?.email || !allowed.includes(session.user.email))
     return NextResponse.json("Unauthorized", { status: 401 })
 
-  const url = `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`
-  const apiKey = process.env.VERCEL_API_TOKEN
   const data: z.infer<typeof edgeConfigSchema> = await req.json()
 
-  if (!url) return NextResponse.json("no config url", { status: 401 })
+  return setEdgeConfig(data)
+}
+
+export async function setEdgeConfig(
+  data: z.infer<typeof edgeConfigSchema>,
+): Promise<NextResponse> {
+  const url = `https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`
+  const apiKey = process.env.VERCEL_API_TOKEN
+  if (!process.env.EDGE_CONFIG_ID)
+    return NextResponse.json("no config ID", { status: 401 })
   if (!apiKey) return NextResponse.json("no api key", { status: 401 })
+
   if (!edgeConfigSchema.safeParse(data).success)
     return NextResponse.json(
       { message: "invalid data", data: data },
       { status: 401 },
     )
+
   try {
     const items: {
       operation: "update"
