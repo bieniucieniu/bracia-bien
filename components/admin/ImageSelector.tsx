@@ -117,12 +117,22 @@ export default function ImageSelesctor({
                 <Button
                   variant={main.includes(img.key) ? "green" : "default"}
                   onClick={() => addRemoveMain(img.key)}
+                  className={
+                    config.mainImgKeys?.includes(img.key)
+                      ? "outline outline-2 outline-offset-2 outline-lime-600"
+                      : ""
+                  }
                 >
                   main
                 </Button>
                 <Button
                   variant={current.includes(img.key) ? "green" : "default"}
                   onClick={() => addRemoveCurrent(img.key)}
+                  className={
+                    config.currentImgKeys?.includes(img.key)
+                      ? "outline outline-2 outline-offset-2 outline-lime-600"
+                      : ""
+                  }
                 >
                   current
                 </Button>
