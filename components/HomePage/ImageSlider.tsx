@@ -9,7 +9,7 @@ export function ImageSlider({
   urls: string[]
   className?: string
 }) {
-  if (!urls.length) return null
+  if (!urls.length) return <div></div>
 
   return (
     <Slider

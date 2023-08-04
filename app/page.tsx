@@ -85,7 +85,7 @@ export default async function Home() {
         className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center"
       >
         <ImageSlider urls={currentImgUrls} className="m-2 overflow-x-hidden" />
-        <div className="bg-red-500">
+        <div className="bg-red-500 overflow-hidden">
           <AboutCards />
         </div>
       </div>

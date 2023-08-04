@@ -7,7 +7,6 @@ export default function Banner({ urls = [] }: { urls: string[] }) {
   const [visible, setVisible] = useState<boolean>(false)
 
   useEffect(() => {
-    console.log(urls)
     if (urls.length > 0) setTimeout(() => setVisible(true), 3000)
   }, [urls])
 
