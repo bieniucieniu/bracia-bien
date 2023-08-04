@@ -4,18 +4,18 @@ import { useEffect, useState } from "react"
 import Slider from "../Slider"
 
 export default function Banner({ urls = [] }: { urls: string[] }) {
-  const [logoVisible, setLogoVisible] = useState<boolean>(true)
+  const [visible, setVisible] = useState<boolean>(false)
 
   useEffect(() => {
     console.log(urls)
-    if (urls.length > 0) setTimeout(() => setLogoVisible(false), 3000)
+    if (urls.length > 0) setTimeout(() => setVisible(true), 3000)
   }, [urls])
 
   return (
     <>
       <div className="absolute inset-0 flex items-center justify-center -z-10">
         <Image
-          onClick={() => setLogoVisible(false)}
+          onClick={() => setVisible(true)}
           src="/logo.png"
           className={"object-contain transition-opacity m-auto"}
           alt="logo"
@@ -23,7 +23,7 @@ export default function Banner({ urls = [] }: { urls: string[] }) {
           height={189}
         />
       </div>
-      {logoVisible ? null : (
+      {visible ? (
         <Slider
           autoSlide={10000}
           className="z-10"
@@ -32,7 +32,7 @@ export default function Banner({ urls = [] }: { urls: string[] }) {
           )}
           length={urls.length}
         />
-      )}
+      ) : null}
     </>
   )
 }
