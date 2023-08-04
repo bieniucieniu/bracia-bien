@@ -13,11 +13,11 @@ export function Topbar() {
   return (
     <nav
       style={{ scrollbarGutter: "stable" }}
-      className="bg-white fixed top-0 left-0 right-0 z-40 grid grid-cols-3 drop-shadow-sm"
+      className="bg-white fixed top-0 left-0 right-0 z-40 drop-shadow-sm p-1 flex flex-wrap-reverse md:grid md:grid-cols-3"
     >
-      <NavigationMenu className="m-auto p-1 col-start-2">
+      <NavigationMenu className="m-auto p-1 md:col-start-2">
         <NavigationMenuList>
-          <NavigationMenuItem>
+          <NavigationMenuItem className="hidden md:block">
             <NavigationMenuLink
               asChild
               className={navigationMenuTriggerStyle()}
@@ -44,33 +44,44 @@ export function Topbar() {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-      <div className="flex mr-8 my-auto flex-row gap-8 justify-end">
-        <Link
-          href="https://www.instagram.com/braciabien/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      <div className="flex flex-row justify-between w-full md:w-auto md:justify-end">
+        <Link href="/" rel="noopener noreferrer" className="md:hidden">
           <Image
-            src="/instagram.svg"
-            className="m-auto object-contain select-none transition-opacity opacity-60 hover:opacity-100 h-8"
-            alt="instagram"
-            width={50}
-            height={50}
+            src="/logo.png"
+            className="m-auto object-contain select-none transition-opacity opacity-60 hover:opacity-100 justify-self-start h-8 w-28"
+            alt="logo"
+            width={638}
+            height={189}
           ></Image>
         </Link>
-        <Link
-          href="https://www.facebook.com/BraciaBien/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            src="/facebook.svg"
-            className="m-auto object-contain select-none transition-opacity opacity-60 hover:opacity-100 h-8"
-            alt="facebook"
-            width={50}
-            height={50}
-          ></Image>
-        </Link>
+        <div className="flex my-auto flex-row gap-8 mr-8 justify-end">
+          <Link
+            href="https://www.instagram.com/braciabien/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image
+              src="/instagram.svg"
+              className="m-auto object-contain select-none transition-opacity opacity-60 hover:opacity-100 h-6 md:h-8"
+              alt="instagram"
+              width={50}
+              height={50}
+            ></Image>
+          </Link>
+          <Link
+            href="https://www.facebook.com/BraciaBien/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image
+              src="/facebook.svg"
+              className="m-auto object-contain select-none transition-opacity opacity-60 hover:opacity-100 h-6 md:h-8"
+              alt="facebook"
+              width={50}
+              height={50}
+            ></Image>
+          </Link>
+        </div>
       </div>
     </nav>
   )
