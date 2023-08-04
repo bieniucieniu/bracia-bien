@@ -35,6 +35,11 @@ const variants: Parameters<typeof motion.div>[0]["variants"] = {
   }),
 }
 
+const swipeConfidenceThreshold = 10000
+const swipePower = (offset: number, velocity: number) => {
+  return Math.abs(offset) * velocity
+}
+
 export default function Slider({
   className,
   length,
@@ -114,12 +119,24 @@ export default function Slider({
             x: { type: "spring", stiffness: 300, damping: 30 },
             opacity: { duration: 0.2 },
           }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={1}
+          onDragEnd={(_, { offset, velocity }) => {
+            const swipe = swipePower(offset.x, velocity.x)
+
+            if (swipe < -swipeConfidenceThreshold) {
+              dispach("next")
+            } else if (swipe > swipeConfidenceThreshold) {
+              dispach("previous")
+            }
+          }}
         >
           {renderer(state.idx)}
         </motion.div>
       </AnimatePresence>
       <button
-        className="absolute z-10 top-[calc(50%_-_20px)] left-[15px] w-[40px] h-[40px] rounded-full bg-white opacity-50 hover:opacity-100 transition-all"
+        className="absolute z-10 top-[calc(50%_-_20px)] left-[15px] w-[40px] h-[40px] rounded-full bg-white opacity-0 md:opacity-50 hover:opacity-70 transition-all"
         onClick={() => dispach("previous")}
       >
         <Image
@@ -131,7 +148,7 @@ export default function Slider({
         ></Image>
       </button>
       <button
-        className="absolute z-10 top-[calc(50%_-_20px)] right-[15px] w-[40px] h-[40px] rounded-full bg-white opacity-50 hover:opacity-100 transition-all"
+        className="absolute z-10 top-[calc(50%_-_20px)] right-[15px] w-[40px] h-[40px] rounded-full bg-white opacity-0 md:opacity-50 hover:opacity-70 transition-all"
         onClick={() => dispach("next")}
       >
         <Image
