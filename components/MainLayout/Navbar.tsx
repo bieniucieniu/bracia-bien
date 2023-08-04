@@ -22,6 +22,15 @@ export function Topbar() {
               asChild
               className={navigationMenuTriggerStyle()}
             >
+              <Link href="/">home</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              asChild
+              className={navigationMenuTriggerStyle()}
+            >
               <Link href="/#about">on nas</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
