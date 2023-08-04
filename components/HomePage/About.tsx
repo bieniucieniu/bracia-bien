@@ -52,7 +52,7 @@ export function AboutCards() {
       className="m-2"
       autoSlide={false}
       length={cards.length}
-      renderer={(i) => <Card className="mx-16">{cards[i]}</Card>}
+      renderer={(i) => <Card className="md:mx-16">{cards[i]}</Card>}
     />
   )
 }
