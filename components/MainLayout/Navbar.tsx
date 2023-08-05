@@ -48,13 +48,14 @@ export function Topbar() {
         <Link href="/" rel="noopener noreferrer" className="md:hidden">
           <Image
             src="/logo.png"
+            priority
             className="m-auto object-contain select-none transition-opacity opacity-60 hover:opacity-100 justify-self-start h-8 w-28"
             alt="logo"
             width={638}
             height={189}
           ></Image>
         </Link>
-        <div className="flex my-auto flex-row gap-8 mr-8 justify-end">
+        <div className="flex my-auto flex-row gap-4 md:gap-8 md:mr-8 justify-end">
           <Link
             href="https://www.instagram.com/braciabien/"
             target="_blank"

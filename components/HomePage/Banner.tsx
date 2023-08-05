@@ -18,6 +18,7 @@ export default function Banner({ urls = [] }: { urls: string[] }) {
       >
         <Image
           src="/logo.png"
+          priority
           className={"object-contain transition-opacity m-auto"}
           alt="logo"
           width={638}
