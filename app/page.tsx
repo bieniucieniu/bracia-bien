@@ -50,24 +50,28 @@ const infoData: LinkData = [
 ]
 
 export default async function Home() {
-  const mainImgKeys = (await get("mainImgKeys"))?.valueOf() as z.infer<
-    typeof edgeConfigSchema
-  >["mainImgKeys"]
-  const mainImgUrls = mainImgKeys?.length
+  const mainImgKeys =
+    ((await get("mainImgKeys"))?.valueOf() as z.infer<
+      typeof edgeConfigSchema
+    >["mainImgKeys"]) ?? []
+
+  const mainImgUrls = mainImgKeys.length
     ? (await utapi.getFileUrls(mainImgKeys)).map((e) => e.url)
     : []
 
-  const currentImgKeys = (await get("currentImgKeys"))?.valueOf() as z.infer<
-    typeof edgeConfigSchema
-  >["currentImgKeys"]
-  const currentImgUrls = currentImgKeys?.length
+  const currentImgKeys =
+    ((await get("currentImgKeys"))?.valueOf() as z.infer<
+      typeof edgeConfigSchema
+    >["currentImgKeys"]) ?? []
+
+  const currentImgUrls = currentImgKeys.length
     ? (await utapi.getFileUrls(currentImgKeys)).map((e) => e.url)
     : []
 
   const allImgKeys = (await listFiles()).map((e) => e.key)
   const elseImgKeys = allImgKeys.filter((e) => {
-    if (mainImgKeys?.includes(e)) return false
-    if (currentImgKeys?.includes(e)) return false
+    if (mainImgKeys.includes(e)) return false
+    if (currentImgKeys.includes(e)) return false
     return true
   })
 
