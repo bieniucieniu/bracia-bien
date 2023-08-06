@@ -14,14 +14,13 @@ import { getServerSession } from "next-auth"
 import authOptions from "@/lib/auth"
 import { ArrowUpIcon } from "@radix-ui/react-icons"
 import ImageSelesctor from "@/components/admin/ImageSelector"
-import { listFiles } from "@/utils/uploadthing"
 import { edgeConfigSchema } from "@/lib/edgeconfig"
 import { z } from "zod"
 
 export default async function Upload() {
   const currentEdgeConifg: z.infer<typeof edgeConfigSchema> = await getAll()
   const session = await getServerSession(authOptions)
-  const keys = await listFiles()
+  const keys = await utapi.listFiles()
   const imgsData = keys.length
     ? await utapi.getFileUrls(keys.map((k) => k.key))
     : []

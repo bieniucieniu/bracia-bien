@@ -7,7 +7,6 @@ import { edgeConfigSchema } from "@/lib/edgeconfig"
 import { get } from "@vercel/edge-config"
 import { utapi } from "uploadthing/server"
 import PhotoGalery from "@/components/HomePage/PhotoGallery"
-import { listFiles } from "@/utils/uploadthing"
 import { z } from "zod"
 import Banner from "@/components/HomePage/Banner"
 
@@ -68,7 +67,7 @@ export default async function Home() {
     ? (await utapi.getFileUrls(currentImgKeys)).map((e) => e.url)
     : []
 
-  const allImgKeys = (await listFiles()).map((e) => e.key)
+  const allImgKeys = (await utapi.listFiles()).map((e) => e.key)
   const elseImgKeys = allImgKeys.filter((e) => {
     if (mainImgKeys.includes(e)) return false
     if (currentImgKeys.includes(e)) return false
