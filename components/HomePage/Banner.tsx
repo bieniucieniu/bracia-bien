@@ -12,10 +12,13 @@ export default function Banner({ urls }: { urls: string[] }) {
 
   return (
     <>
-      <div className="absolute inset-0 flex items-center justify-center -z-10">
+      <div
+        onClick={() => setVisible(true)}
+        className="absolute inset-0 flex items-center justify-center"
+      >
         <Image
-          onClick={() => setVisible(true)}
           src="/logo.png"
+          priority
           className={"object-contain transition-opacity m-auto"}
           alt="logo"
           width={638}

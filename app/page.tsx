@@ -7,7 +7,6 @@ import { edgeConfigSchema } from "@/lib/edgeconfig"
 import { get } from "@vercel/edge-config"
 import { utapi } from "uploadthing/server"
 import PhotoGalery from "@/components/HomePage/PhotoGallery"
-import { listFiles } from "@/utils/uploadthing"
 import { z } from "zod"
 import Banner from "@/components/HomePage/Banner"
 
@@ -50,24 +49,28 @@ const infoData: LinkData = [
 ]
 
 export default async function Home() {
-  const mainImgKeys = (await get("mainImgKeys"))?.valueOf() as z.infer<
-    typeof edgeConfigSchema
-  >["mainImgKeys"]
-  const mainImgUrls = mainImgKeys?.length
+  const mainImgKeys =
+    ((await get("mainImgKeys"))?.valueOf() as z.infer<
+      typeof edgeConfigSchema
+    >["mainImgKeys"]) ?? []
+
+  const mainImgUrls = mainImgKeys.length
     ? (await utapi.getFileUrls(mainImgKeys)).map((e) => e.url)
     : []
 
-  const currentImgKeys = (await get("currentImgKeys"))?.valueOf() as z.infer<
-    typeof edgeConfigSchema
-  >["currentImgKeys"]
-  const currentImgUrls = currentImgKeys?.length
+  const currentImgKeys =
+    ((await get("currentImgKeys"))?.valueOf() as z.infer<
+      typeof edgeConfigSchema
+    >["currentImgKeys"]) ?? []
+
+  const currentImgUrls = currentImgKeys.length
     ? (await utapi.getFileUrls(currentImgKeys)).map((e) => e.url)
     : []
 
-  const allImgKeys = (await listFiles()).map((e) => e.key)
+  const allImgKeys = (await utapi.listFiles()).map((e) => e.key)
   const elseImgKeys = allImgKeys.filter((e) => {
-    if (mainImgKeys?.includes(e)) return false
-    if (currentImgKeys?.includes(e)) return false
+    if (mainImgKeys.includes(e)) return false
+    if (currentImgKeys.includes(e)) return false
     return true
   })
 
@@ -84,8 +87,11 @@ export default async function Home() {
         id="about"
         className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center"
       >
-        <ImageSlider urls={currentImgUrls} className="m-2 overflow-x-hidden" />
-        <div className="bg-red-500 overflow-hidden">
+        <ImageSlider
+          urls={currentImgUrls}
+          className="m-2 overflow-x-hidden min-h-screen lg:h-auto"
+        />
+        <div className="bg-red-500 overflow-hidden min-h-screen lg:h-auto">
           <AboutCards />
         </div>
       </div>
