@@ -3,11 +3,11 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import Slider from "../Slider"
 
-export default function Banner({ urls = [] }: { urls: string[] }) {
+export default function Banner({ urls }: { urls: string[] }) {
   const [visible, setVisible] = useState<boolean>(false)
 
   useEffect(() => {
-    if (urls.length > 0) setTimeout(() => setVisible(true), 3000)
+    setTimeout(() => setVisible(true), 3000)
   }, [urls])
 
   return (
@@ -22,7 +22,7 @@ export default function Banner({ urls = [] }: { urls: string[] }) {
           height={189}
         />
       </div>
-      {visible ? (
+      {visible && urls.length > 0 ? (
         <Slider
           autoSlide={10000}
           className="z-10"
