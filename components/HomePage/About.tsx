@@ -14,37 +14,80 @@ export function AboutCards() {
   const cards: JSX.Element[] = [
     <>
       <CardHeader>
-        <CardTitle>on nas</CardTitle>
+        <CardTitle>Hurtownia na Stawiszynskiej</CardTitle>
+        <CardDescription></CardDescription>
       </CardHeader>
-      <CardContent>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-        sodales fermentum consectetur. Sed id gravida nibh, vel elementum quam.
-        Nulla tristique sapien ac accumsan finibus. Sed nunc ligula, ornare ut
-        volutpat sed, fermentum at ipsum. Curabitur imperdiet interdum urna, sed
-        venenatis urna lobortis quis.
-      </CardContent>
+      <CardContent></CardContent>
       <CardFooter>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-        sodales fermentum consectetur.
+        <Link
+          className="hover:underline"
+          href="https://goo.gl/maps/p9mYhSsgZWzVhuLA6"
+          target="_blank"
+        >
+          Stawiszyńska 125, 62-800 Kalisz
+        </Link>
       </CardFooter>
     </>,
     <>
       <CardHeader>
-        <CardTitle>sklep 1</CardTitle>
-        <CardDescription>
-          <Link href="https://goo.gl/maps/BfMbTwFQTeVjVR717" target="_blank">
-            Stawiszyńska 125, 62-800 Kalisz
-          </Link>
-        </CardDescription>
+        <CardTitle>on nas</CardTitle>
       </CardHeader>
-      <CardContent>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-        sodales fermentum consectetur. Sed id gravida nibh, vel elementum quam.
-        Nulla tristique sapien ac accumsan finibus. Sed nunc ligula, ornare ut
-        volutpat sed, fermentum at ipsum. Curabitur imperdiet interdum urna, sed
-        venenatis urna lobortis quis.
-      </CardContent>
+      <CardContent>posiadamy 3 sklepy poza hurtownia</CardContent>
       <CardFooter></CardFooter>
+    </>,
+    <>
+      <CardHeader>
+        <CardTitle>
+          sklep {'"'}Pod Zegarem{'"'}
+        </CardTitle>
+        <CardDescription>sklep znajduje sie na parterze hali</CardDescription>
+      </CardHeader>
+      <CardContent></CardContent>
+      <CardFooter>
+        <Link
+          className="hover:underline"
+          href="https://goo.gl/maps/7PkrZp8oaSH2wEY87"
+          target="_blank"
+        >
+          Górnośląska 76A, 62-800 Kalisz
+        </Link>
+      </CardFooter>
+    </>,
+    <>
+      <CardHeader>
+        <CardTitle>
+          sklep w {'"'}Mini Parku{'"'}
+        </CardTitle>
+        <CardDescription>sklep znajduje sie na parterze hali</CardDescription>
+      </CardHeader>
+      <CardContent></CardContent>
+      <CardFooter>
+        <Link
+          className="hover:underline"
+          href="https://goo.gl/maps/BfMbTwFQTeVjVR717"
+          target="_blank"
+        >
+          Prymasa Stefana Wyszyńskiego 42a, 62-800 Kalisz
+        </Link>
+      </CardFooter>
+    </>,
+    <>
+      <CardHeader>
+        <CardTitle>
+          sklep w {'"'}Zlotym Centrun{'"'}
+        </CardTitle>
+        <CardDescription>sklep znajduje sie na parterze hali</CardDescription>
+      </CardHeader>
+      <CardContent></CardContent>
+      <CardFooter>
+        <Link
+          className="hover:underline"
+          href="https://goo.gl/maps/7pUSv7apQgftd7uZ9"
+          target="_blank"
+        >
+          Polna 14, 62-800 Kalisz
+        </Link>
+      </CardFooter>
     </>,
   ]
   return (
