@@ -13,62 +13,62 @@ export const db = drizzle(sql)
 export const insertImagesSchema = createInsertSchema(images)
 export const selectImagesSchema = createSelectSchema(images)
 
-const uuidArraySchema = z.string().uuid().array()
-const categorySchema = z.enum(categoryEnum.enumValues)
+export const uuidArraySchema = z.string().uuid().array()
+export const categorySchema = z.enum(categoryEnum.enumValues)
 
 export async function getByCategory(
-	category: z.infer<typeof categorySchema>[],
+  category: z.infer<typeof categorySchema>[],
 ): Promise<JsonRes> {
-	if (!categorySchema.array().safeParse(categorySchema))
-		return [{ error: "invalid data" }, { status: 400 }]
+  if (!categorySchema.array().safeParse(categorySchema))
+    return [{ error: "invalid data" }, { status: 400 }]
 
-	const res = await db
-		.select()
-		.from(images)
-		.where(inArray(images.category, category))
+  const res = await db
+    .select()
+    .from(images)
+    .where(inArray(images.category, category))
 
-	return [{ res }]
+  return [{ res }]
 }
 
 export async function addImages(
-	data: z.infer<typeof insertImagesSchema>[],
+  data: z.infer<typeof insertImagesSchema>[],
 ): Promise<JsonRes> {
-	if (!insertImagesSchema.safeParse(data))
-		return [{ error: "invalid data" }, { status: 400 }]
+  if (!insertImagesSchema.safeParse(data))
+    return [{ error: "invalid data" }, { status: 400 }]
 
-	const res = await db.insert(images).values(data).returning()
+  const res = await db.insert(images).values(data).returning()
 
-	return [{ res }]
+  return [{ res }]
 }
 
 const imagesOmitKey = selectImagesSchema.omit({ key: true })
 
 export async function updateImages({
-	keys,
-	update,
+  keys,
+  update,
 }: {
-	keys: z.infer<typeof uuidArraySchema>
-	update: z.infer<typeof imagesOmitKey>
+  keys: z.infer<typeof uuidArraySchema>
+  update: z.infer<typeof imagesOmitKey>
 }): Promise<JsonRes> {
-	if (!imagesOmitKey.safeParse(update) || !uuidArraySchema.safeParse(keys))
-		return [{ error: "invalid data" }, { status: 400 }]
+  if (!imagesOmitKey.safeParse(update) || !uuidArraySchema.safeParse(keys))
+    return [{ error: "invalid data" }, { status: 400 }]
 
-	const res = await db
-		.update(images)
-		.set(update)
-		.where(inArray(images.key, keys))
-		.returning()
+  const res = await db
+    .update(images)
+    .set(update)
+    .where(inArray(images.key, keys))
+    .returning()
 
-	return [{ res }]
+  return [{ res }]
 }
 
 export async function deleteImages(
-	keys: z.infer<typeof uuidArraySchema>,
+  keys: z.infer<typeof uuidArraySchema>,
 ): Promise<JsonRes> {
-	if (!uuidArraySchema.safeParse(keys))
-		return [{ error: "invalid data" }, { status: 400 }]
+  if (!uuidArraySchema.safeParse(keys))
+    return [{ error: "invalid data" }, { status: 400 }]
 
-	const res = await db.delete(images).where(inArray(images.key, keys))
+  const res = await db.delete(images).where(inArray(images.key, keys))
 
-	return [{ res }]
+  return [{ res }]
 }
