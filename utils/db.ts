@@ -1,11 +1,12 @@
-import { insertImagesSchema, uuidArraySchema } from "@/db/postgres"
-import { z } from "zod"
+import {
+  type addImages,
+  type deleteImages,
+  type updateImages,
+} from "@/db/postgres"
 export async function addImagesData(
-  images: z.infer<typeof insertImagesSchema>,
+  images: Parameters<typeof addImages>[0],
   onCompleat?: (res: Response) => void,
 ) {
-  insertImagesSchema.parse(images)
-
   const res = await fetch("/api/postgres", {
     method: "POST",
     body: JSON.stringify({ images }),
@@ -14,18 +15,16 @@ export async function addImagesData(
   onCompleat && onCompleat(res)
 }
 
-export async function updateDeleteImages(
+export async function patchImagesData(
   data: {
-    updateImages?: z.infer<typeof uuidArraySchema>
-    deleteImages?: z.infer<typeof uuidArraySchema>
+    updateImages?: Parameters<typeof updateImages>[0]
+    deleteImages?: Parameters<typeof deleteImages>[0]
   },
   onCompleat?: (res: Response) => void,
 ) {
   if (!data.updateImages && !data.deleteImages) {
     throw new Error("no data provided")
   }
-  if (data.updateImages) uuidArraySchema.parse(data.updateImages)
-  if (data.deleteImages) uuidArraySchema.parse(data.deleteImages)
 
   const res = await fetch("/api/postgres", {
     method: "PATCH",

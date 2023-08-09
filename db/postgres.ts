@@ -27,7 +27,7 @@ export async function getByCategorie(
     .from(images)
     .where(inArray(images.categorie, categorie))
 
-  return [{ res }]
+  return [res]
 }
 
 export async function addImages(
@@ -38,26 +38,31 @@ export async function addImages(
 
   const res = await db.insert(images).values(data).returning()
 
-  return [{ res }]
+  return [res]
 }
 
-const imagesOmitKey = selectImagesSchema.omit({ key: true })
+export const imagesOmitKey = selectImagesSchema.omit({ key: true })
 
-export async function updateImages({
-  keys,
-  update,
-}: {
-  keys: z.infer<typeof uuidArraySchema>
-  update: z.infer<typeof imagesOmitKey>
-}): Promise<JsonRes> {
-  if (!imagesOmitKey.safeParse(update) || !uuidArraySchema.safeParse(keys))
-    return [{ error: "invalid data" }, { status: 400 }]
+export async function updateImages(
+  data: {
+    keys: z.infer<typeof uuidArraySchema>
+    update: z.infer<typeof imagesOmitKey>
+  }[],
+): Promise<JsonRes> {
+  const res = await Promise.all(
+    data.map(async ({ update, keys }) => {
+      if (!imagesOmitKey.safeParse(update) || !uuidArraySchema.safeParse(keys))
+        return [{ error: "invalid data", update, keys }, { status: 400 }]
 
-  const res = await db
-    .update(images)
-    .set(update)
-    .where(inArray(images.key, keys))
-    .returning()
+      const r = await db
+        .update(images)
+        .set(update)
+        .where(inArray(images.key, keys))
+        .returning()
+
+      return r
+    }),
+  )
 
   return [{ res }]
 }
@@ -70,5 +75,5 @@ export async function deleteImages(
 
   const res = await db.delete(images).where(inArray(images.key, keys))
 
-  return [{ res }]
+  return [res]
 }

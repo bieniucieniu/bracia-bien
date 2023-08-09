@@ -25,12 +25,12 @@ export async function PATCH(req: Request) {
   const res: { deleted?: any; updated?: any } = {}
 
   if (data.updateImages) {
-    const updated = await updateImages(data.update)
+    const updated = await updateImages(data.updateImages)
     res.updated = updated
   }
 
   if (data.deleteImages) {
-    const deleted = await deleteImages(data.delete)
+    const deleted = await deleteImages(data.deleteImages)
     res.deleted = deleted
   }
 
