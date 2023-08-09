@@ -2,7 +2,7 @@ import { drizzle } from "drizzle-orm/vercel-postgres"
 import { sql } from "@vercel/postgres"
 import { inArray } from "drizzle-orm"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
-import { images, categoryEnum } from "./schema"
+import { images, categorieEnum } from "./schema"
 import { z } from "zod"
 import { type NextResponse } from "next/server"
 
@@ -14,18 +14,18 @@ export const insertImagesSchema = createInsertSchema(images)
 export const selectImagesSchema = createSelectSchema(images)
 
 export const uuidArraySchema = z.string().uuid().array()
-export const categorySchema = z.enum(categoryEnum.enumValues)
+export const categorieSchema = z.enum(categorieEnum.enumValues)
 
-export async function getByCategory(
-  category: z.infer<typeof categorySchema>[],
+export async function getByCategorie(
+  categorie: z.infer<typeof categorieSchema>[],
 ): Promise<JsonRes> {
-  if (!categorySchema.array().safeParse(categorySchema))
+  if (!categorieSchema.array().safeParse(categorieSchema))
     return [{ error: "invalid data" }, { status: 400 }]
 
   const res = await db
     .select()
     .from(images)
-    .where(inArray(images.category, category))
+    .where(inArray(images.categorie, categorie))
 
   return [{ res }]
 }
