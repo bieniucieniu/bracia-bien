@@ -3,6 +3,8 @@ import {
   type deleteImages,
   type updateImages,
 } from "@/db/postgres"
+import { images } from "@/db/schema"
+import { InferModel } from "drizzle-orm"
 export async function addImagesData(
   images: Parameters<typeof addImages>[0],
   onCompleat?: (res: Response) => void,
@@ -20,16 +22,18 @@ export async function patchImagesData(
     updateImages?: Parameters<typeof updateImages>[0]
     deleteImages?: Parameters<typeof deleteImages>[0]
   },
-  onCompleat?: (res: Response) => void,
+  onCompleat?: (res: InferModel<typeof images>) => void,
 ) {
   if (!data.updateImages && !data.deleteImages) {
     throw new Error("no data provided")
   }
 
-  const res = await fetch("/api/postgres", {
+  const dbRes = await fetch("/api/postgres", {
     method: "PATCH",
     body: JSON.stringify(data),
   })
+
+  const { res } = await dbRes.json()
 
   onCompleat && onCompleat(res)
 }
