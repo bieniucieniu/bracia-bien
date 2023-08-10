@@ -4,6 +4,7 @@ import { inArray } from "drizzle-orm"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 import { images, categorieEnum } from "./schema"
 import { z } from "zod"
+import { utapi } from "uploadthing/server"
 
 export const db = drizzle(sql)
 export const insertImagesSchema = createInsertSchema(images)
@@ -75,14 +76,17 @@ export async function updateImages(
 
 export async function deleteImages(
   keys: z.infer<typeof uuidArraySchema>,
-): Promise<ValidationError | { res: typeof res; error?: never }> {
+): Promise<
+  ValidationError | { res: typeof res; utRes: typeof utRes; error?: never }
+> {
   if (!uuidArraySchema.safeParse(keys))
     return { error: [{ error: "invalid data", keys }, { status: 400 }] }
-
   const res = await db
     .delete(images)
     .where(inArray(images.key, keys))
-    .returning({ keys: images.key })
+    .returning()
 
-  return { res }
+  const utRes = await utapi.deleteFiles(res.map((e) => e.key))
+
+  return { res, utRes }
 }
