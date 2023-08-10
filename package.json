@@ -53,6 +53,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@types/pg": "^8.10.2",
     "drizzle-kit": "^0.19.12",
     "pg": "^8.11.2"
   }
