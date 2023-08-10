@@ -29,6 +29,7 @@ import { z } from "zod"
 import { deleteFiles } from "@/utils/uploadthing"
 
 import { useRouter } from "next/navigation"
+import { patchImagesData } from "@/utils/db"
 export default function ImageSelesctor({
   imgsData,
   config,
@@ -95,6 +96,10 @@ export default function ImageSelesctor({
         router.refresh()
       }
     })
+
+    patchImagesData({ deleteImages: toDelete }, (res) => {
+      res.map((e) => e.error && console.log(e))
+    })
   }
   return (
     <Card className="flex flex-col w-fit m-auto" id="imgSel">
@@ -113,29 +118,31 @@ export default function ImageSelesctor({
                 height={300}
                 className="object-contain h-auto rounded-t-xl"
               />
-              <section className="flex justify-around pb-2 rounded-b-xl shadow-md">
-                <Button
-                  variant={main.includes(img.key) ? "green" : "default"}
-                  onClick={() => addRemoveMain(img.key)}
-                  className={
-                    config.mainImgKeys?.includes(img.key)
-                      ? "outline outline-2 outline-offset-2 outline-lime-600"
-                      : ""
-                  }
-                >
-                  main
-                </Button>
-                <Button
-                  variant={current.includes(img.key) ? "green" : "default"}
-                  onClick={() => addRemoveCurrent(img.key)}
-                  className={
-                    config.currentImgKeys?.includes(img.key)
-                      ? "outline outline-2 outline-offset-2 outline-lime-600"
-                      : ""
-                  }
-                >
-                  current
-                </Button>
+              <section className="flex justify-around items-center pb-2 rounded-b-xl shadow-md">
+                <div className="flex flex-row gap-x-4 p-2 rounded-xl shadow-md">
+                  <Button
+                    variant={main.includes(img.key) ? "green" : "default"}
+                    onClick={() => addRemoveMain(img.key)}
+                    className={
+                      config.mainImgKeys?.includes(img.key)
+                        ? "outline outline-2 outline-offset-2 outline-lime-600"
+                        : ""
+                    }
+                  >
+                    main
+                  </Button>
+                  <Button
+                    variant={current.includes(img.key) ? "green" : "default"}
+                    onClick={() => addRemoveCurrent(img.key)}
+                    className={
+                      config.currentImgKeys?.includes(img.key)
+                        ? "outline outline-2 outline-offset-2 outline-lime-600"
+                        : ""
+                    }
+                  >
+                    current
+                  </Button>
+                </div>
                 <Button
                   variant={
                     toDelete.includes(img.key) ? "destructive" : "default"

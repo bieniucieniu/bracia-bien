@@ -10,11 +10,10 @@ import { useCallback, useState } from "react"
 import ErrorAlert from "../ErrorAlert"
 import { twMerge } from "tailwind-merge"
 import { Progress } from "../ui/progress"
-import { Textarea } from "../ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
-import { useSession } from "next-auth/react"
+import { addImagesData } from "@/utils/db"
 
 const { useUploadThing } = generateReactHelpers<FileRouter>()
 
@@ -54,7 +53,17 @@ export function UploadZone({
   })
 
   const { isUploading, startUpload } = useUploadThing(endpoint ?? "image", {
-    onClientUploadComplete: () => {
+    onClientUploadComplete: (e) => {
+      if (Array.isArray(e)) {
+        const items: Parameters<typeof addImagesData>[0] = e.map(
+          ({ fileKey }) => ({
+            key: fileKey,
+            categorie: categorie === "else" ? "" : categorie,
+            alt,
+          }),
+        )
+        addImagesData(items)
+      }
       setFiles([])
     },
     onUploadError: (error) => {
@@ -66,7 +75,9 @@ export function UploadZone({
   })
 
   const [alt, setAlt] = useState<string>()
-  const [categorie, setCategorie] = useState<string>()
+  const [categorie, setCategorie] = useState<"main" | "current" | "else">(
+    "else",
+  )
 
   return (
     <div className={twMerge("flex flex-col gap-2 items-center", className)}>
@@ -76,7 +87,8 @@ export function UploadZone({
             width,
             height,
           },
-          className: `border-2 border-dashed border-black rounded-xl p-5 w-fill h-fill`,
+          className:
+            "border-2 border-dashed border-black rounded-xl p-5 w-fill h-fill",
         })}
       >
         <input {...getInputProps({ disabled: isUploading })} />
@@ -105,8 +117,8 @@ export function UploadZone({
         )}
         <ErrorAlert error={error} onAccept={() => setError(undefined)} />
         <RadioGroup
-          defaultValue="else"
-          onValueChange={(e) => setCategorie(e)}
+          defaultValue={categorie}
+          onValueChange={(e: "main" | "current" | "else") => setCategorie(e)}
           disabled={isUploading}
           className="flex flex-row"
         >
