@@ -25,20 +25,18 @@ import {
 } from "@/components/ui/alert-dialog"
 import Link from "next/link"
 import { setConfig } from "@/lib/edgeconfig"
-import { z } from "zod"
 import { deleteFiles } from "@/utils/uploadthing"
 
 import { useRouter } from "next/navigation"
 import { patchImagesData } from "@/utils/db"
-export default function ImageSelesctor({
-  imgsData,
-  config,
-}: {
-  imgsData: { url: string; key: string }[]
-  config: z.infer<typeof edgeConfigSchema>
-}) {
-  const [main, setMain] = useState<string[]>(config.mainImgKeys ?? [])
-  const [current, setCurrent] = useState<string[]>(config.currentImgKeys ?? [])
+import { InferModel } from "drizzle-orm"
+import { images } from "@/db/schema"
+interface ImgsData extends InferModel<typeof images> {
+  url: string
+}
+export default function ImageSelesctor({ imgsData }: { imgsData: ImgsData[] }) {
+  const [main, setMain] = useState<string[]>([])
+  const [current, setCurrent] = useState<string[]>([])
   const [toDelete, setToDelete] = useState<string[]>([])
   const router = useRouter()
 
@@ -109,11 +107,11 @@ export default function ImageSelesctor({
       </CardHeader>
       <CardContent>
         <ul className="flex flex-row flex-wrap p-2 gap-2">
-          {imgsData.map((img) => (
-            <li className="flex flex-col gap-2" key={img.key}>
+          {imgsData.map(({ url, key, alt, categorie }) => (
+            <li className="flex flex-col gap-2" key={key}>
               <Image
-                alt={img.key}
-                src={img.url}
+                alt={alt || ""}
+                src={url}
                 width={400}
                 height={300}
                 className="object-contain h-auto rounded-t-xl"
@@ -121,10 +119,9 @@ export default function ImageSelesctor({
               <section className="flex justify-around items-center pb-2 rounded-b-xl shadow-md">
                 <div className="flex flex-row gap-x-4 p-2 rounded-xl shadow-md">
                   <Button
-                    variant={main.includes(img.key) ? "green" : "default"}
-                    onClick={() => addRemoveMain(img.key)}
+                    onClick={() => addRemoveMain(key)}
                     className={
-                      config.mainImgKeys?.includes(img.key)
+                      categorie === "main"
                         ? "outline outline-2 outline-offset-2 outline-lime-600"
                         : ""
                     }
@@ -132,10 +129,10 @@ export default function ImageSelesctor({
                     main
                   </Button>
                   <Button
-                    variant={current.includes(img.key) ? "green" : "default"}
-                    onClick={() => addRemoveCurrent(img.key)}
+                    variant={current.includes(key) ? "green" : "default"}
+                    onClick={() => addRemoveCurrent(key)}
                     className={
-                      config.currentImgKeys?.includes(img.key)
+                      categorie === "current"
                         ? "outline outline-2 outline-offset-2 outline-lime-600"
                         : ""
                     }
@@ -144,10 +141,8 @@ export default function ImageSelesctor({
                   </Button>
                 </div>
                 <Button
-                  variant={
-                    toDelete.includes(img.key) ? "destructive" : "default"
-                  }
-                  onClick={() => addRemoveToDelete(img.key)}
+                  variant={toDelete.includes(key) ? "destructive" : "default"}
+                  onClick={() => addRemoveToDelete(key)}
                   className="outline outline-2 outline-offset-2 outline-red-500"
                 >
                   to delete

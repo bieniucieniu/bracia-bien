@@ -58,7 +58,7 @@ export function UploadZone({
         const items: Parameters<typeof addImagesData>[0] = e.map(
           ({ fileKey }) => ({
             key: fileKey,
-            categorie: categorie === "else" ? "" : categorie,
+            categorie: categorie,
             alt,
           }),
         )
