@@ -13,7 +13,8 @@ import { Progress } from "../ui/progress"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
-import { addImagesData } from "@/utils/db"
+import { addImagesData } from "@/db/clientApi"
+import { categorie as categorieEnum } from "@/db/schema"
 
 const { useUploadThing } = generateReactHelpers<FileRouter>()
 
@@ -105,7 +106,7 @@ export function Uploader({
       />
       <div className="flex flex-row gap-x-4">
         {isUploading ? (
-          <Progress value={progress} />
+          <Progress value={progress} className="w-full" />
         ) : (
           <Button
             onClick={() => startUpload(files)}
@@ -122,18 +123,12 @@ export function Uploader({
           disabled={isUploading}
           className="flex flex-row"
         >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="main" id="r1" />
-            <Label htmlFor="r1">main</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="current" id="r2" />
-            <Label htmlFor="r2">current</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="else" id="r3" />
-            <Label htmlFor="r3">else</Label>
-          </div>
+          {categorieEnum.enumValues.map((str) => (
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value={str} id="r1" />
+              <Label htmlFor="r1">{str}</Label>
+            </div>
+          ))}
         </RadioGroup>
       </div>
     </div>
