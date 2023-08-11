@@ -22,48 +22,50 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Link from "next/link"
-import { deleteFiles } from "@/utils/uploadthing"
+import { categorie as categorieEnum } from "@/db/schema"
 
-import { useRouter } from "next/navigation"
-import { patchImagesData } from "@/utils/db"
+import { patchImagesData } from "@/db/clientApi"
 import { Label } from "../ui/label"
 import { ImgData } from "./AdminDashboard"
+import { twJoin } from "tailwind-merge"
+import { Input } from "../ui/input"
 
 export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
-  const [toDelete, setToDelete] = useState<string[]>([])
-  const [toUpdate, setToUpdate] = useState<ImgData["categorie"][]>(
-    Array.from({ length: imgsData.length }),
+  const [toDelete, setToDelete] = useState<(ImgData["key"] | null)[]>(
+    Array.from({ length: imgsData.length }, () => null),
   )
-  const router = useRouter()
+  const [toUpdateCategorie, setToUpdateCategorie] = useState<
+    ImgData["categorie"][]
+  >(Array.from({ length: imgsData.length }, () => null))
+
+  const [toUpdateAlt, setToUpdateAlt] = useState<ImgData["alt"][]>(
+    Array.from({ length: imgsData.length }, () => null),
+  )
 
   const addRemoveToDelete = useCallback(
-    (key: string) => {
-      if (toDelete.includes(key)) {
-        const newItems = toDelete.filter((k) => k !== key)
-        setToDelete(newItems)
-      } else {
-        toDelete.push(key)
-        setToDelete([...toDelete])
-      }
+    (idx: number) => {
+      toDelete[idx] = toDelete[idx] ? null : imgsData[idx].key
+      setToDelete([...toDelete])
     },
     [toDelete],
   )
 
-  const setSelected = () => {}
+  const [altEdit, setAltEdit] = useState<string>("")
 
-  const deleteSelected = () => {
-    deleteFiles(toDelete, async (res) => {
-      const body = await res.json()
-      if (body.success) {
-        setToDelete([])
-        router.refresh()
-      }
-    })
+  const patchSelected = () => {
+    const filteredDelete = toDelete.filter((e) => Boolean(e)) as string[]
+    // const filteredUpdate = toUpdate.filter((e) => Boolean(e))
 
-    patchImagesData({ deleteImages: toDelete }, (res) => {
-      res.map((e) => e.error && console.log(e))
+    patchImagesData({ deleteImages: filteredDelete }, (res) => {
+      if (res.deleted.error) console.log(res.updated.error)
+      if (res.updated.error) console.log(res.updated.error)
     })
   }
   return (
@@ -75,46 +77,89 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
       <CardContent>
         <ul className="flex flex-row flex-wrap p-2 gap-2">
           {imgsData.map(({ url, key, alt, categorie }, idx) => (
-            <li className="flex flex-col gap-2" key={key}>
+            <li
+              className="flex flex-col gap-2 overflow-hidden rounded-xl shadow-md"
+              key={key}
+            >
               <Image
-                alt={alt || ""}
-                src={url || ""}
+                alt={alt ?? ""}
+                src={url ?? ""}
                 width={400}
                 height={300}
-                className="object-contain h-auto rounded-t-xl"
+                className={twJoin(
+                  "object-contain h-auto transition",
+                  toDelete[idx] ? "blur-sm" : "",
+                )}
               />
 
-              {!categorie ? (
-                "error"
-              ) : (
-                <RadioGroup
-                  defaultValue={categorie}
-                  onValueChange={(e: NonNullable<ImgData["categorie"]>) => {
-                    if (e === categorie) toUpdate[idx] = null
-                    else toUpdate[idx] = e
-                    setToUpdate([...toUpdate])
-                  }}
-                  className="flex flex-row"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="main" id="r1" />
-                    <Label htmlFor="r1">main</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="current" id="r2" />
-                    <Label htmlFor="r2">current</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="else" id="r3" />
-                    <Label htmlFor="r3">else</Label>
-                  </div>
-                </RadioGroup>
-              )}
+              <section className="flex justify-around items-center pb-2">
+                {!categorie ? (
+                  "error"
+                ) : (
+                  <RadioGroup
+                    defaultValue={categorie}
+                    onValueChange={(e: NonNullable<ImgData["categorie"]>) => {
+                      if (e === categorie) toUpdateCategorie[idx] = null
+                      else toUpdateCategorie[idx] = e
+                      setToUpdateCategorie([...toUpdateCategorie])
+                    }}
+                    className="flex flex-row"
+                  >
+                    {categorieEnum.enumValues.map((str) => (
+                      <div
+                        className={twJoin(
+                          "flex items-center space-x-2 rounded-xl pr-1",
+                          categorie === str
+                            ? "outline outline-2 outline-offset-2 outline-lime-300"
+                            : "",
+                        )}
+                      >
+                        <RadioGroupItem value={str} id="r1" />
+                        <Label htmlFor="r1">{str}</Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                )}
+                <Popover onOpenChange={() => setAltEdit(alt ?? "")}>
+                  <PopoverTrigger asChild>
+                    <Button variant={toUpdateAlt[idx] ? "green" : "outline"}>
+                      edit alt
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="flex flex-col">
+                    <Input
+                      type="text"
+                      value={altEdit}
+                      onChange={(e) => setAltEdit(e.target.value)}
+                    />
+                    <div className="flex flex-row gap-x-2 justify-end mt-2">
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          toUpdateAlt[idx] = null
+                          setToUpdateAlt([...toUpdateAlt])
 
-              <section className="flex justify-around items-center pb-2 rounded-b-xl shadow-md">
+                          setAltEdit(alt ?? "")
+                        }}
+                      >
+                        reset
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          toUpdateAlt[idx] = altEdit
+                          setToUpdateAlt([...toUpdateAlt])
+
+                          setAltEdit(alt ?? "")
+                        }}
+                      >
+                        set
+                      </Button>
+                    </div>
+                  </PopoverContent>
+                </Popover>
                 <Button
-                  variant={toDelete.includes(key) ? "destructive" : "default"}
-                  onClick={() => addRemoveToDelete(key)}
+                  variant={toDelete[idx] ? "destructive" : "default"}
+                  onClick={() => addRemoveToDelete(idx)}
                   className="outline outline-2 outline-offset-2 outline-red-500"
                 >
                   delete
@@ -129,42 +174,27 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive" disabled={toDelete.length <= 0}>
-                delete Selected
+                set changes
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  Delete {toDelete.length} files?
+                  Delete {toDelete.filter((e) => Boolean(e)).length} files?
+                  Update categorie of{" "}
+                  {toUpdateCategorie.filter((e) => Boolean(e)).length} files?
                 </AlertDialogTitle>
                 <AlertDialogDescription>are you sure</AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={deleteSelected}>
+                <AlertDialogAction onClick={patchSelected}>
                   Continue
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
 
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button>Set Selected</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Set Selected</AlertDialogTitle>
-                <AlertDialogDescription>are you sure</AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={setSelected}>
-                  Continue
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
           <Button asChild>
             <Link href="#imgSel">go to top</Link>
           </Button>
