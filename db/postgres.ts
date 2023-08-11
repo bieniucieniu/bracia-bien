@@ -32,8 +32,7 @@ export async function getByCategorie(
 
 export async function getAll() {
   const res = await db.select().from(images)
-
-  return [{ res }]
+  return { res }
 }
 
 export async function addImages(
