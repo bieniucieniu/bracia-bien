@@ -17,7 +17,7 @@ import { addImagesData } from "@/utils/db"
 
 const { useUploadThing } = generateReactHelpers<FileRouter>()
 
-export function UploadZone({
+export function Uploader({
   endpoint,
   className,
   height = 300,

@@ -1,6 +1,5 @@
 "use client"
 
-import { edgeConfigSchema } from "@/lib/edgeconfig"
 import Image from "next/image"
 import { Button } from "../ui/button"
 import { useCallback, useState } from "react"
@@ -23,49 +22,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Link from "next/link"
-import { setConfig } from "@/lib/edgeconfig"
 import { deleteFiles } from "@/utils/uploadthing"
 
 import { useRouter } from "next/navigation"
 import { patchImagesData } from "@/utils/db"
-import { InferModel } from "drizzle-orm"
-import { images } from "@/db/schema"
-interface ImgsData extends InferModel<typeof images> {
-  url: string
-}
-export default function ImageSelesctor({ imgsData }: { imgsData: ImgsData[] }) {
-  const [main, setMain] = useState<string[]>([])
-  const [current, setCurrent] = useState<string[]>([])
-  const [toDelete, setToDelete] = useState<string[]>([])
-  const router = useRouter()
+import { Label } from "../ui/label"
+import { ImgData } from "./AdminDashboard"
 
-  const addRemoveMain = useCallback(
-    (key: string) => {
-      if (main.includes(key)) {
-        const newItems = main.filter((k) => k !== key)
-        setMain(newItems)
-        return
-      } else {
-        main.unshift(key)
-        setMain([...main])
-      }
-    },
-    [main],
+export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
+  const [toDelete, setToDelete] = useState<string[]>([])
+  const [toUpdate, setToUpdate] = useState<ImgData["categorie"][]>(
+    Array.from({ length: imgsData.length }),
   )
-  const addRemoveCurrent = useCallback(
-    (key: string) => {
-      if (current.includes(key)) {
-        const newItems = current.filter((k) => k !== key)
-        setCurrent(newItems)
-        return
-      } else {
-        current.unshift(key)
-        setCurrent([...current])
-      }
-    },
-    [current],
-  )
+  const router = useRouter()
 
   const addRemoveToDelete = useCallback(
     (key: string) => {
@@ -80,12 +51,8 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgsData[] }) {
     [toDelete],
   )
 
-  const setSelected = () => {
-    setConfig({ mainImgKeys: main, currentImgKeys: current }, async (res) => {
-      const body = await res.json()
-      if (body.error) throw new Error(body.error)
-    })
-  }
+  const setSelected = () => {}
+
   const deleteSelected = () => {
     deleteFiles(toDelete, async (res) => {
       const body = await res.json()
@@ -107,45 +74,50 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgsData[] }) {
       </CardHeader>
       <CardContent>
         <ul className="flex flex-row flex-wrap p-2 gap-2">
-          {imgsData.map(({ url, key, alt, categorie }) => (
+          {imgsData.map(({ url, key, alt, categorie }, idx) => (
             <li className="flex flex-col gap-2" key={key}>
               <Image
                 alt={alt || ""}
-                src={url}
+                src={url || ""}
                 width={400}
                 height={300}
                 className="object-contain h-auto rounded-t-xl"
               />
+
+              {!categorie ? (
+                "error"
+              ) : (
+                <RadioGroup
+                  defaultValue={categorie}
+                  onValueChange={(e: NonNullable<ImgData["categorie"]>) => {
+                    if (e === categorie) toUpdate[idx] = null
+                    else toUpdate[idx] = e
+                    setToUpdate([...toUpdate])
+                  }}
+                  className="flex flex-row"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="main" id="r1" />
+                    <Label htmlFor="r1">main</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="current" id="r2" />
+                    <Label htmlFor="r2">current</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="else" id="r3" />
+                    <Label htmlFor="r3">else</Label>
+                  </div>
+                </RadioGroup>
+              )}
+
               <section className="flex justify-around items-center pb-2 rounded-b-xl shadow-md">
-                <div className="flex flex-row gap-x-4 p-2 rounded-xl shadow-md">
-                  <Button
-                    onClick={() => addRemoveMain(key)}
-                    className={
-                      categorie === "main"
-                        ? "outline outline-2 outline-offset-2 outline-lime-600"
-                        : ""
-                    }
-                  >
-                    main
-                  </Button>
-                  <Button
-                    variant={current.includes(key) ? "green" : "default"}
-                    onClick={() => addRemoveCurrent(key)}
-                    className={
-                      categorie === "current"
-                        ? "outline outline-2 outline-offset-2 outline-lime-600"
-                        : ""
-                    }
-                  >
-                    current
-                  </Button>
-                </div>
                 <Button
                   variant={toDelete.includes(key) ? "destructive" : "default"}
                   onClick={() => addRemoveToDelete(key)}
                   className="outline outline-2 outline-offset-2 outline-red-500"
                 >
-                  to delete
+                  delete
                 </Button>
               </section>
             </li>
