@@ -20,7 +20,7 @@ export async function patchImagesData(
     updateImages?: Parameters<typeof updateImages>[0]
     deleteImages?: Parameters<typeof deleteImages>[0]
   },
-  onCompleat?: (res: any[]) => void,
+  onCompleat?: (res: { deleted?: any; updated?: any }) => void,
 ) {
   if (!data.updateImages && !data.deleteImages) {
     throw new Error("no data provided")
