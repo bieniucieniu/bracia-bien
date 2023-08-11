@@ -2,13 +2,13 @@ import { drizzle } from "drizzle-orm/vercel-postgres"
 import { sql } from "@vercel/postgres"
 import { inArray } from "drizzle-orm"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
-import { images, categorieEnum } from "./schema"
+import { imagesData, categorie as categorieEnum } from "./schema"
 import { z } from "zod"
 import { utapi } from "uploadthing/server"
 
 export const db = drizzle(sql)
-export const insertImagesSchema = createInsertSchema(images)
-export const selectImagesSchema = createSelectSchema(images)
+export const insertImagesSchema = createInsertSchema(imagesData)
+export const selectImagesSchema = createSelectSchema(imagesData)
 
 export const uuidArraySchema = z.string().uuid().array()
 export const categorieSchema = z.enum(categorieEnum.enumValues)
@@ -24,14 +24,14 @@ export async function getByCategorie(
     return { error: [{ error: "invalid data", categorie }, { status: 400 }] }
   const res = await db
     .select()
-    .from(images)
-    .where(inArray(images.categorie, categorie))
+    .from(imagesData)
+    .where(inArray(imagesData.categorie, categorie))
 
   return { res }
 }
 
 export async function getAll() {
-  const res = await db.select().from(images)
+  const res = await db.select().from(imagesData)
   return { res }
 }
 
@@ -41,7 +41,7 @@ export async function addImages(
   if (!insertImagesSchema.safeParse(data))
     return { error: [{ error: "invalid data", data }, { status: 400 }] }
 
-  const res = await db.insert(images).values(data).returning()
+  const res = await db.insert(imagesData).values(data).returning()
 
   return { res }
 }
@@ -62,10 +62,9 @@ export async function updateImages(
         }
 
       const r = await db
-        .update(images)
+        .update(imagesData)
         .set(update)
-        .where(inArray(images.key, keys))
-
+        .where(inArray(imagesData.key, keys))
       return r
     }),
   )
@@ -81,8 +80,8 @@ export async function deleteImages(
   if (!uuidArraySchema.safeParse(keys))
     return { error: [{ error: "invalid data", keys }, { status: 400 }] }
   const res = await db
-    .delete(images)
-    .where(inArray(images.key, keys))
+    .delete(imagesData)
+    .where(inArray(imagesData.key, keys))
     .returning()
 
   const utRes = await utapi.deleteFiles(res.map((e) => e.key))

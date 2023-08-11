@@ -3,8 +3,6 @@ import {
   type deleteImages,
   type updateImages,
 } from "@/db/postgres"
-import { images } from "@/db/schema"
-import { InferModel } from "drizzle-orm"
 export async function addImagesData(
   images: Parameters<typeof addImages>[0],
   onCompleat?: (res: Response) => void,
