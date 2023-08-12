@@ -1,5 +1,4 @@
 "use client"
-
 import Image from "next/image"
 import { Button } from "../ui/button"
 import { useCallback, useState } from "react"
@@ -120,7 +119,9 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
                     ))}
                   </RadioGroup>
                 )}
-                <Popover onOpenChange={() => setAltEdit(alt ?? "")}>
+                <Popover
+                  onOpenChange={() => setAltEdit(toUpdateAlt[idx] ?? alt ?? "")}
+                >
                   <PopoverTrigger asChild>
                     <Button variant={toUpdateAlt[idx] ? "green" : "outline"}>
                       edit alt
