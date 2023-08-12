@@ -41,31 +41,41 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
     Array.from({ length: imgsData.length }, () => null),
   )
   const [toUpdateCategorie, setToUpdateCategorie] = useState<
-    ImgData["categorie"][]
+    ({
+      key: ImgData["key"]
+      categorie: ImgData["categorie"]
+    } | null)[]
   >(Array.from({ length: imgsData.length }, () => null))
-
-  const [toUpdateAlt, setToUpdateAlt] = useState<ImgData["alt"][]>(
-    Array.from({ length: imgsData.length }, () => null),
-  )
-
-  const addRemoveToDelete = useCallback(
-    (idx: number) => {
-      toDelete[idx] = toDelete[idx] ? null : imgsData[idx].key
-      setToDelete([...toDelete])
-    },
-    [toDelete],
-  )
 
   const [altEdit, setAltEdit] = useState<string>("")
 
   const patchSelected = () => {
     const filteredDelete = toDelete.filter((e) => Boolean(e)) as string[]
-    // const filteredUpdate = toUpdate.filter((e) => Boolean(e))
-
-    patchImagesData({ deleteImages: filteredDelete }, (res) => {
-      if (res.deleted.error) console.log(res.updated.error)
-      if (res.updated.error) console.log(res.updated.error)
+    const filteredUpdate: Parameters<
+      typeof patchImagesData
+    >[0]["updateImages"] = categorieEnum.enumValues.map((categorie) => {
+      return {
+        keys: toUpdateCategorie
+          .filter((e) => {
+            if (!e) return false
+            return e.categorie === categorie
+          })
+          .map((e) => {
+            return e!.key
+          }) as string[],
+        update: { categorie, alt: null },
+      }
     })
+
+    filteredUpdate.push()
+
+    patchImagesData(
+      { deleteImages: filteredDelete, updateImages: filteredUpdate },
+      (res) => {
+        if (res.deleted.error) console.log(res.updated.error)
+        if (res.updated.error) console.log(res.updated.error)
+      },
+    )
   }
   return (
     <Card className="flex flex-col w-fit m-auto" id="imgSel">
@@ -99,12 +109,16 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
                     defaultValue={categorie}
                     onValueChange={(e: NonNullable<ImgData["categorie"]>) => {
                       if (e === categorie) toUpdateCategorie[idx] = null
-                      else toUpdateCategorie[idx] = e
+                      else
+                        toUpdateCategorie[idx] = {
+                          key: key,
+                          categorie: e,
+                        }
                       setToUpdateCategorie([...toUpdateCategorie])
                     }}
                     className="flex flex-row"
                   >
-                    {categorieEnum.enumValues.map((str) => (
+                    {categorieEnum.enumValues.map((str, i) => (
                       <div
                         className={twJoin(
                           "flex items-center space-x-2 rounded-xl pr-1",
@@ -113,19 +127,15 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
                             : "",
                         )}
                       >
-                        <RadioGroupItem value={str} id="r1" />
-                        <Label htmlFor="r1">{str}</Label>
+                        <RadioGroupItem value={str} id={"r-" + i} />
+                        <Label htmlFor={"r-" + i}>{str}</Label>
                       </div>
                     ))}
                   </RadioGroup>
                 )}
-                <Popover
-                  onOpenChange={() => setAltEdit(toUpdateAlt[idx] ?? alt ?? "")}
-                >
+                <Popover onOpenChange={() => setAltEdit(alt ?? "")}>
                   <PopoverTrigger asChild>
-                    <Button variant={toUpdateAlt[idx] ? "green" : "outline"}>
-                      edit alt
-                    </Button>
+                    <Button variant="outline">edit alt</Button>
                   </PopoverTrigger>
                   <PopoverContent className="flex flex-col">
                     <Input
@@ -135,20 +145,18 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
                     />
                     <div className="flex flex-row gap-x-2 justify-end mt-2">
                       <Button
-                        variant="outline"
                         onClick={() => {
-                          toUpdateAlt[idx] = null
-                          setToUpdateAlt([...toUpdateAlt])
-
-                          setAltEdit(alt ?? "")
-                        }}
-                      >
-                        reset
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          toUpdateAlt[idx] = altEdit
-                          setToUpdateAlt([...toUpdateAlt])
+                          patchImagesData({
+                            updateImages: [
+                              {
+                                keys: [key],
+                                update: {
+                                  categorie: null,
+                                  alt: altEdit,
+                                },
+                              },
+                            ],
+                          })
 
                           setAltEdit(alt ?? "")
                         }}
@@ -160,7 +168,10 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
                 </Popover>
                 <Button
                   variant={toDelete[idx] ? "destructive" : "default"}
-                  onClick={() => addRemoveToDelete(idx)}
+                  onClick={() => {
+                    toDelete[idx] = toDelete[idx] ? null : key
+                    setToDelete([...toDelete])
+                  }}
                   className="outline outline-2 outline-offset-2 outline-red-500"
                 >
                   delete
