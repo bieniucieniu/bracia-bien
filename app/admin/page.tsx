@@ -20,7 +20,10 @@ export default async function Admin() {
   return session?.user ? (
     <AdminDashboard imgsData={imgsData} />
   ) : (
-    <main className="h-screen w-screen flex flex-col gap-10 items-center justify-center">
+    <main
+      style={{ scrollbarGutter: "stable" }}
+      className="h-screen w-screen flex flex-col gap-10 items-center justify-center"
+    >
       <AuthButton />
     </main>
   )
