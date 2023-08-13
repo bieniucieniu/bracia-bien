@@ -35,6 +35,8 @@ import { ImgData } from "./AdminDashboard"
 import { twJoin } from "tailwind-merge"
 import { Input } from "../ui/input"
 import { patchImagesData } from "@/db/clientApi"
+import { setUncaughtExceptionCaptureCallback } from "process"
+import { Catamaran } from "next/font/google"
 
 export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
   const [imageData, setImageData] = useState<
@@ -87,7 +89,12 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
   function resetChanges() {
     setImageData(imgsData)
   }
+
+  const [uploading, setUploading] = useState<boolean>(false)
+
   function submitChanges() {
+    setUploading(true)
+
     const toDelete = imageData.filter((e) => e.delete).map((e) => e.key)
     const toUpdateCategorie = categorieEnum.enumValues.map((categorie) => {
       const keys = imageData
@@ -104,17 +111,39 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
         update: { alt: e.newAlt },
       }))
 
-    patchImagesData(
-      {
-        updateImages: [...toUpdateCategorie, ...toUpdateAlt],
-        deleteImages: toDelete,
-      },
-      (res) => {
-        if (res.status !== 200) {
-          console.log(res)
-        }
-      },
+    if (
+      toUpdateCategorie.length > 0 &&
+      toDelete.length > 0 &&
+      toUpdateAlt.length > 0
     )
+      patchImagesData(
+        {
+          updateImages: [...toUpdateCategorie, ...toUpdateAlt],
+          deleteImages: toDelete,
+        },
+        (res) => {
+          if (!(res instanceof Response) || res.status !== 200) {
+            console.log(res)
+          } else {
+            const newData: ImgData[] = imageData
+              .filter((e) => !e.delete)
+              .map((e) => ({
+                ...e,
+                alt: e.newAlt ?? e.alt,
+                categorie: e.newCategorie ?? e.categorie,
+                newAlt: null,
+                newCategorie: null,
+              }))
+
+            setImageData(newData)
+          }
+          setUploading(false)
+        },
+      )
+    else {
+      setUploading(false)
+      console.log("nothing is changed")
+    }
   }
 
   return (
@@ -145,6 +174,7 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
                     "error"
                   ) : (
                     <RadioGroup
+                      disabled={uploading}
                       defaultValue={categorie}
                       onValueChange={(e: NonNullable<ImgData["categorie"]>) => {
                         SetNewCategorie(key, e)
@@ -172,12 +202,16 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
                     onOpenChange={() => setAltEdit(newAlt ?? alt ?? "")}
                   >
                     <PopoverTrigger asChild>
-                      <Button variant={newAlt ? "green" : "outline"}>
+                      <Button
+                        disabled={uploading}
+                        variant={newAlt ? "green" : "outline"}
+                      >
                         edit alt
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="flex flex-col">
                       <Input
+                        disabled={uploading}
                         type="text"
                         onChange={(e) => setAltEdit(e.target.value)}
                         value={altEdit ?? alt}
@@ -215,7 +249,9 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
         <div className="sticky bottom-2 flex gap-1 bg-white shadow-sm rounded-xl p-2">
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="destructive">submit changes</Button>
+              <Button disabled={uploading} variant="destructive">
+                submit changes
+              </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -239,7 +275,9 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
           </AlertDialog>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="destructive">reset changes</Button>
+              <Button disabled={uploading} variant="destructive">
+                reset changes
+              </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
