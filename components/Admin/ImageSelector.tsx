@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image"
 import { Button } from "../ui/button"
-import { useCallback, useState } from "react"
+import { useState } from "react"
 import {
   Card,
   CardContent,
@@ -30,53 +30,58 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Link from "next/link"
 import { categorie as categorieEnum } from "@/db/schema"
 
-import { patchImagesData } from "@/db/clientApi"
 import { Label } from "../ui/label"
 import { ImgData } from "./AdminDashboard"
 import { twJoin } from "tailwind-merge"
 import { Input } from "../ui/input"
 
 export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
-  const [toDelete, setToDelete] = useState<(ImgData["key"] | null)[]>(
-    Array.from({ length: imgsData.length }, () => null),
-  )
-  const [toUpdateCategorie, setToUpdateCategorie] = useState<
-    ({
-      key: ImgData["key"]
-      categorie: ImgData["categorie"]
-    } | null)[]
-  >(Array.from({ length: imgsData.length }, () => null))
+  const [imageData, setImageData] = useState<
+    (ImgData & {
+      newAlt?: string
+      newCategorie?: ImgData["categorie"]
+      delete?: boolean
+    })[]
+  >(imgsData)
 
-  const [altEdit, setAltEdit] = useState<string>("")
-
-  const patchSelected = () => {
-    const filteredDelete = toDelete.filter((e) => Boolean(e)) as string[]
-    const filteredUpdate: Parameters<
-      typeof patchImagesData
-    >[0]["updateImages"] = categorieEnum.enumValues.map((categorie) => {
-      return {
-        keys: toUpdateCategorie
-          .filter((e) => {
-            if (!e) return false
-            return e.categorie === categorie
-          })
-          .map((e) => {
-            return e!.key
-          }) as string[],
-        update: { categorie, alt: null },
+  function deleteData(key: ImgData["key"]) {
+    const newData = imageData.map((e) => {
+      if (e.key === key) {
+        if (e.delete === true) return { ...e, delete: undefined }
+        return { ...e, delete: true }
       }
+      return e
     })
 
-    filteredUpdate.push()
-
-    patchImagesData(
-      { deleteImages: filteredDelete, updateImages: filteredUpdate },
-      (res) => {
-        if (res.deleted.error) console.log(res.updated.error)
-        if (res.updated.error) console.log(res.updated.error)
-      },
-    )
+    setImageData(newData)
   }
+  function SetNewAlt(key: ImgData["key"], alt: string) {
+    const newData = imageData.map((e) => {
+      if (e.key === key) {
+        if (alt === e.alt) return { ...e, newAlt: undefined }
+        return { ...e, newAlt: alt }
+      }
+      return e
+    })
+
+    setImageData(newData)
+  }
+  function SetNewCategorie(
+    key: ImgData["key"],
+    categorie: ImgData["categorie"],
+  ) {
+    const newData = imageData.map((e) => {
+      if (e.key === key) {
+        if (categorie === e.categorie) return { ...e, newCategorie: undefined }
+        return { ...e, newCategorie: categorie }
+      }
+      return e
+    })
+
+    setImageData(newData)
+  }
+  const [altEdit, setAltEdit] = useState<string>("")
+
   return (
     <Card className="flex flex-col w-fit m-auto" id="imgSel">
       <CardHeader>
@@ -85,7 +90,7 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
       </CardHeader>
       <CardContent>
         <ul className="flex flex-row flex-wrap p-2 gap-2">
-          {imgsData.map(({ url, key, alt, categorie }, idx) => (
+          {imageData.map(({ url, key, alt, categorie, newAlt }) => (
             <li
               className="flex flex-col gap-2 overflow-hidden rounded-xl shadow-md"
               key={key}
@@ -95,31 +100,24 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
                 src={url ?? ""}
                 width={400}
                 height={300}
-                className={twJoin(
-                  "object-contain h-auto transition",
-                  toDelete[idx] ? "blur-sm" : "",
-                )}
+                className={twJoin("object-contain h-auto transition")}
               />
 
-              <section className="flex justify-around items-center pb-2">
+              <span>{key}</span>
+              <section className="flex justify-around flex-wrap items-center pb-2">
                 {!categorie ? (
                   "error"
                 ) : (
                   <RadioGroup
                     defaultValue={categorie}
                     onValueChange={(e: NonNullable<ImgData["categorie"]>) => {
-                      if (e === categorie) toUpdateCategorie[idx] = null
-                      else
-                        toUpdateCategorie[idx] = {
-                          key: key,
-                          categorie: e,
-                        }
-                      setToUpdateCategorie([...toUpdateCategorie])
+                      SetNewCategorie(key, e)
                     }}
                     className="flex flex-row"
                   >
                     {categorieEnum.enumValues.map((str, i) => (
                       <div
+                        key={str}
                         className={twJoin(
                           "flex items-center space-x-2 rounded-xl pr-1",
                           categorie === str
@@ -133,32 +131,22 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
                     ))}
                   </RadioGroup>
                 )}
-                <Popover onOpenChange={() => setAltEdit(alt ?? "")}>
+                <Popover
+                  modal
+                  onOpenChange={() => setAltEdit(newAlt ?? alt ?? "")}
+                >
                   <PopoverTrigger asChild>
                     <Button variant="outline">edit alt</Button>
                   </PopoverTrigger>
                   <PopoverContent className="flex flex-col">
                     <Input
                       type="text"
-                      value={altEdit}
                       onChange={(e) => setAltEdit(e.target.value)}
                     />
                     <div className="flex flex-row gap-x-2 justify-end mt-2">
                       <Button
                         onClick={() => {
-                          patchImagesData({
-                            updateImages: [
-                              {
-                                keys: [key],
-                                update: {
-                                  categorie: null,
-                                  alt: altEdit,
-                                },
-                              },
-                            ],
-                          })
-
-                          setAltEdit(alt ?? "")
+                          SetNewAlt(key, altEdit)
                         }}
                       >
                         set
@@ -167,10 +155,8 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
                   </PopoverContent>
                 </Popover>
                 <Button
-                  variant={toDelete[idx] ? "destructive" : "default"}
                   onClick={() => {
-                    toDelete[idx] = toDelete[idx] ? null : key
-                    setToDelete([...toDelete])
+                    deleteData(key)
                   }}
                   className="outline outline-2 outline-offset-2 outline-red-500"
                 >
@@ -185,24 +171,23 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
         <div className="sticky bottom-2 flex gap-1 bg-white shadow-sm rounded-xl p-2">
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="destructive" disabled={toDelete.length <= 0}>
-                set changes
-              </Button>
+              <Button variant="destructive">set changes</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  Delete {toDelete.filter((e) => Boolean(e)).length} files?
+                  Delete {imgsData.length - imageData.length} files?
+                  <br />
                   Update categorie of{" "}
-                  {toUpdateCategorie.filter((e) => Boolean(e)).length} files?
+                  {imageData.filter((e) => e.newCategorie).length} files?
+                  <br />
+                  Update alt of {imageData.filter((e) => e.alt).length} files?
                 </AlertDialogTitle>
                 <AlertDialogDescription>are you sure</AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={patchSelected}>
-                  Continue
-                </AlertDialogAction>
+                <AlertDialogAction>Continue</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
