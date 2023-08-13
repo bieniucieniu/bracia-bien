@@ -20,18 +20,16 @@ export async function patchImagesData(
     updateImages?: Parameters<typeof updateImages>[0]
     deleteImages?: Parameters<typeof deleteImages>[0]
   },
-  onCompleat?: (res: { deleted?: any; updated?: any }) => void,
+  onCompleat?: (res: Response) => void,
 ) {
   if (!data.updateImages && !data.deleteImages) {
     throw new Error("no data provided")
   }
 
-  const dbRes = await fetch("/api/postgres", {
+  const res = await fetch("/api/postgres", {
     method: "PATCH",
     body: JSON.stringify(data),
   })
-
-  const { res } = await dbRes.json()
 
   onCompleat && onCompleat(res)
 }
