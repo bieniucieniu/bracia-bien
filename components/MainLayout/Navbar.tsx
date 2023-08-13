@@ -8,13 +8,11 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
+import { FacebookIcon, InstagramIcon } from "lucide-react"
 
 export function Topbar() {
   return (
-    <nav
-      style={{ scrollbarGutter: "stable" }}
-      className="bg-white fixed top-0 left-0 right-0 z-40 drop-shadow-sm p-1 flex flex-wrap-reverse md:grid md:grid-cols-3"
-    >
+    <nav className="bg-white fixed top-0 left-0 right-0 z-40 drop-shadow-sm p-1 flex flex-wrap-reverse md:grid md:grid-cols-3">
       <NavigationMenu className="m-auto p-1 md:col-start-2">
         <NavigationMenuList>
           <NavigationMenuItem className="hidden md:block">
@@ -61,26 +59,22 @@ export function Topbar() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image
-              src="/instagram.svg"
-              className="m-auto object-contain select-none transition-opacity opacity-60 hover:opacity-100 h-6 md:h-8"
-              alt="instagram"
-              width={50}
-              height={50}
-            ></Image>
+            <InstagramIcon
+              width={30}
+              height={30}
+              className="opacity-50 hover:opacity-80 transition-opacity"
+            />
           </Link>
           <Link
             href="https://www.facebook.com/BraciaBien/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image
-              src="/facebook.svg"
-              className="m-auto object-contain select-none transition-opacity opacity-60 hover:opacity-100 h-6 md:h-8"
-              alt="facebook"
-              width={50}
-              height={50}
-            ></Image>
+            <FacebookIcon
+              height={30}
+              width={30}
+              className="opacity-50 hover:opacity-80 transition-opacity"
+            />
           </Link>
         </div>
       </div>
