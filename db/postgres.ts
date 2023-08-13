@@ -54,7 +54,7 @@ export async function updateImages(
     update: Partial<z.infer<typeof imagesOmitKey>>
   }[],
 ): Promise<ValidationError | { res: typeof res; error?: never }> {
-  const res = await Promise.all(
+  const res = await Promise.allSettled(
     data.map(async ({ update, keys }) => {
       if (!imagesOmitKey.safeParse(update) || !uuidArraySchema.safeParse(keys))
         return {
