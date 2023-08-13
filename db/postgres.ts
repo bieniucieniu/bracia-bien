@@ -51,7 +51,7 @@ export const imagesOmitKey = selectImagesSchema.omit({ key: true })
 export async function updateImages(
   data: {
     keys: z.infer<typeof uuidArraySchema>
-    update: z.infer<typeof imagesOmitKey>
+    update: Partial<z.infer<typeof imagesOmitKey>>
   }[],
 ): Promise<ValidationError | { res: typeof res; error?: never }> {
   const res = await Promise.all(
@@ -77,7 +77,7 @@ export async function deleteImages(
 ): Promise<
   ValidationError | { res: typeof res; utRes: typeof utRes; error?: never }
 > {
-  if (!uuidArraySchema.safeParse(keys))
+  if (!uuidArraySchema.safeParse(keys) || !keys.length)
     return { error: [{ error: "invalid data", keys }, { status: 400 }] }
   const res = await db
     .delete(imagesData)
