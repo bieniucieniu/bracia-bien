@@ -124,7 +124,7 @@ export function Uploader({
           className="flex flex-row"
         >
           {categorieEnum.enumValues.map((str) => (
-            <div className="flex items-center space-x-2">
+            <div key={str} className="flex items-center space-x-2">
               <RadioGroupItem value={str} id="r1" />
               <Label htmlFor="r1">{str}</Label>
             </div>
