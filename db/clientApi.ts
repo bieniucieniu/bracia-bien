@@ -5,14 +5,18 @@ import {
 } from "@/db/postgres"
 export async function addImagesData(
   images: Parameters<typeof addImages>[0],
-  onCompleat?: (res: Response) => void,
+  onCompleat?: (res?: Response | any) => void,
 ) {
-  const res = await fetch("/api/postgres", {
-    method: "POST",
-    body: JSON.stringify({ images }),
-  })
+  try {
+    const res = await fetch("/api/postgres", {
+      method: "POST",
+      body: JSON.stringify({ images }),
+    })
 
-  onCompleat && onCompleat(res)
+    onCompleat && onCompleat(res)
+  } catch (e) {
+    onCompleat && onCompleat(e)
+  }
 }
 
 export async function patchImagesData(
@@ -20,16 +24,20 @@ export async function patchImagesData(
     updateImages?: Parameters<typeof updateImages>[0]
     deleteImages?: Parameters<typeof deleteImages>[0]
   },
-  onCompleat?: (res: Response) => void,
+  onCompleat?: (res?: Response | any) => void,
 ) {
-  if (!data.updateImages && !data.deleteImages) {
-    throw new Error("no data provided")
+  try {
+    if (!data.updateImages && !data.deleteImages) {
+      throw new Error("no data provided")
+    }
+
+    const res = await fetch("/api/postgres", {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    })
+
+    onCompleat && onCompleat(res)
+  } catch (e) {
+    onCompleat && onCompleat(e)
   }
-
-  const res = await fetch("/api/postgres", {
-    method: "PATCH",
-    body: JSON.stringify(data),
-  })
-
-  onCompleat && onCompleat(res)
 }
