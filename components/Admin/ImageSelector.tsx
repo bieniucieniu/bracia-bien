@@ -252,7 +252,7 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  Delete {imgsData.length - imageData.length} files?
+                  Delete {imageData.filter((e) => e.delete).length} files?
                   <br />
                   Update categorie of{" "}
                   {imageData.filter((e) => e.newCategorie).length} files?
@@ -280,7 +280,7 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
                 <AlertDialogTitle>
                   reset
                   <br />
-                  delete {imgsData.length - imageData.length} files?
+                  delete {imageData.filter((e) => e.delete).length} files?
                   <br />
                   Update categorie of{" "}
                   {imageData.filter((e) => e.newCategorie).length} files?
