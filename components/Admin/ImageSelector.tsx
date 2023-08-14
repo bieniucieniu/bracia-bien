@@ -35,8 +35,6 @@ import { ImgData } from "./AdminDashboard"
 import { twJoin } from "tailwind-merge"
 import { Input } from "../ui/input"
 import { patchImagesData } from "@/db/clientApi"
-import { setUncaughtExceptionCaptureCallback } from "process"
-import { Catamaran } from "next/font/google"
 
 export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
   const [imageData, setImageData] = useState<
@@ -95,7 +93,9 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
   function submitChanges() {
     setUploading(true)
 
-    const toDelete = imageData.filter((e) => e.delete).map((e) => e.key)
+    const toDelete = imageData
+      .filter((e) => e.delete === true)
+      .map((e) => e.key)
     const toUpdateCategorie = categorieEnum.enumValues.map((categorie) => {
       const keys = imageData
         .filter(
@@ -111,40 +111,36 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
         update: { alt: e.newAlt },
       }))
 
-    if (
-      toUpdateCategorie.length > 0 &&
-      toDelete.length > 0 &&
-      toUpdateAlt.length > 0
-    )
-      patchImagesData(
-        {
-          updateImages: [...toUpdateCategorie, ...toUpdateAlt],
-          deleteImages: toDelete,
-        },
-        (res) => {
-          if (!(res instanceof Response) || res.status !== 200) {
-            console.log(res)
-          } else {
-            const newData: ImgData[] = imageData
-              .filter((e) => !e.delete)
-              .map((e) => ({
-                ...e,
-                alt: e.newAlt ?? e.alt,
-                categorie: e.newCategorie ?? e.categorie,
-                newAlt: null,
-                newCategorie: null,
-              }))
+    patchImagesData(
+      {
+        updateImages:
+          toUpdateCategorie.length || toUpdateAlt.length
+            ? [...toUpdateCategorie, ...toUpdateAlt]
+            : undefined,
+        deleteImages: toDelete.length ? toDelete : undefined,
+      },
+      (res) => {
+        if (res instanceof Response || res.status === 200) {
+          const newData: ImgData[] = imageData
+            .filter((e) => !e.delete)
+            .map((e) => ({
+              ...e,
+              alt: e.newAlt ?? e.alt,
+              categorie: e.newCategorie ?? e.categorie,
+              newAlt: null,
+              newCategorie: null,
+            }))
 
-            setImageData(newData)
-          }
-          setUploading(false)
-        },
-      )
-    else {
-      setUploading(false)
-      console.log("nothing is changed")
-    }
+          setImageData(newData)
+        } else {
+          console.log(res)
+        }
+        setUploading(false)
+      },
+    )
   }
+
+  if (!imgsData || imageData.length <= 0) return "no imgs"
 
   return (
     <Card className="flex flex-col w-fit m-auto" id="imgSel">

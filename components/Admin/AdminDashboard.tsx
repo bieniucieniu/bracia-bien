@@ -31,7 +31,7 @@ export default function AdminDashboard({ imgsData }: { imgsData: ImgData[] }) {
         </CardContent>
         <CardFooter></CardFooter>
       </Card>
-      {imgsData.length ? <ImageSelesctor imgsData={imgsData} /> : "no imgs"}
+      <ImageSelesctor imgsData={imgsData} />
     </main>
   )
 }
