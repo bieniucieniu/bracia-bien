@@ -15,7 +15,7 @@ export default function AuthButton({ className }: { className?: string }) {
     >
       {session ? (
         <>
-          <span>Signed in as {session.user?.name}</span>
+          <span>Signed in as {session.user?.email}</span>
           <Button onClick={() => signOut()}>Sign out</Button>
         </>
       ) : (

@@ -1,19 +1,34 @@
+import AdminDashboard from "@/components/Admin/AdminDashboard"
 import AuthButton from "@/components/Auth"
-import { Button } from "@/components/ui/button"
 import authOptions from "@/lib/auth"
 import { getServerSession } from "next-auth"
-import Link from "next/link"
+import { utapi } from "uploadthing/server"
+import { getAll } from "@/db/postgres"
 
 export default async function Admin() {
   const session = await getServerSession(authOptions)
-  return (
-    <div className="h-screen w-screen flex flex-col gap-10 items-center justify-center">
+  const { res: allImages } = await getAll()
+  const imgsUrls =
+    allImages && allImages.length
+      ? await utapi.getFileUrls(allImages.map((k) => k.key))
+      : []
+  const imgsData =
+    allImages && allImages.length
+      ? allImages.map((e) => {
+          return {
+            url: imgsUrls.find((u) => e.key === u.key)?.url,
+            ...e,
+          }
+        })
+      : []
+  return session?.user ? (
+    <AdminDashboard imgsData={imgsData} />
+  ) : (
+    <main
+      style={{ scrollbarGutter: "stable" }}
+      className="h-screen w-screen flex flex-col gap-10 items-center justify-center"
+    >
       <AuthButton />
-      {session?.user ? (
-        <Button size="lg" asChild>
-          <Link href="/admin/upload">upload files</Link>
-        </Button>
-      ) : null}
-    </div>
+    </main>
   )
 }

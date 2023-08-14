@@ -2,13 +2,19 @@
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import Slider from "../Slider"
+import { InferModel } from "drizzle-orm"
+import { imagesData } from "@/db/schema"
 
-export default function Banner({ urls = [] }: { urls: string[] }) {
+export default function Banner({
+  data,
+}: {
+  data: (InferModel<typeof imagesData> & { url: string })[]
+}) {
   const [visible, setVisible] = useState<boolean>(false)
 
   useEffect(() => {
-    if (urls.length > 0) setTimeout(() => setVisible(true), 3000)
-  }, [urls])
+    setTimeout(() => setVisible(true), 3000)
+  }, [data])
 
   return (
     <>
@@ -25,14 +31,19 @@ export default function Banner({ urls = [] }: { urls: string[] }) {
           height={189}
         />
       </div>
-      {visible ? (
+      {visible && data.length > 0 ? (
         <Slider
           autoSlide={10000}
           className="z-10"
           renderer={(i) => (
-            <Image alt={`image-${i}`} src={urls[i]} width={1920} height={800} />
+            <Image
+              alt={data[i].alt ?? `image-${i}`}
+              src={data[i].url}
+              width={1920}
+              height={800}
+            />
           )}
-          length={urls.length}
+          length={data.length}
         />
       ) : null}
     </>

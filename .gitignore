@@ -34,5 +34,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# sst
-/.sst/
+# drizzle kit
+
+drizzle.config.*
+/drizzle
