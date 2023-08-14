@@ -58,7 +58,10 @@ export async function updateImages(
     data.map(async ({ update, keys }) => {
       if (!imagesOmitKey.safeParse(update) || !uuidArraySchema.safeParse(keys))
         return {
-          error: [{ error: "invalid data", keys, update }, { status: 400 }],
+          error: [
+            { error: "invalid update data", keys, update },
+            { status: 400 },
+          ],
         }
 
       const r = await db
@@ -78,7 +81,7 @@ export async function deleteImages(
   ValidationError | { res: typeof res; utRes: typeof utRes; error?: never }
 > {
   if (!uuidArraySchema.safeParse(keys) || !keys.length)
-    return { error: [{ error: "invalid data", keys }, { status: 400 }] }
+    return { error: [{ error: "invalid delete data", keys }, { status: 400 }] }
   const res = await db
     .delete(imagesData)
     .where(inArray(imagesData.key, keys))
