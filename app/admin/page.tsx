@@ -8,15 +8,19 @@ import { getAll } from "@/db/postgres"
 export default async function Admin() {
   const session = await getServerSession(authOptions)
   const { res: allImages } = await getAll()
-  const imgsUrls = allImages.length
-    ? await utapi.getFileUrls(allImages.map((k) => k.key))
-    : []
-  const imgsData = allImages.map((e) => {
-    return {
-      url: imgsUrls.find((u) => e.key === u.key)?.url,
-      ...e,
-    }
-  })
+  const imgsUrls =
+    allImages && allImages.length
+      ? await utapi.getFileUrls(allImages.map((k) => k.key))
+      : []
+  const imgsData =
+    allImages && allImages.length
+      ? allImages.map((e) => {
+          return {
+            url: imgsUrls.find((u) => e.key === u.key)?.url,
+            ...e,
+          }
+        })
+      : []
   return session?.user ? (
     <AdminDashboard imgsData={imgsData} />
   ) : (
