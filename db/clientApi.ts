@@ -27,7 +27,7 @@ export async function patchImagesData(
   onCompleat?: (res?: Response | any) => void,
 ) {
   try {
-    if (!data.updateImages && !data.deleteImages) {
+    if (!data.updateImages?.length && !data.deleteImages?.length) {
       throw new Error("no data provided")
     }
 
