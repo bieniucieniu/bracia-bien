@@ -1,23 +1,30 @@
 "use client"
 import Image from "next/image"
 import Slider from "../Slider"
+import { InferModel } from "drizzle-orm"
+import { imagesData } from "@/db/schema"
 
 export function ImageSlider({
-  urls,
+  data,
   className,
 }: {
-  urls: string[]
+  data: (InferModel<typeof imagesData> & { url: string })[]
   className?: string
 }) {
-  if (!urls.length) return <div></div>
+  if (!data.length) return <div></div>
 
   return (
     <Slider
       className={className}
       renderer={(i) => (
-        <Image alt={`image-${i}`} src={urls[i]} width={1920} height={800} />
+        <Image
+          alt={data[i].alt ?? `image-${i}`}
+          src={data[i].url}
+          width={1920}
+          height={800}
+        />
       )}
-      length={urls.length}
+      length={data.length}
     />
   )
 }

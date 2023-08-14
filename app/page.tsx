@@ -3,12 +3,12 @@ import { playfair } from "./fonts"
 
 import { ImageSlider } from "@/components/HomePage/ImageSlider"
 import { AboutCards } from "@/components/HomePage/About"
-import { edgeConfigSchema } from "@/lib/edgeconfig"
-import { get } from "@vercel/edge-config"
 import { utapi } from "uploadthing/server"
 import PhotoGalery from "@/components/HomePage/PhotoGallery"
-import { z } from "zod"
 import Banner from "@/components/HomePage/Banner"
+import { getAll } from "@/db/postgres"
+import { InferModel } from "drizzle-orm"
+import { imagesData } from "@/db/schema"
 
 type LinkData = { name: string; href: string; target?: string; rel?: string }[]
 
@@ -49,55 +49,50 @@ const infoData: LinkData = [
 ]
 
 export default async function Home() {
-  const mainImgKeys =
-    ((await get("mainImgKeys"))?.valueOf() as z.infer<
-      typeof edgeConfigSchema
-    >["mainImgKeys"]) ?? []
+  const { res: allImages } = await getAll()
+  const imgsUrls =
+    allImages && allImages.length
+      ? await utapi.getFileUrls(allImages.map((k) => k.key))
+      : []
+  // @ts-ignore
+  const imgsData: (InferModel<typeof imagesData> & {
+    url: string
+  })[] =
+    allImages && allImages.length
+      ? allImages
+          .map((e) => {
+            return {
+              url: imgsUrls.find((u) => e.key === u.key)?.url,
+              ...e,
+            }
+          })
+          .filter((e) => typeof e.url === "string")
+      : []
 
-  const mainImgUrls = mainImgKeys.length
-    ? (await utapi.getFileUrls(mainImgKeys)).map((e) => e.url)
-    : []
-
-  const currentImgKeys =
-    ((await get("currentImgKeys"))?.valueOf() as z.infer<
-      typeof edgeConfigSchema
-    >["currentImgKeys"]) ?? []
-
-  const currentImgUrls = currentImgKeys.length
-    ? (await utapi.getFileUrls(currentImgKeys)).map((e) => e.url)
-    : []
-
-  const allImgKeys = (await utapi.listFiles()).map((e) => e.key)
-  const elseImgKeys = allImgKeys.filter((e) => {
-    if (mainImgKeys.includes(e)) return false
-    if (currentImgKeys.includes(e)) return false
-    return true
-  })
-
-  const elseImgUrls = elseImgKeys.length
-    ? (await utapi.getFileUrls(elseImgKeys)).map((e) => e.url)
-    : []
+  const mainImgs = imgsData.filter((e) => e.categorie === "main")
+  const currentImgs = imgsData.filter((e) => e.categorie === "current")
+  const elseImgs = imgsData.filter((e) => e.categorie === "else")
 
   return (
     <>
       <div className="min-h-screen relative grid overflow-x-hidden pt-4">
-        <Banner urls={mainImgUrls} />
+        <Banner data={mainImgs} />
       </div>
       <div
         id="about"
         className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center"
       >
         <ImageSlider
-          urls={currentImgUrls}
+          data={currentImgs}
           className="m-2 overflow-x-hidden min-h-screen lg:h-auto"
         />
         <div className="bg-red-500 overflow-hidden min-h-screen lg:h-auto">
           <AboutCards />
         </div>
       </div>
-      {elseImgUrls.length > 0 ? (
+      {elseImgs.length > 0 ? (
         <div className="min-h-screen relative flex items-center">
-          <PhotoGalery urls={elseImgUrls} className="m-4" />
+          <PhotoGalery data={elseImgs} className="m-4" />
         </div>
       ) : null}
       <footer

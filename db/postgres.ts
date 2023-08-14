@@ -1,6 +1,6 @@
 import { drizzle } from "drizzle-orm/vercel-postgres"
 import { sql } from "@vercel/postgres"
-import { inArray } from "drizzle-orm"
+import { eq, inArray } from "drizzle-orm"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 import { imagesData, categorie as categorieEnum } from "./schema"
 import { z } from "zod"
@@ -18,7 +18,7 @@ type ValidationError = {
 }
 
 export async function getByCategorie(
-  categorie: z.infer<typeof categorieSchema>[],
+  categorie: z.infer<typeof categorieSchema>,
 ): Promise<ValidationError | { res: any; error?: never }> {
   try {
     if (!categorieSchema.array().safeParse(categorie))
@@ -26,7 +26,7 @@ export async function getByCategorie(
     const res = await db
       .select()
       .from(imagesData)
-      .where(inArray(imagesData.categorie, categorie))
+      .where(eq(imagesData.categorie, categorie))
     return { res }
   } catch (e) {
     return {
