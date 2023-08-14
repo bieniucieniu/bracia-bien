@@ -39,5 +39,5 @@ export async function PATCH(req: Request) {
     res.deleted = deleted
   }
 
-  return NextResponse.json(res)
+  return NextResponse.json(res, { status: 200 })
 }
