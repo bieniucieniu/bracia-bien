@@ -19,31 +19,48 @@ type ValidationError = {
 
 export async function getByCategorie(
   categorie: z.infer<typeof categorieSchema>[],
-): Promise<ValidationError | { res: typeof res; error?: never }> {
-  if (!categorieSchema.array().safeParse(categorie))
-    return { error: [{ error: "invalid data", categorie }, { status: 400 }] }
-  const res = await db
-    .select()
-    .from(imagesData)
-    .where(inArray(imagesData.categorie, categorie))
-
-  return { res }
+): Promise<ValidationError | { res: any; error?: never }> {
+  try {
+    if (!categorieSchema.array().safeParse(categorie))
+      return { error: [{ error: "invalid data", categorie }, { status: 400 }] }
+    const res = await db
+      .select()
+      .from(imagesData)
+      .where(inArray(imagesData.categorie, categorie))
+    return { res }
+  } catch (e) {
+    return {
+      error: [{ error: "error", info: e }, { status: 400 }],
+    }
+  }
 }
 
 export async function getAll() {
-  const res = await db.select().from(imagesData)
-  return { res }
+  try {
+    const res = await db.select().from(imagesData)
+    return { res }
+  } catch (e) {
+    return {
+      error: [{ error: "error", info: e }, { status: 400 }],
+    }
+  }
 }
 
 export async function addImages(
   data: z.infer<typeof insertImagesSchema>[],
-): Promise<ValidationError | { res: typeof res; error?: never }> {
-  if (!insertImagesSchema.safeParse(data))
-    return { error: [{ error: "invalid data", data }, { status: 400 }] }
+): Promise<ValidationError | { res: any; error?: never }> {
+  try {
+    if (!insertImagesSchema.safeParse(data))
+      return { error: [{ error: "invalid data", data }, { status: 400 }] }
 
-  const res = await db.insert(imagesData).values(data).returning()
+    const res = await db.insert(imagesData).values(data).returning()
 
-  return { res }
+    return { res }
+  } catch (e) {
+    return {
+      error: [{ error: "error", info: e }, { status: 400 }],
+    }
+  }
 }
 
 export const imagesOmitKey = selectImagesSchema.omit({ key: true })
@@ -53,41 +70,58 @@ export async function updateImages(
     keys: z.infer<typeof uuidArraySchema>
     update: Partial<z.infer<typeof imagesOmitKey>>
   }[],
-): Promise<ValidationError | { res: typeof res; error?: never }> {
-  const res = await Promise.allSettled(
-    data.map(async ({ update, keys }) => {
-      if (!imagesOmitKey.safeParse(update) || !uuidArraySchema.safeParse(keys))
-        return {
-          error: [
-            { error: "invalid update data", keys, update },
-            { status: 400 },
-          ],
-        }
+): Promise<ValidationError | { res: any; error?: never }> {
+  try {
+    const res = await Promise.allSettled(
+      data.map(async ({ update, keys }) => {
+        if (
+          !imagesOmitKey.safeParse(update) ||
+          !uuidArraySchema.safeParse(keys)
+        )
+          return {
+            error: [
+              { error: "invalid update data", keys, update },
+              { status: 400 },
+            ],
+          }
 
-      const r = await db
-        .update(imagesData)
-        .set(update)
-        .where(inArray(imagesData.key, keys))
-      return r
-    }),
-  )
+        const r = await db
+          .update(imagesData)
+          .set(update)
+          .where(inArray(imagesData.key, keys))
+        return r
+      }),
+    )
 
-  return { res }
+    return { res }
+  } catch (e) {
+    return {
+      error: [{ error: "error", info: e }, { status: 400 }],
+    }
+  }
 }
 
 export async function deleteImages(
   keys: z.infer<typeof uuidArraySchema>,
 ): Promise<
-  ValidationError | { res: typeof res; utRes: typeof utRes; error?: never }
+  ValidationError | { res: any; utRes: { success: boolean }; error?: never }
 > {
-  if (!uuidArraySchema.safeParse(keys) || !keys.length)
-    return { error: [{ error: "invalid delete data", keys }, { status: 400 }] }
-  const res = await db
-    .delete(imagesData)
-    .where(inArray(imagesData.key, keys))
-    .returning()
+  try {
+    if (!uuidArraySchema.safeParse(keys) || !keys.length)
+      return {
+        error: [{ error: "invalid delete data", keys }, { status: 400 }],
+      }
+    const res = await db
+      .delete(imagesData)
+      .where(inArray(imagesData.key, keys))
+      .returning()
 
-  const utRes = await utapi.deleteFiles(res.map((e) => e.key))
+    const utRes = await utapi.deleteFiles(res.map((e) => e.key))
 
-  return { res, utRes }
+    return { res, utRes }
+  } catch (e) {
+    return {
+      error: [{ error: "error", info: e }, { status: 400 }],
+    }
+  }
 }
