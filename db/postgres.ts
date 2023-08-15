@@ -21,8 +21,7 @@ export async function getByCategorie(
   categorie: z.infer<typeof categorieSchema>,
 ): Promise<ValidationError | { res: any; error?: never }> {
   try {
-    if (!categorieSchema.array().safeParse(categorie))
-      return { error: [{ error: "invalid data", categorie }, { status: 400 }] }
+    categorieSchema.array().parse(categorie)
     const res = await db
       .select()
       .from(imagesData)
@@ -107,10 +106,8 @@ export async function deleteImages(
   ValidationError | { res: any; utRes: { success: boolean }; error?: never }
 > {
   try {
-    if (!uuidArraySchema.safeParse(keys) || !keys.length)
-      return {
-        error: [{ error: "invalid delete data", keys }, { status: 400 }],
-      }
+    uuidArraySchema.parse(keys)
+    if (!keys.length) throw new Error("empty keys array deleteImages")
     const res = await db
       .delete(imagesData)
       .where(inArray(imagesData.key, keys))
