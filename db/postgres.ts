@@ -34,7 +34,7 @@ export async function getByCategorie(
   }
 }
 
-export async function getAll() {
+export async function getAllImages() {
   try {
     const res = await db.select().from(imagesData)
     return { res }

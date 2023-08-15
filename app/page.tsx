@@ -6,7 +6,7 @@ import { AboutCards } from "@/components/HomePage/About"
 import { utapi } from "uploadthing/server"
 import PhotoGalery from "@/components/HomePage/PhotoGallery"
 import Banner from "@/components/HomePage/Banner"
-import { getAll } from "@/db/postgres"
+import { getAllImages } from "@/db/postgres"
 import { InferModel } from "drizzle-orm"
 import { imagesData } from "@/db/schema"
 
@@ -49,7 +49,7 @@ const infoData: LinkData = [
 ]
 
 export default async function Home() {
-  const { res: allImages } = await getAll()
+  const { res: allImages } = await getAllImages()
   const imgsUrls =
     allImages && allImages.length
       ? await utapi.getFileUrls(allImages.map((k) => k.key))
