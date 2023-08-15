@@ -3,11 +3,11 @@ import AuthButton from "@/components/Auth"
 import authOptions from "@/lib/auth"
 import { getServerSession } from "next-auth"
 import { utapi } from "uploadthing/server"
-import { getAll } from "@/db/postgres"
+import { getAllImages } from "@/db/postgres"
 
 export default async function Admin() {
   const session = await getServerSession(authOptions)
-  const { res: allImages } = await getAll()
+  const { res: allImages } = await getAllImages()
   const imgsUrls =
     allImages && allImages.length
       ? await utapi.getFileUrls(allImages.map((k) => k.key))

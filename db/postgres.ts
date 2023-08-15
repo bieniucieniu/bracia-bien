@@ -2,7 +2,7 @@ import { drizzle } from "drizzle-orm/vercel-postgres"
 import { sql } from "@vercel/postgres"
 import { eq, inArray } from "drizzle-orm"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
-import { imagesData, categorie as categorieEnum } from "./schema"
+import { imagesData, imagesCategorieEnum } from "./schema"
 import { z } from "zod"
 import { utapi } from "uploadthing/server"
 
@@ -11,7 +11,7 @@ export const insertImagesSchema = createInsertSchema(imagesData)
 export const selectImagesSchema = createSelectSchema(imagesData)
 
 export const uuidArraySchema = z.string().uuid().array()
-export const categorieSchema = z.enum(categorieEnum.enumValues)
+export const categorieSchema = z.enum(imagesCategorieEnum.enumValues)
 
 type ValidationError = {
   error: [{ error: string; [key: string]: any }, { status: number }]

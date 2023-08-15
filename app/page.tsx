@@ -71,7 +71,7 @@ export default async function Home() {
 
   const mainImgs = imgsData.filter((e) => e.categorie === "main")
   const currentImgs = imgsData.filter((e) => e.categorie === "current")
-  const elseImgs = imgsData.filter((e) => e.categorie === "else")
+  const galleryImgs = imgsData.filter((e) => e.categorie === "gallery")
 
   return (
     <>
@@ -90,9 +90,9 @@ export default async function Home() {
           <AboutCards />
         </div>
       </div>
-      {elseImgs.length > 0 ? (
+      {galleryImgs.length > 0 ? (
         <div className="min-h-screen relative flex items-center">
-          <PhotoGalery data={elseImgs} className="m-4" />
+          <PhotoGalery data={galleryImgs} className="m-4" />
         </div>
       ) : null}
       <footer
