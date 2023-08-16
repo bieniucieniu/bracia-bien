@@ -5,7 +5,6 @@ import {
   varchar,
   serial,
   text,
-  integer,
 } from "drizzle-orm/pg-core"
 
 export const imagesCategorieEnum = pgEnum("images_categorie", [
@@ -35,33 +34,12 @@ export const infoCard = pgTable(
     id: serial("id").primaryKey().notNull(),
     title: varchar("title"),
     content: text("alt").default(""),
-    linkId: integer("link_id").references(() => links.id),
+    link: varchar("link"),
     imageKey: varchar("image_key").references(() => imagesData.key),
   },
   (table) => {
     return {
       infoCardUnique: unique("info_card_id_unique").on(table.id),
-    }
-  },
-)
-export const linksCategorie = pgEnum("links_categorie", [
-  "info",
-  "contacts",
-
-  "else",
-])
-
-export const links = pgTable(
-  "links",
-  {
-    id: serial("id").primaryKey().notNull(),
-    href: varchar("href"),
-    title: varchar("title"),
-    categorie: linksCategorie("categorie"),
-  },
-  (table) => {
-    return {
-      linksUnique: unique("link_id_unique").on(table.id),
     }
   },
 )
