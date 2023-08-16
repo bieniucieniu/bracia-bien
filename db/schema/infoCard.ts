@@ -2,7 +2,7 @@ import { pgTable, serial, text, unique, varchar } from "drizzle-orm/pg-core"
 import { imagesData } from "./image"
 
 export const infoCard = pgTable(
-  "infoCard",
+  "info_card",
   {
     id: serial("id").primaryKey().notNull(),
     title: varchar("title").notNull(),
@@ -10,7 +10,6 @@ export const infoCard = pgTable(
     link: varchar("link"),
     imageKey: varchar("image_key")
       .references(() => imagesData.key)
-
       .array(),
   },
   (table) => {

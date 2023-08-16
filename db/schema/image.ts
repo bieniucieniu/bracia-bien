@@ -1,24 +1,29 @@
 import {
-  pgTable,
-  pgEnum,
-  unique,
-  varchar,
-  serial,
-  text,
+	pgTable,
+	pgEnum,
+	unique,
+	varchar,
 } from "drizzle-orm/pg-core"
 
 export const imagesCategorieEnum = pgEnum("images_categorie", [
-  "gallery",
-  "main",
-  "current",
-  "info",
+	"gallery",
+	"main",
+	"current",
+	"info",
 ])
 
 export const imagesData = pgTable(
-  "imagesData",
-  {
-    key: varchar("key").primaryKey().notNull(),
-    categorie: imagesCategorieEnum("categorie").default("gallery"),
+	"images_data",
+	{
+		key: varchar("key").primaryKey().notNull(),
+		categorie: imagesCategorieEnum("categorie").default("gallery"),
+		alt: varchar("alt").default(""),
+	},
+	(table) => {
+		return {
+			imagesKeyUnique: unique("images_key_unique").on(table.key),
+		}
+	},
     alt: varchar("alt").default(""),
   },
   (table) => {
