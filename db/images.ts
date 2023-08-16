@@ -2,7 +2,7 @@ import { drizzle } from "drizzle-orm/vercel-postgres"
 import { sql } from "@vercel/postgres"
 import { eq, inArray } from "drizzle-orm"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
-import { imagesData, imagesCategorieEnum } from "./schema"
+import { imagesData, imagesCategorieEnum } from "./schema/image"
 import { z } from "zod"
 import { utapi } from "uploadthing/server"
 
@@ -17,7 +17,7 @@ type ValidationError = {
   error: [{ error: string; [key: string]: any }, { status: number }]
 }
 
-export async function getByCategorie(
+export async function getImagesByCategorie(
   categorie: z.infer<typeof categorieSchema>,
 ): Promise<ValidationError | { res: any; error?: never }> {
   try {

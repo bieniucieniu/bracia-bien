@@ -2,7 +2,7 @@ import {
   type addImages,
   type deleteImages,
   type updateImages,
-} from "@/db/postgres"
+} from "@/db/images"
 export async function addImagesData(
   images: Parameters<typeof addImages>[0],
   onCompleat?: (res?: Response | any) => void,

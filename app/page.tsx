@@ -6,9 +6,9 @@ import { AboutCards } from "@/components/HomePage/About"
 import { utapi } from "uploadthing/server"
 import PhotoGalery from "@/components/HomePage/PhotoGallery"
 import Banner from "@/components/HomePage/Banner"
-import { getAllImages } from "@/db/postgres"
+import { getAllImages } from "@/db/images"
 import { InferModel } from "drizzle-orm"
-import { imagesData } from "@/db/schema"
+import { imagesData } from "@/db/schema/image"
 
 type LinkData = { name: string; href: string; target?: string; rel?: string }[]
 

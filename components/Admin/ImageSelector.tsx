@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/popover"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Link from "next/link"
-import { imagesCategorieEnum } from "@/db/schema"
+import { imagesCategorieEnum } from "@/db/schema/image"
 
 import { Label } from "../ui/label"
 import { ImgData } from "./AdminDashboard"

@@ -14,7 +14,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { addImagesData } from "@/db/clientApi"
-import { imagesCategorieEnum, imagesData } from "@/db/schema"
+import { imagesCategorieEnum, imagesData } from "@/db/schema/image"
 import { InferModel } from "drizzle-orm"
 
 const { useUploadThing } = generateReactHelpers<FileRouter>()

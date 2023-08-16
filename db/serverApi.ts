@@ -1,4 +1,4 @@
-import { addImages, deleteImages, updateImages } from "@/db/postgres"
+import { addImages, deleteImages, updateImages } from "@/db/images"
 import { getAuth } from "@/lib/auth"
 import { NextResponse } from "next/server"
 
