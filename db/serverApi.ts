@@ -22,7 +22,10 @@ export async function PATCH(req: Request) {
 
   const data = await req.json()
 
-  const res: { deleted?: any; updated?: any } = {}
+  const res: { deleted?: any; updated?: any } = {
+    deleted: undefined,
+    updated: undefined,
+  }
 
   if (data.updateImages) {
     const updated = await updateImages(data.updateImages)
