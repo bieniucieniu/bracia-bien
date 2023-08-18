@@ -9,8 +9,8 @@ export async function POST(req: Request) {
 
   const data = await req.json()
   if (data.images) {
-    const added = await addImages(data.images)
-    return NextResponse.json({ added })
+    const res = await addImages(data.images)
+    return NextResponse.json(res)
   }
 
   NextResponse.json({ message: "no data provaided" })
@@ -36,5 +36,5 @@ export async function PATCH(req: Request) {
     res.deleted = deleted
   }
 
-  return NextResponse.json(res, { status: 200 })
+  return NextResponse.json(res)
 }
