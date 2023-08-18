@@ -49,7 +49,8 @@ const infoData: LinkData = [
 ]
 
 export default async function Home() {
-  const { res: allImages } = await getAllImages()
+  const { res: allImages, error } = await getAllImages()
+  if (error) console.log(error)
   const imgsUrls =
     allImages && allImages.length
       ? await utapi.getFileUrls(allImages.map((k) => k.key))

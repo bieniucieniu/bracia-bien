@@ -7,7 +7,8 @@ import { getAllImages } from "@/db/images"
 
 export default async function Admin() {
   const session = await getServerSession(authOptions)
-  const { res: allImages } = await getAllImages()
+  const { res: allImages, error } = await getAllImages()
+  if (error) console.log(error)
   const imgsUrls =
     allImages && allImages.length
       ? await utapi.getFileUrls(allImages.map((k) => k.key))
