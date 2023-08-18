@@ -1,124 +1,105 @@
 import { drizzle } from "drizzle-orm/vercel-postgres"
 import { sql } from "@vercel/postgres"
-import { eq, inArray } from "drizzle-orm"
+import { inArray } from "drizzle-orm"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
-import { imagesData, imagesCategorieEnum } from "./schema/image"
 import { z } from "zod"
-import { utapi } from "uploadthing/server"
+import { infoCard } from "./schema/infoCard"
 
 export const db = drizzle(sql)
-export const insertImagesSchema = createInsertSchema(imagesData)
-export const selectImagesSchema = createSelectSchema(imagesData)
+export const insertCardSchema = createInsertSchema(infoCard)
+export const selectCardSchema = createSelectSchema(infoCard)
 
 export const uuidArraySchema = z.string().uuid().array()
-export const categorieSchema = z.enum(imagesCategorieEnum.enumValues)
 
 type ValidationError = {
-  error: [{ error: string; [key: string]: any }, { status: number }]
+  error: any
+  status?: number
+  [key: string]: any
 }
 
-export async function getImagesByCategorie(
-  categorie: z.infer<typeof categorieSchema>,
-): Promise<ValidationError | { res: any; error?: never }> {
+export async function getAllCards() {
   try {
-    categorieSchema.array().parse(categorie)
-    const res = await db
-      .select()
-      .from(imagesData)
-      .where(eq(imagesData.categorie, categorie))
+    const res = await db.select().from(infoCard)
     return { res }
   } catch (e) {
     return {
-      error: [{ error: "error", info: e }, { status: 400 }],
+      error: e,
+      status: 400,
     }
   }
 }
 
-export async function getAllImages() {
+export async function addCards(
+  data: z.infer<typeof insertCardSchema>[],
+): Promise<ValidationError | { res: any }> {
   try {
-    const res = await db.select().from(imagesData)
-    return { res }
-  } catch (e) {
-    return {
-      error: [{ error: "error", info: e }, { status: 400 }],
-    }
-  }
-}
+    insertCardSchema.parse(data)
 
-export async function addImages(
-  data: z.infer<typeof insertImagesSchema>[],
-): Promise<ValidationError | { res: any; error?: never }> {
-  try {
-    if (!insertImagesSchema.safeParse(data))
-      return { error: [{ error: "invalid data", data }, { status: 400 }] }
-
-    const res = await db.insert(imagesData).values(data).returning()
+    const res = await db.insert(infoCard).values(data).returning()
 
     return { res }
   } catch (e) {
     return {
-      error: [{ error: "error", info: e }, { status: 400 }],
+      error: e,
+      status: 400,
+      data,
     }
   }
 }
 
-export const imagesOmitKey = selectImagesSchema.omit({ key: true })
+export const cardOmitId = selectCardSchema.omit({ id: true })
+export const cardsId = selectCardSchema.pick({ id: true })
 
-export async function updateImages(
+export async function updateCard(
   data: {
-    keys: z.infer<typeof uuidArraySchema>
-    update: Partial<z.infer<typeof imagesOmitKey>>
+    ids: z.infer<typeof cardsId>[]
+    update: Partial<z.infer<typeof cardOmitId>>
   }[],
-): Promise<ValidationError | { res: any; error?: never }> {
-  try {
-    const res = await Promise.allSettled(
-      data.map(async ({ update, keys }) => {
-        if (
-          !imagesOmitKey.safeParse(update) ||
-          !uuidArraySchema.safeParse(keys)
-        )
-          return {
-            error: [
-              { error: "invalid update data", keys, update },
-              { status: 400 },
-            ],
-          }
+): Promise<ValidationError | { res: any }> {
+  const res = await Promise.allSettled(
+    data.map(async ({ update, ids }) => {
+      try {
+        cardsId.array().parse(ids)
+        cardOmitId.parse(update)
+
+        if (!ids.length) throw new Error("empty id Array")
 
         const r = await db
-          .update(imagesData)
+          .update(infoCard)
           .set(update)
-          .where(inArray(imagesData.key, keys))
-        return r
-      }),
-    )
+          .where(inArray(infoCard, ids))
 
-    return { res }
-  } catch (e) {
-    return {
-      error: [{ error: "error", info: e }, { status: 400 }],
-    }
-  }
+        return r
+      } catch (e) {
+        return {
+          error: e,
+          ids,
+          data,
+          status: 400,
+        }
+      }
+    }),
+  )
+
+  return { res }
 }
 
 export async function deleteImages(
-  keys: z.infer<typeof uuidArraySchema>,
-): Promise<
-  ValidationError | { res: any; utRes: { success: boolean }; error?: never }
-> {
+  ids: z.infer<typeof cardsId>[],
+): Promise<ValidationError | { res: any }> {
   try {
-    uuidArraySchema.parse(keys)
-    if (!keys.length) throw new Error("empty keys array deleteImages")
+    cardsId.array().parse(ids)
+    if (!ids.length) throw new Error("empty ids array")
     const res = await db
-      .delete(imagesData)
-      .where(inArray(imagesData.key, keys))
+      .delete(infoCard)
+      .where(inArray(infoCard, ids))
       .returning()
 
-    const utRes = await utapi.deleteFiles(res.map((e) => e.key))
-
-    return { res, utRes }
+    return { res }
   } catch (e) {
     return {
-      error: [{ error: "error", info: e }, { status: 400 }],
+      error: e,
+      status: 400,
     }
   }
 }
