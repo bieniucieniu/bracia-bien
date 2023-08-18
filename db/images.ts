@@ -13,15 +13,14 @@ export const selectImagesSchema = createSelectSchema(imagesData)
 export const uuidArraySchema = z.string().uuid().array()
 export const categorieSchema = z.enum(imagesCategorieEnum.enumValues)
 
-type ValidationError = {
-  error: [{ error: string; [key: string]: any }, { status: number }]
-}
+type ValidationError = { error: any; status?: number; [key: string]: any }
 
 export async function getImagesByCategorie(
   categorie: z.infer<typeof categorieSchema>,
-): Promise<ValidationError | { res: any; error?: never }> {
+): Promise<ValidationError | { res: any }> {
   try {
     categorieSchema.array().parse(categorie)
+
     const res = await db
       .select()
       .from(imagesData)
@@ -29,7 +28,8 @@ export async function getImagesByCategorie(
     return { res }
   } catch (e) {
     return {
-      error: [{ error: "error", info: e }, { status: 400 }],
+      error: e,
+      status: 400,
     }
   }
 }
@@ -40,24 +40,25 @@ export async function getAllImages() {
     return { res }
   } catch (e) {
     return {
-      error: [{ error: "error", info: e }, { status: 400 }],
+      error: e,
+      status: 400,
     }
   }
 }
 
 export async function addImages(
   data: z.infer<typeof insertImagesSchema>[],
-): Promise<ValidationError | { res: any; error?: never }> {
+): Promise<ValidationError | { res: any }> {
   try {
-    if (!insertImagesSchema.safeParse(data))
-      return { error: [{ error: "invalid data", data }, { status: 400 }] }
+    insertImagesSchema.parse(data)
 
     const res = await db.insert(imagesData).values(data).returning()
 
     return { res }
   } catch (e) {
     return {
-      error: [{ error: "error", info: e }, { status: 400 }],
+      error: e,
+      status: 400,
     }
   }
 }
@@ -69,20 +70,12 @@ export async function updateImages(
     keys: z.infer<typeof uuidArraySchema>
     update: Partial<z.infer<typeof imagesOmitKey>>
   }[],
-): Promise<ValidationError | { res: any; error?: never }> {
+): Promise<ValidationError | { res: any }> {
   try {
     const res = await Promise.allSettled(
       data.map(async ({ update, keys }) => {
-        if (
-          !imagesOmitKey.safeParse(update) ||
-          !uuidArraySchema.safeParse(keys)
-        )
-          return {
-            error: [
-              { error: "invalid update data", keys, update },
-              { status: 400 },
-            ],
-          }
+        imagesOmitKey.parse(update)
+        uuidArraySchema.parse(keys)
 
         const r = await db
           .update(imagesData)
@@ -95,16 +88,15 @@ export async function updateImages(
     return { res }
   } catch (e) {
     return {
-      error: [{ error: "error", info: e }, { status: 400 }],
+      error: e,
+      status: 400,
     }
   }
 }
 
 export async function deleteImages(
   keys: z.infer<typeof uuidArraySchema>,
-): Promise<
-  ValidationError | { res: any; utRes: { success: boolean }; error?: never }
-> {
+): Promise<ValidationError | { res: any; utRes: { success: boolean } }> {
   try {
     uuidArraySchema.parse(keys)
     if (!keys.length) throw new Error("empty keys array deleteImages")
@@ -118,7 +110,8 @@ export async function deleteImages(
     return { res, utRes }
   } catch (e) {
     return {
-      error: [{ error: "error", info: e }, { status: 400 }],
+      error: e,
+      status: 400,
     }
   }
 }
