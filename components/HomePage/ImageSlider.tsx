@@ -2,7 +2,7 @@
 import Image from "next/image"
 import Slider from "../Slider"
 import { InferModel } from "drizzle-orm"
-import { imagesData } from "@/db/schema"
+import { imagesData } from "@/db/schema/image"
 
 export function ImageSlider({
   data,

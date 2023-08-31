@@ -3,7 +3,7 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import Slider from "../Slider"
 import { InferModel } from "drizzle-orm"
-import { imagesData } from "@/db/schema"
+import { imagesData } from "@/db/schema/image"
 
 export default function Banner({
   data,
