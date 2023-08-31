@@ -3,7 +3,7 @@ import { pgTable, pgEnum, unique, varchar } from "drizzle-orm/pg-core"
 export const categorie = pgEnum("categorie", ["else", "main", "current"])
 
 export const imagesData = pgTable(
-  "imagesData",
+  "images_data",
   {
     key: varchar("key").primaryKey().notNull(),
     categorie: categorie("categorie").default("else"),
