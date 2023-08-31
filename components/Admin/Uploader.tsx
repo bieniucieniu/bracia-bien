@@ -14,7 +14,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { addImagesData } from "@/db/clientApi"
-import { categorie as categorieEnum } from "@/db/schema"
+import { imagesCategorieEnum, imagesData } from "@/db/schema/image"
+import { InferModel } from "drizzle-orm"
 
 const { useUploadThing } = generateReactHelpers<FileRouter>()
 
@@ -74,11 +75,10 @@ export function Uploader({
       setProgress(p)
     },
   })
+  type Categorie = NonNullable<InferModel<typeof imagesData>["categorie"]>
 
   const [alt, setAlt] = useState<string>()
-  const [categorie, setCategorie] = useState<"main" | "current" | "else">(
-    "else",
-  )
+  const [categorie, setCategorie] = useState<Categorie>("gallery")
 
   return (
     <div className={twMerge("flex flex-col gap-2 items-center", className)}>
@@ -119,11 +119,11 @@ export function Uploader({
         <ErrorAlert error={error} onAccept={() => setError(undefined)} />
         <RadioGroup
           defaultValue={categorie}
-          onValueChange={(e: "main" | "current" | "else") => setCategorie(e)}
+          onValueChange={(e: Categorie) => setCategorie(e)}
           disabled={isUploading}
           className="flex flex-row"
         >
-          {categorieEnum.enumValues.map((str) => (
+          {imagesCategorieEnum.enumValues.map((str) => (
             <div key={str} className="flex items-center space-x-2">
               <RadioGroupItem value={str} id="r1" />
               <Label htmlFor="r1">{str}</Label>

@@ -6,9 +6,9 @@ import { AboutCards } from "@/components/HomePage/About"
 import { utapi } from "uploadthing/server"
 import PhotoGalery from "@/components/HomePage/PhotoGallery"
 import Banner from "@/components/HomePage/Banner"
-import { getAllImages } from "@/db/postgres"
+import { getAllImages } from "@/db/images"
 import { InferModel } from "drizzle-orm"
-import { imagesData } from "@/db/schema"
+import { imagesData } from "@/db/schema/image"
 
 type LinkData = { name: string; href: string; target?: string; rel?: string }[]
 
@@ -49,7 +49,8 @@ const infoData: LinkData = [
 ]
 
 export default async function Home() {
-  const { res: allImages } = await getAllImages()
+  const { res: allImages, error } = await getAllImages()
+  if (error) console.log(error)
   const imgsUrls =
     allImages && allImages.length
       ? await utapi.getFileUrls(allImages.map((k) => k.key))
@@ -71,7 +72,7 @@ export default async function Home() {
 
   const mainImgs = imgsData.filter((e) => e.categorie === "main")
   const currentImgs = imgsData.filter((e) => e.categorie === "current")
-  const elseImgs = imgsData.filter((e) => e.categorie === "else")
+  const galleryImgs = imgsData.filter((e) => e.categorie === "gallery")
 
   return (
     <>
@@ -90,9 +91,9 @@ export default async function Home() {
           <AboutCards />
         </div>
       </div>
-      {elseImgs.length > 0 ? (
+      {galleryImgs.length > 0 ? (
         <div className="min-h-screen relative flex items-center">
-          <PhotoGalery data={elseImgs} className="m-4" />
+          <PhotoGalery data={galleryImgs} className="m-4" />
         </div>
       ) : null}
       <footer

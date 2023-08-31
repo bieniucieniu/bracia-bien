@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/popover"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Link from "next/link"
-import { categorie as categorieEnum } from "@/db/schema"
+import { imagesCategorieEnum } from "@/db/schema/image"
 
 import { Label } from "../ui/label"
 import { ImgData } from "./AdminDashboard"
@@ -96,14 +96,17 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
     const toDelete = imageData
       .filter((e) => e.delete === true)
       .map((e) => e.key)
-    const toUpdateCategorie = categorieEnum.enumValues.map((categorie) => {
-      const keys = imageData
-        .filter(
-          (e) => e.newCategorie === categorie && e.newCategorie !== e.categorie,
-        )
-        .map((e) => e.key)
-      return { keys, update: { categorie } }
-    })
+    const toUpdateCategorie = imagesCategorieEnum.enumValues.map(
+      (categorie) => {
+        const keys = imageData
+          .filter(
+            (e) =>
+              e.newCategorie === categorie && e.newCategorie !== e.categorie,
+          )
+          .map((e) => e.key)
+        return { keys, update: { categorie } }
+      },
+    )
     const toUpdateAlt = imageData
       .filter((e) => e.newAlt && e.newAlt !== e.alt)
       .map((e) => ({
@@ -177,7 +180,7 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
                       }}
                       className="flex flex-row"
                     >
-                      {categorieEnum.enumValues.map((str, i) => (
+                      {imagesCategorieEnum.enumValues.map((str, i) => (
                         <div
                           key={str}
                           className={twJoin(

@@ -1,6 +1,5 @@
 import AuthButton from "@/components/Auth"
 import { Uploader } from "./Uploader"
-// import { getAll } from "@vercel/edge-config"
 
 import {
   Card,
@@ -11,7 +10,7 @@ import {
 } from "@/components/ui/card"
 import ImageSelesctor from "./ImageSelector"
 import { InferModel } from "drizzle-orm"
-import { imagesData } from "@/db/schema"
+import { imagesData } from "@/db/schema/image"
 export interface ImgData extends InferModel<typeof imagesData> {
   url: string | undefined
 }
