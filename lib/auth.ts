@@ -1,6 +1,5 @@
 import { getServerSession, Session, type NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
-import { type NextResponse } from "next/server"
 
 const allowed = ["bienmikolaj@gmail.com", "braciabien@gmail.com"]
 

@@ -1,5 +1,5 @@
 import { MenuItem, MenuRoot } from "@/components/PillMenu"
-import { playfair } from "./fonts"
+import { playfair } from "@/lib/fonts"
 
 import { ImageSlider } from "@/components/HomePage/ImageSlider"
 import { AboutCards } from "@/components/HomePage/About"
@@ -55,9 +55,8 @@ export default async function Home() {
     allImages && allImages.length
       ? await utapi.getFileUrls(allImages.map((k) => k.key))
       : []
-  // @ts-ignore
   const imgsData: (InferInsertModel<typeof imagesData> & {
-    url: string
+    url?: string
   })[] =
     allImages && allImages.length
       ? allImages
