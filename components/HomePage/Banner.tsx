@@ -2,13 +2,13 @@
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import Slider from "../Slider"
-import { InferModel } from "drizzle-orm"
-import { imagesData } from "@/db/schema/image"
+import { InferInsertModel } from "drizzle-orm"
+import { imagesData } from "@/db/schema/imagesData"
 
 export default function Banner({
   data,
 }: {
-  data: (InferModel<typeof imagesData> & { url: string })[]
+  data: (InferInsertModel<typeof imagesData> & { url: string })[]
 }) {
   const [visible, setVisible] = useState<boolean>(false)
 

@@ -5,14 +5,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { imagesData } from "@/db/schema/image"
-import { InferModel } from "drizzle-orm"
+import { imagesData } from "@/db/schema/imagesData"
+import { InferInsertModel } from "drizzle-orm"
 import Image from "next/image"
 export default function PhotoGalery({
   data,
   className,
 }: {
-  data: (Omit<InferModel<typeof imagesData>, "categorie"> & { url: string })[]
+  data: (Omit<InferInsertModel<typeof imagesData>, "categorie"> & {
+    url: string
+  })[]
   className?: string
 }) {
   return (
