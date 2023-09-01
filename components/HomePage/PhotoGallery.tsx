@@ -13,7 +13,7 @@ export default function PhotoGalery({
   className,
 }: {
   data: (Omit<InferInsertModel<typeof imagesData>, "categorie"> & {
-    url: string
+    url?: string
   })[]
   className?: string
 }) {
@@ -25,16 +25,19 @@ export default function PhotoGalery({
       </CardHeader>
       <CardContent>
         <div className="flex flex-row w-full justify-around gap-3 flex-wrap">
-          {data.map(({ url, key, alt }, i) => (
-            <Image
-              key={key}
-              src={url}
-              alt={alt ?? `photo-${i}`}
-              height={800}
-              width={1920}
-              className="w-full h-auto lg:w-auto lg:h-[240px] xl:h-[300px] object-contain rounded-xl shadow-sm"
-            />
-          ))}
+          {data.map(({ url, key, alt }, i) => {
+            if (!url) return null
+            return (
+              <Image
+                key={key}
+                src={url}
+                alt={alt ?? `photo-${i}`}
+                height={800}
+                width={1920}
+                className="w-full h-auto lg:w-auto lg:h-[240px] xl:h-[300px] object-contain rounded-xl shadow-sm"
+              />
+            )
+          })}
         </div>
       </CardContent>
     </Card>

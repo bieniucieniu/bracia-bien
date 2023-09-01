@@ -47,7 +47,7 @@ export default function Slider({
   autoSlide = 6000,
 }: {
   className?: string
-  renderer: (idx: number) => JSX.Element
+  renderer: (idx: number) => React.ReactNode
   length: number
   autoSlide?: number | false
 }) {

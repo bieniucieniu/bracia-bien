@@ -8,7 +8,7 @@ import { imagesData } from "@/db/schema/imagesData"
 export default function Banner({
   data,
 }: {
-  data: (InferInsertModel<typeof imagesData> & { url: string })[]
+  data: (InferInsertModel<typeof imagesData> & { url?: string })[]
 }) {
   const [visible, setVisible] = useState<boolean>(false)
 
@@ -35,14 +35,18 @@ export default function Banner({
         <Slider
           autoSlide={10000}
           className="z-10"
-          renderer={(i) => (
-            <Image
-              alt={data[i].alt ?? `image-${i}`}
-              src={data[i].url}
-              width={1920}
-              height={800}
-            />
-          )}
+          renderer={(i) => {
+            const d = data[i]
+            if (!d.url) return null
+            return (
+              <Image
+                alt={d.alt ?? `image-${i}`}
+                src={d.url}
+                width={1920}
+                height={800}
+              />
+            )
+          }}
           length={data.length}
         />
       ) : null}
