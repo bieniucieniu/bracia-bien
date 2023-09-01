@@ -6,9 +6,9 @@ import { AboutCards } from "@/components/HomePage/About"
 import { utapi } from "uploadthing/server"
 import PhotoGalery from "@/components/HomePage/PhotoGallery"
 import Banner from "@/components/HomePage/Banner"
-import { getAllImages } from "@/db/images"
-import { InferModel } from "drizzle-orm"
-import { imagesData } from "@/db/schema/image"
+import { getAllImagesData } from "@/db/imagesData/serverApi"
+import { InferInsertModel } from "drizzle-orm"
+import { imagesData } from "@/db/schema/imagesData"
 
 type LinkData = { name: string; href: string; target?: string; rel?: string }[]
 
@@ -49,14 +49,14 @@ const infoData: LinkData = [
 ]
 
 export default async function Home() {
-  const { res: allImages, error } = await getAllImages()
+  const { res: allImages, error } = await getAllImagesData()
   if (error) console.log(error)
   const imgsUrls =
     allImages && allImages.length
       ? await utapi.getFileUrls(allImages.map((k) => k.key))
       : []
   // @ts-ignore
-  const imgsData: (InferModel<typeof imagesData> & {
+  const imgsData: (InferInsertModel<typeof imagesData> & {
     url: string
   })[] =
     allImages && allImages.length

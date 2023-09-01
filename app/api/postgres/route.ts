@@ -1,3 +1,1 @@
-import { POST, PATCH } from "@/db/serverApi"
-
-export { POST, PATCH }
+export { POST, PATCH } from "@/db/router"

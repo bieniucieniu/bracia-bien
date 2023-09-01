@@ -4,11 +4,11 @@ import authOptions from "@/lib/auth"
 import { getServerSession } from "next-auth"
 import { utapi } from "uploadthing/server"
 
-import { getAllImages } from "@/db/images"
+import { getAllImagesData } from "@/db/imagesData/serverApi"
 
 export default async function Admin() {
   const session = await getServerSession(authOptions)
-  const { res: allImages, error } = await getAllImages()
+  const { res: allImages, error } = await getAllImagesData()
   if (error) console.log(error)
   const imgsUrls =
     allImages && allImages.length
