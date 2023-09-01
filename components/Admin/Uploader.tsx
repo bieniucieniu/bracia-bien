@@ -5,7 +5,8 @@ import { generateReactHelpers } from "@uploadthing/react/hooks"
 import type { FileRouter } from "@/lib/uploadthing"
 import { Button } from "../ui/button"
 
-import { useDropzone, type FileWithPath } from "react-dropzone"
+import { useDropzone } from "react-dropzone"
+import type { FileWithPath } from "react-dropzone"
 import { useCallback, useState } from "react"
 import ErrorAlert from "../ErrorAlert"
 import { twMerge } from "tailwind-merge"
@@ -14,8 +15,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { addImagesData } from "@/db/clientApi"
-import { imagesCategorieEnum, imagesData } from "@/db/schema/image"
-import { InferModel } from "drizzle-orm"
+import { imagesCategorieEnum, imagesData } from "@/db/schema/imagesData"
+import { InferInsertModel } from "drizzle-orm"
 
 const { useUploadThing } = generateReactHelpers<FileRouter>()
 
@@ -57,13 +58,11 @@ export function Uploader({
   const { isUploading, startUpload } = useUploadThing(endpoint ?? "image", {
     onClientUploadComplete: (e) => {
       if (Array.isArray(e)) {
-        const items: Parameters<typeof addImagesData>[0] = e.map(
-          ({ fileKey }) => ({
-            key: fileKey,
-            categorie: categorie,
-            alt,
-          }),
-        )
+        const items: Parameters<typeof addImagesData>[0] = e.map(({ key }) => ({
+          key,
+          categorie: categorie,
+          alt,
+        }))
         addImagesData(items)
       }
       setFiles([])
@@ -75,7 +74,7 @@ export function Uploader({
       setProgress(p)
     },
   })
-  type Categorie = NonNullable<InferModel<typeof imagesData>["categorie"]>
+  type Categorie = NonNullable<InferInsertModel<typeof imagesData>["categorie"]>
 
   const [alt, setAlt] = useState<string>()
   const [categorie, setCategorie] = useState<Categorie>("gallery")

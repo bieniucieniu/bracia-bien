@@ -28,13 +28,13 @@ import {
 } from "@/components/ui/popover"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Link from "next/link"
-import { imagesCategorieEnum } from "@/db/schema/image"
+import { imagesCategorieEnum } from "@/db/schema/imagesData"
 
 import { Label } from "../ui/label"
 import { ImgData } from "./AdminDashboard"
 import { twJoin } from "tailwind-merge"
 import { Input } from "../ui/input"
-import { patchImagesData } from "@/db/clientApi"
+import { updateImagesData, deleteImagesData } from "@/db/clientApi"
 
 export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
   const [imageData, setImageData] = useState<
@@ -114,25 +114,20 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
         update: { alt: e.newAlt },
       }))
 
-    patchImagesData(
-      {
-        updateImages:
-          toUpdateCategorie.length || toUpdateAlt.length
-            ? [...toUpdateCategorie, ...toUpdateAlt]
-            : undefined,
-        deleteImages: toDelete.length ? toDelete : undefined,
-      },
+    updateImagesData(
+      toUpdateCategorie.length || toUpdateAlt.length
+        ? [...toUpdateCategorie, ...toUpdateAlt]
+        : undefined,
       (res) => {
-        if (res instanceof Response || res.status === 200) {
-          const newData: ImgData[] = imageData
-            .filter((e) => !e.delete)
-            .map((e) => ({
-              ...e,
-              alt: e.newAlt ?? e.alt,
-              categorie: e.newCategorie ?? e.categorie,
-              newAlt: null,
-              newCategorie: null,
-            }))
+        setUploading(true)
+        if (res instanceof Response && res.status === 200) {
+          const newData: ImgData[] = imageData.map((e) => ({
+            ...e,
+            alt: e.newAlt ?? e.alt,
+            categorie: e.newCategorie ?? e.categorie,
+            newAlt: undefined,
+            newCategorie: undefined,
+          }))
 
           setImageData(newData)
         } else {
@@ -141,6 +136,17 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
         setUploading(false)
       },
     )
+    deleteImagesData(toDelete.length ? toDelete : undefined, (res) => {
+      setUploading(true)
+      if (res instanceof Response && res.status === 200) {
+        const newData: ImgData[] = imageData.filter((e) => !e.delete)
+
+        setImageData(newData)
+      } else {
+        console.log(res)
+      }
+      setUploading(false)
+    })
   }
 
   if (!imgsData || imageData.length <= 0) return "no imgs"
@@ -159,13 +165,17 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
                 className="flex flex-col gap-2 overflow-hidden rounded-xl shadow-md"
                 key={key}
               >
-                <Image
-                  alt={alt ?? ""}
-                  src={url ?? ""}
-                  width={400}
-                  height={300}
-                  className={twJoin("object-contain h-auto transition")}
-                />
+                {url ? (
+                  <Image
+                    alt={alt ?? ""}
+                    src={url ?? ""}
+                    width={400}
+                    height={300}
+                    className={twJoin("object-contain h-auto transition")}
+                  />
+                ) : (
+                  `invalid url ${url}`
+                )}
 
                 <span>{key}</span>
                 <section className="flex justify-around flex-wrap items-center pb-2">
