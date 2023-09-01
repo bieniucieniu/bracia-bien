@@ -9,9 +9,9 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import ImageSelesctor from "./ImageSelector"
-import { InferModel } from "drizzle-orm"
-import { imagesData } from "@/db/schema/image"
-export interface ImgData extends InferModel<typeof imagesData> {
+import { InferInsertModel } from "drizzle-orm"
+import { imagesData } from "@/db/schema/imagesData"
+export interface ImgData extends InferInsertModel<typeof imagesData> {
   url: string | undefined
 }
 export default function AdminDashboard({ imgsData }: { imgsData: ImgData[] }) {
