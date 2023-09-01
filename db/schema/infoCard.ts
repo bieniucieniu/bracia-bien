@@ -1,5 +1,4 @@
 import { pgTable, serial, text, unique, varchar } from "drizzle-orm/pg-core"
-import { imagesData } from "./image"
 
 export const infoCard = pgTable(
   "info_card",

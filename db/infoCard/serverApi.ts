@@ -3,7 +3,7 @@ import { sql } from "@vercel/postgres"
 import { inArray } from "drizzle-orm"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 import { z } from "zod"
-import { infoCard } from "./schema/infoCard"
+import { infoCard } from "../schema/infoCard"
 
 export const db = drizzle(sql)
 export const insertCardSchema = createInsertSchema(infoCard)

@@ -2,7 +2,7 @@ import { drizzle } from "drizzle-orm/vercel-postgres"
 import { sql } from "@vercel/postgres"
 import { eq, inArray } from "drizzle-orm"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
-import { imagesData, imagesCategorieEnum } from "./schema/image"
+import { imagesData, imagesCategorieEnum } from "../schema/imagesData"
 import { z } from "zod"
 import { utapi } from "uploadthing/server"
 
@@ -15,7 +15,7 @@ export const categorieSchema = z.enum(imagesCategorieEnum.enumValues)
 
 type ValidationError = { error: any; status?: number; [key: string]: any }
 
-export async function getImagesByCategorie(
+export async function getImagesDataByCategorie(
   categorie: z.infer<typeof categorieSchema>,
 ): Promise<ValidationError | { res: any }> {
   try {
@@ -28,25 +28,27 @@ export async function getImagesByCategorie(
     return { res }
   } catch (e) {
     return {
+      message: "error in get by categorie images",
       error: e,
       status: 400,
     }
   }
 }
 
-export async function getAllImages() {
+export async function getAllImagesData() {
   try {
     const res = await db.select().from(imagesData)
     return { res }
   } catch (e) {
     return {
+      massage: "error in get all images",
       error: e,
       status: 400,
     }
   }
 }
 
-export async function addImages(
+export async function addImagesData(
   data: z.infer<typeof insertImagesSchema>[],
 ): Promise<ValidationError | { res: any }> {
   try {
@@ -57,6 +59,7 @@ export async function addImages(
     return { res }
   } catch (e) {
     return {
+      message: "invalid data add images",
       error: e,
       status: 400,
     }
@@ -65,7 +68,7 @@ export async function addImages(
 
 export const imagesOmitKey = selectImagesSchema.omit({ key: true })
 
-export async function updateImages(
+export async function updateImagesData(
   data: {
     keys: z.infer<typeof uuidArraySchema>
     update: Partial<z.infer<typeof imagesOmitKey>>
@@ -88,13 +91,14 @@ export async function updateImages(
     return { res }
   } catch (e) {
     return {
+      message: "error in undate images",
       error: e,
       status: 400,
     }
   }
 }
 
-export async function deleteImages(
+export async function deleteImagesData(
   keys: z.infer<typeof uuidArraySchema>,
 ): Promise<ValidationError | { res: any; utRes: { success: boolean } }> {
   try {
@@ -110,6 +114,7 @@ export async function deleteImages(
     return { res, utRes }
   } catch (e) {
     return {
+      message: "error in delete images",
       error: e,
       status: 400,
     }

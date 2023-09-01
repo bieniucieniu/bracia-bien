@@ -1,16 +1,17 @@
-import {
-  type addImages,
-  type deleteImages,
-  type updateImages,
-} from "@/db/images"
+import type {
+  addImagesData as addImages,
+  deleteImagesData as deleteImages,
+  updateImagesData as updateImages,
+} from "./imagesData/serverApi"
 export async function addImagesData(
-  images: Parameters<typeof addImages>[0],
+  data: Parameters<typeof addImages>[0] | undefined,
   onCompleat?: (res?: Response | any) => void,
 ) {
+  if (!data) return
   try {
     const res = await fetch("/api/postgres", {
       method: "POST",
-      body: JSON.stringify({ images }),
+      body: JSON.stringify({ add: data }),
     })
 
     onCompleat && onCompleat(res)
@@ -19,21 +20,40 @@ export async function addImagesData(
   }
 }
 
-export async function patchImagesData(
-  data: {
-    updateImages?: Parameters<typeof updateImages>[0]
-    deleteImages?: Parameters<typeof deleteImages>[0]
-  },
+export async function updateImagesData(
+  data: Parameters<typeof updateImages>[0] | undefined,
   onCompleat?: (res?: Response | any) => void,
 ) {
+  if (!data) return
   try {
-    if (!data.updateImages?.length && !data.deleteImages?.length) {
+    if (data.length < 0) {
       throw new Error("no data provided")
     }
 
     const res = await fetch("/api/postgres", {
       method: "PATCH",
-      body: JSON.stringify(data),
+      body: JSON.stringify({ update: data }),
+    })
+
+    onCompleat && onCompleat(res)
+  } catch (e) {
+    onCompleat && onCompleat(e)
+  }
+}
+
+export async function deleteImagesData(
+  data: Parameters<typeof deleteImages>[0] | undefined,
+  onCompleat?: (res?: Response | any) => void,
+) {
+  if (!data) return
+  try {
+    if (data.length < 0) {
+      throw new Error("no data provided")
+    }
+
+    const res = await fetch("/api/postgres", {
+      method: "PATCH",
+      body: JSON.stringify({ delete: data }),
     })
 
     onCompleat && onCompleat(res)

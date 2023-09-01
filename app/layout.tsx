@@ -1,7 +1,7 @@
 import "./globals.css"
 import { roboto } from "./fonts"
 import { Topbar } from "@/components/MainLayout/Navbar"
-import { AuthProvider } from "./providers"
+import { AuthProvider } from "@/components/providers"
 
 export const metadata = {
   title: "Bracia Bien",

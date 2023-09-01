@@ -1,4 +1,8 @@
-import { addImages, deleteImages, updateImages } from "@/db/images"
+import {
+  addImagesData,
+  deleteImagesData,
+  updateImagesData,
+} from "@/db/imagesData/serverApi"
 import { getAuth } from "@/lib/auth"
 import { NextResponse } from "next/server"
 
@@ -9,7 +13,7 @@ export async function POST(req: Request) {
 
   const data = await req.json()
   if (data.images) {
-    const res = await addImages(data.images)
+    const res = await addImagesData(data.images)
     return NextResponse.json(res)
   }
 
@@ -27,14 +31,14 @@ export async function PATCH(req: Request) {
     updated: undefined,
   }
 
-  if (data.updateImages) {
-    const updated = await updateImages(data.updateImages)
+  if (data.updateImagesData) {
+    const updated = await updateImagesData(data.updateImagesData)
 
     res.updated = updated
   }
 
-  if (data.deleteImages) {
-    const deleted = await deleteImages(data.deleteImages)
+  if (data.deleteImagesData) {
+    const deleted = await deleteImagesData(data.deleteImagesData)
 
     res.deleted = deleted
   }
