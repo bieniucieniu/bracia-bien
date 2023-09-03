@@ -23,13 +23,9 @@ const { useUploadThing } = generateReactHelpers<FileRouter>()
 export function Uploader({
   endpoint,
   className,
-  height = 300,
-  width = 400,
 }: {
   endpoint?: keyof FileRouter
   className?: string
-  width?: number | string
-  height?: number | string
 }) {
   const [files, setFiles] = useState<File[]>([])
   const [progress, setProgress] = useState(0)
@@ -80,15 +76,11 @@ export function Uploader({
   const [categorie, setCategorie] = useState<Categorie>("gallery")
 
   return (
-    <div className={twMerge("flex flex-col gap-2 items-center", className)}>
+    <div className={twMerge("flex flex-col gap-y-4 items-center", className)}>
       <div
         {...getRootProps({
-          style: {
-            width,
-            height,
-          },
           className:
-            "border-2 border-dashed border-black rounded-xl p-5 w-fill h-fill",
+            "border-2 border-dashed border-black rounded-xl p-5 min-w-[300px] lg:min-w-[400px] lg:min-h-[300px] max-w-full max-h-full",
         })}
       >
         <input {...getInputProps({ disabled: isUploading })} />
@@ -96,6 +88,7 @@ export function Uploader({
           Drop files here or click
         </span>
       </div>
+
       <Input
         type="text"
         placeholder="alt"
@@ -103,33 +96,32 @@ export function Uploader({
         disabled={isUploading}
         onChange={(e) => setAlt(e.target.value)}
       />
-      <div className="flex flex-row gap-x-4">
-        {isUploading ? (
-          <Progress value={progress} className="w-full" />
-        ) : (
-          <Button
-            onClick={() => startUpload(files)}
-            disabled={files.length <= 0 || isUploading}
-            className="self-center"
-          >
-            Upload {files.length} files
-          </Button>
-        )}
-        <ErrorAlert error={error} onAccept={() => setError(undefined)} />
-        <RadioGroup
-          defaultValue={categorie}
-          onValueChange={(e: Categorie) => setCategorie(e)}
-          disabled={isUploading}
-          className="flex flex-row"
+      <RadioGroup
+        defaultValue={categorie}
+        onValueChange={(e: Categorie) => setCategorie(e)}
+        disabled={isUploading}
+        className="flex flex-row"
+      >
+        {imagesCategorieEnum.enumValues.map((str) => (
+          <div key={str} className="flex items-center space-x-2">
+            <RadioGroupItem value={str} id="r1" />
+            <Label htmlFor="r1">{str}</Label>
+          </div>
+        ))}
+      </RadioGroup>
+
+      {isUploading ? (
+        <Progress value={progress} className="w-full h-9 rounded-md max-w-xs" />
+      ) : (
+        <Button
+          onClick={() => startUpload(files)}
+          disabled={files.length <= 0 || isUploading}
+          className="self-center w-full max-w-xs"
         >
-          {imagesCategorieEnum.enumValues.map((str) => (
-            <div key={str} className="flex items-center space-x-2">
-              <RadioGroupItem value={str} id="r1" />
-              <Label htmlFor="r1">{str}</Label>
-            </div>
-          ))}
-        </RadioGroup>
-      </div>
+          Upload {files.length} files
+        </Button>
+      )}
+      <ErrorAlert error={error} onAccept={() => setError(undefined)} />
     </div>
   )
 }
