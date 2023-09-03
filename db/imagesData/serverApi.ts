@@ -10,7 +10,7 @@ export const db = drizzle(sql)
 export const insertImagesSchema = createInsertSchema(imagesData)
 export const selectImagesSchema = createSelectSchema(imagesData)
 
-export const uuidArraySchema = z.string().uuid().array()
+export const uuidArraySchema = z.string().array()
 export const categorieSchema = z.enum(imagesCategorieEnum.enumValues)
 
 type ValidationError = { error: any; status?: number; [key: string]: any }
@@ -52,15 +52,17 @@ export async function addImagesData(
   data: z.infer<typeof insertImagesSchema>[],
 ): Promise<ValidationError | { res: any }> {
   try {
-    insertImagesSchema.parse(data)
+    insertImagesSchema.array().parse(data)
 
     const res = await db.insert(imagesData).values(data).returning()
+    console.log(res)
 
     return { res }
   } catch (e) {
     return {
       message: "invalid data add images",
       error: e,
+      data,
       status: 400,
     }
   }
