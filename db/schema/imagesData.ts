@@ -11,8 +11,8 @@ export const imagesData = pgTable(
   "images_data",
   {
     key: varchar("key").primaryKey().notNull(),
-    categorie: imagesCategorieEnum("categorie").default("gallery"),
-    alt: varchar("alt").default(""),
+    categorie: imagesCategorieEnum("categorie").default("gallery").notNull(),
+    alt: varchar("alt").default("").notNull(),
   },
   (table) => {
     return {
