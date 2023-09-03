@@ -70,21 +70,23 @@ export async function addImagesData(
 
 export const imagesOmitKey = selectImagesSchema.omit({ key: true })
 
-export async function updateImagesData(
-  data: {
+export async function updateImagesData({
+  update,
+}: {
+  update: {
     keys: z.infer<typeof uuidArraySchema>
-    update: Partial<z.infer<typeof imagesOmitKey>>
-  }[],
-): Promise<ValidationError | { res: any }> {
+    change: Partial<z.infer<typeof imagesOmitKey>>
+  }[]
+}): Promise<ValidationError | { res: any }> {
   try {
     const res = await Promise.allSettled(
-      data.map(async ({ update, keys }) => {
-        imagesOmitKey.parse(update)
+      update.map(async ({ change, keys }) => {
+        imagesOmitKey.parse(change)
         uuidArraySchema.parse(keys)
 
         const r = await db
           .update(imagesData)
-          .set(update)
+          .set(change)
           .where(inArray(imagesData.key, keys))
         return r
       }),
@@ -100,15 +102,15 @@ export async function updateImagesData(
   }
 }
 
-export async function deleteImagesData(
-  keys: z.infer<typeof uuidArraySchema>,
-): Promise<ValidationError | { res: any; utRes: { success: boolean } }> {
+export async function deleteImagesData(data: {
+  delete: z.infer<typeof uuidArraySchema>
+}): Promise<ValidationError | { res: any; utRes: { success: boolean } }> {
   try {
-    uuidArraySchema.parse(keys)
-    if (!keys.length) throw new Error("empty keys array deleteImages")
+    uuidArraySchema.parse(data.delete)
+    if (!data.delete.length) throw new Error("empty keys array deleteImages")
     const res = await db
       .delete(imagesData)
-      .where(inArray(imagesData.key, keys))
+      .where(inArray(imagesData.key, data.delete))
       .returning()
 
     const utRes = await utapi.deleteFiles(res.map((e) => e.key))

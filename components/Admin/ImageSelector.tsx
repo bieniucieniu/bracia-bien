@@ -104,19 +104,19 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
               e.newCategorie === categorie && e.newCategorie !== e.categorie,
           )
           .map((e) => e.key)
-        return { keys, update: { categorie } }
+        return { keys, change: { categorie } }
       },
     )
     const toUpdateAlt = imageData
       .filter((e) => e.newAlt && e.newAlt !== e.alt)
       .map((e) => ({
         keys: [e.key],
-        update: { alt: e.newAlt },
+        change: { alt: e.newAlt },
       }))
 
     updateImagesData(
       toUpdateCategorie.length || toUpdateAlt.length
-        ? [...toUpdateCategorie, ...toUpdateAlt]
+        ? { update: [...toUpdateCategorie, ...toUpdateAlt] }
         : undefined,
       (res) => {
         setUploading(true)
@@ -136,17 +136,20 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
         setUploading(false)
       },
     )
-    deleteImagesData(toDelete.length ? toDelete : undefined, (res) => {
-      setUploading(true)
-      if (res instanceof Response && res.status === 200) {
-        const newData: ImgData[] = imageData.filter((e) => !e.delete)
+    deleteImagesData(
+      toDelete.length ? { delete: toDelete } : undefined,
+      (res) => {
+        setUploading(true)
+        if (res instanceof Response && res.status === 200) {
+          const newData: ImgData[] = imageData.filter((e) => !e.delete)
 
-        setImageData(newData)
-      } else {
-        console.log(res)
-      }
-      setUploading(false)
-    })
+          setImageData(newData)
+        } else {
+          console.log(res)
+        }
+        setUploading(false)
+      },
+    )
   }
 
   if (!imgsData || imageData.length <= 0) return "no imgs"
