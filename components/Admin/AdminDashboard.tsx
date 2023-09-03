@@ -4,31 +4,39 @@ import { Uploader } from "./Uploader"
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from "@/components/ui/card"
 import ImageSelesctor from "./ImageSelector"
 import { InferInsertModel } from "drizzle-orm"
 import { imagesData } from "@/db/schema/imagesData"
+import { getServerSession } from "next-auth"
 export interface ImgData extends InferInsertModel<typeof imagesData> {
   url: string | undefined
 }
-export default function AdminDashboard({ imgsData }: { imgsData: ImgData[] }) {
+export default async function AdminDashboard({
+  imgsData,
+}: {
+  imgsData: ImgData[]
+}) {
+  const session = await getServerSession()
   return (
     <main className="pt-20 pb-4 flex flex-col gap-4 relative">
       <Card className="flex flex-col w-fit m-auto max-w-6xl">
         <CardHeader>
           <CardTitle>Admin dashboard</CardTitle>
+          <CardDescription className="flex items-center justify-around">
+            <p>
+              signed in as{" "}
+              <mark className="px-1 rounded">{session?.user?.name}</mark>
+            </p>
+            <AuthButton signed className="inline-block self-end" />
+          </CardDescription>
         </CardHeader>
-        <CardContent>
-          <AuthButton className="m-auto" />
-        </CardContent>
-
         <CardContent>
           <Uploader />
         </CardContent>
-        <CardFooter></CardFooter>
       </Card>
       <ImageSelesctor imgsData={imgsData} />
     </main>
