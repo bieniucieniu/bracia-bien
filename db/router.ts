@@ -12,8 +12,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
 
   const data = await req.json()
-  if (data.images) {
-    const res = await addImagesData(data.images)
+  if (data.add) {
+    const res = await addImagesData(data.add)
     return NextResponse.json(res)
   }
 
@@ -26,18 +26,20 @@ export async function PATCH(req: Request) {
 
   const data = await req.json()
 
+  console.log(data)
+
   const res: { deleted?: any; updated?: any } = {
     deleted: undefined,
     updated: undefined,
   }
 
-  if (data.updateImagesData) {
+  if (data.update) {
     const updated = await updateImagesData(data.updateImagesData)
 
     res.updated = updated
   }
 
-  if (data.deleteImagesData) {
+  if (data.delete) {
     const deleted = await deleteImagesData(data.deleteImagesData)
 
     res.deleted = deleted
