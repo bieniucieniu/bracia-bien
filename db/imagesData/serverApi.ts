@@ -68,7 +68,7 @@ export async function addImagesData(
   }
 }
 
-export const imagesOmitKey = selectImagesSchema.omit({ key: true })
+export const imagesOmitKey = insertImagesSchema.omit({ key: true })
 
 export async function updateImagesData({
   update,
