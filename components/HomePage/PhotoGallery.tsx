@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { imagesData } from "@/db/schema/imagesData"
 import { InferInsertModel } from "drizzle-orm"
 import Image from "next/image"
