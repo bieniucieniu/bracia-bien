@@ -14,8 +14,7 @@ export default function PhotoGalery({
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle>Photo galley</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardTitle>galley</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-row w-full justify-around gap-3 flex-wrap">
