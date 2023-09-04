@@ -91,8 +91,8 @@ export default async function Home() {
         </div>
       </div>
       {galleryImgs.length > 0 ? (
-        <div className="min-h-screen relative flex items-center">
-          <PhotoGalery data={galleryImgs} className="m-4" />
+        <div className="min-h-screen relative flex justify-stretch items-stretch">
+          <PhotoGalery data={galleryImgs} className="m-4 w-full" />
         </div>
       ) : null}
       <footer

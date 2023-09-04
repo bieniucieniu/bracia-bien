@@ -25,6 +25,7 @@ export function ImageSlider({
             src={d.url}
             width={1920}
             height={800}
+            className="object-contain"
           />
         )
       }}
