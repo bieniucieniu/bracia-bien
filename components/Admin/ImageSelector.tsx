@@ -35,6 +35,7 @@ import { ImgData } from "./AdminDashboard"
 import { twJoin } from "tailwind-merge"
 import { Input } from "../ui/input"
 import { updateImagesData, deleteImagesData } from "@/db/clientApi"
+import { toPl } from "@/lib/utils"
 
 export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
   const [imageData, setImageData] = useState<
@@ -180,35 +181,32 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
                   `invalid url ${url}`
                 )}
 
-                <span>{key}</span>
+                <span className="truncate">{key}</span>
                 <section className="flex justify-around flex-wrap items-center pb-2">
-                  {!categorie ? (
-                    "error"
-                  ) : (
-                    <RadioGroup
-                      disabled={uploading}
-                      defaultValue={categorie}
-                      onValueChange={(e: NonNullable<ImgData["categorie"]>) => {
-                        SetNewCategorie(key, e)
-                      }}
-                      className="flex flex-row"
-                    >
-                      {imagesCategorieEnum.enumValues.map((str, i) => (
-                        <div
-                          key={str}
-                          className={twJoin(
-                            "flex items-center space-x-2 rounded-xl pr-1",
-                            categorie === str
-                              ? "outline outline-2 outline-offset-2 outline-lime-300"
-                              : "",
-                          )}
-                        >
-                          <RadioGroupItem value={str} id={"r-" + i} />
-                          <Label htmlFor={"r-" + i}>{str}</Label>
-                        </div>
-                      ))}
-                    </RadioGroup>
-                  )}
+                  {categorie ? null : "error in categorie"}
+                  <RadioGroup
+                    disabled={uploading}
+                    defaultValue={categorie}
+                    onValueChange={(e: NonNullable<ImgData["categorie"]>) => {
+                      SetNewCategorie(key, e)
+                    }}
+                    className="flex flex-row"
+                  >
+                    {imagesCategorieEnum.enumValues.map((str, i) => (
+                      <div
+                        key={str}
+                        className={twJoin(
+                          "flex items-center space-x-2 rounded-xl pr-1",
+                          categorie === str
+                            ? "outline outline-2 outline-offset-2 outline-lime-300"
+                            : "",
+                        )}
+                      >
+                        <RadioGroupItem value={str} id={"r-" + i} />
+                        <Label htmlFor={"r-" + i}>{toPl(str)}</Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
                   <Popover
                     modal
                     onOpenChange={() => setAltEdit(newAlt ?? alt ?? "")}
