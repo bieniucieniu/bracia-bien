@@ -10,6 +10,8 @@ import { getAllImagesData } from "@/db/imagesData/serverApi"
 import { InferInsertModel } from "drizzle-orm"
 import { imagesData } from "@/db/schema/imagesData"
 
+export const revalidate = 3600
+
 type LinkData = { name: string; href: string; target?: string; rel?: string }[]
 
 const contactsData: LinkData = [
