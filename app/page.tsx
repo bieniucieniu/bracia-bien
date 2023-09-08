@@ -10,6 +10,8 @@ import { getAllImagesData } from "@/db/imagesData/serverApi"
 import { InferInsertModel } from "drizzle-orm"
 import { imagesData } from "@/db/schema/imagesData"
 
+export const revalidate = 3600
+
 type LinkData = { name: string; href: string; target?: string; rel?: string }[]
 
 const contactsData: LinkData = [
@@ -91,8 +93,8 @@ export default async function Home() {
         </div>
       </div>
       {galleryImgs.length > 0 ? (
-        <div className="min-h-screen relative flex items-center">
-          <PhotoGalery data={galleryImgs} className="m-4" />
+        <div className="min-h-screen relative flex justify-stretch items-stretch">
+          <PhotoGalery data={galleryImgs} className="m-4 w-full" />
         </div>
       ) : null}
       <footer

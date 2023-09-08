@@ -26,7 +26,7 @@ export async function updateImagesData(
 ) {
   if (!data) return
   try {
-    if (data.length < 0) {
+    if (data.update.length < 0) {
       throw new Error("no data provided")
     }
 
@@ -47,13 +47,13 @@ export async function deleteImagesData(
 ) {
   if (!data) return
   try {
-    if (data.length < 0) {
+    if (data.delete.length < 0) {
       throw new Error("no data provided")
     }
 
     const res = await fetch("/api/postgres", {
       method: "PATCH",
-      body: JSON.stringify({ delete: data }),
+      body: JSON.stringify(data),
     })
 
     onCompleat && onCompleat(res)

@@ -34,7 +34,7 @@ export default function Banner({
       {visible && data.length > 0 ? (
         <Slider
           autoSlide={10000}
-          className="z-10"
+          className="z-10 max-h-full"
           renderer={(i) => {
             const d = data[i]
             if (!d.url) return null
@@ -42,8 +42,8 @@ export default function Banner({
               <Image
                 alt={d.alt ?? `image-${i}`}
                 src={d.url}
-                width={1920}
-                height={800}
+                fill
+                className="object-contain"
               />
             )
           }}

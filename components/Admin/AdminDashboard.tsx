@@ -28,7 +28,7 @@ export default async function AdminDashboard({
           <CardTitle>Admin dashboard</CardTitle>
           <CardDescription className="flex items-center justify-around">
             <span>
-              signed in as{" "}
+              zalogowany jako{" "}
               <mark className="px-1 rounded">{session?.user?.name}</mark>
             </span>
             <AuthButton signed className="inline-block self-end" />

@@ -35,6 +35,7 @@ import { ImgData } from "./AdminDashboard"
 import { twJoin } from "tailwind-merge"
 import { Input } from "../ui/input"
 import { updateImagesData, deleteImagesData } from "@/db/clientApi"
+import { toPl } from "@/lib/utils"
 
 export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
   const [imageData, setImageData] = useState<
@@ -104,19 +105,19 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
               e.newCategorie === categorie && e.newCategorie !== e.categorie,
           )
           .map((e) => e.key)
-        return { keys, update: { categorie } }
+        return { keys, change: { categorie } }
       },
     )
     const toUpdateAlt = imageData
       .filter((e) => e.newAlt && e.newAlt !== e.alt)
       .map((e) => ({
         keys: [e.key],
-        update: { alt: e.newAlt },
+        change: { alt: e.newAlt },
       }))
 
     updateImagesData(
       toUpdateCategorie.length || toUpdateAlt.length
-        ? [...toUpdateCategorie, ...toUpdateAlt]
+        ? { update: [...toUpdateCategorie, ...toUpdateAlt] }
         : undefined,
       (res) => {
         setUploading(true)
@@ -136,17 +137,20 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
         setUploading(false)
       },
     )
-    deleteImagesData(toDelete.length ? toDelete : undefined, (res) => {
-      setUploading(true)
-      if (res instanceof Response && res.status === 200) {
-        const newData: ImgData[] = imageData.filter((e) => !e.delete)
+    deleteImagesData(
+      toDelete.length ? { delete: toDelete } : undefined,
+      (res) => {
+        setUploading(true)
+        if (res instanceof Response && res.status === 200) {
+          const newData: ImgData[] = imageData.filter((e) => !e.delete)
 
-        setImageData(newData)
-      } else {
-        console.log(res)
-      }
-      setUploading(false)
-    })
+          setImageData(newData)
+        } else {
+          console.log(res)
+        }
+        setUploading(false)
+      },
+    )
   }
 
   if (!imgsData || imageData.length <= 0) return "no imgs"
@@ -177,35 +181,32 @@ export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
                   `invalid url ${url}`
                 )}
 
-                <span>{key}</span>
+                <span className="truncate">{key}</span>
                 <section className="flex justify-around flex-wrap items-center pb-2">
-                  {!categorie ? (
-                    "error"
-                  ) : (
-                    <RadioGroup
-                      disabled={uploading}
-                      defaultValue={categorie}
-                      onValueChange={(e: NonNullable<ImgData["categorie"]>) => {
-                        SetNewCategorie(key, e)
-                      }}
-                      className="flex flex-row"
-                    >
-                      {imagesCategorieEnum.enumValues.map((str, i) => (
-                        <div
-                          key={str}
-                          className={twJoin(
-                            "flex items-center space-x-2 rounded-xl pr-1",
-                            categorie === str
-                              ? "outline outline-2 outline-offset-2 outline-lime-300"
-                              : "",
-                          )}
-                        >
-                          <RadioGroupItem value={str} id={"r-" + i} />
-                          <Label htmlFor={"r-" + i}>{str}</Label>
-                        </div>
-                      ))}
-                    </RadioGroup>
-                  )}
+                  {categorie ? null : "error in categorie"}
+                  <RadioGroup
+                    disabled={uploading}
+                    defaultValue={categorie}
+                    onValueChange={(e: NonNullable<ImgData["categorie"]>) => {
+                      SetNewCategorie(key, e)
+                    }}
+                    className="flex flex-row"
+                  >
+                    {imagesCategorieEnum.enumValues.map((str, i) => (
+                      <div
+                        key={str}
+                        className={twJoin(
+                          "flex items-center space-x-2 rounded-xl pr-1",
+                          categorie === str
+                            ? "outline outline-2 outline-offset-2 outline-lime-300"
+                            : "",
+                        )}
+                      >
+                        <RadioGroupItem value={str} id={"r-" + i} />
+                        <Label htmlFor={"r-" + i}>{toPl(str)}</Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
                   <Popover
                     modal
                     onOpenChange={() => setAltEdit(newAlt ?? alt ?? "")}

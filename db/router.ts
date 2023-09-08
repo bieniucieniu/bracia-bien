@@ -34,13 +34,13 @@ export async function PATCH(req: Request) {
   }
 
   if (data.update) {
-    const updated = await updateImagesData(data.updateImagesData)
+    const updated = await updateImagesData(data)
 
     res.updated = updated
   }
 
   if (data.delete) {
-    const deleted = await deleteImagesData(data.deleteImagesData)
+    const deleted = await deleteImagesData(data)
 
     res.deleted = deleted
   }

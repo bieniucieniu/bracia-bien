@@ -17,6 +17,7 @@ import { Input } from "../ui/input"
 import { addImagesData } from "@/db/clientApi"
 import { imagesCategorieEnum, imagesData } from "@/db/schema/imagesData"
 import { InferInsertModel } from "drizzle-orm"
+import { toPl } from "@/lib/utils"
 
 const { useUploadThing } = generateReactHelpers<FileRouter>()
 
@@ -85,7 +86,7 @@ export function Uploader({
       >
         <input {...getInputProps({ disabled: isUploading })} />
         <span className="font-semibold text-gray-700">
-          Drop files here or click
+          Upuść pliki tutaj lub kliknij
         </span>
       </div>
 
@@ -105,7 +106,7 @@ export function Uploader({
         {imagesCategorieEnum.enumValues.map((str) => (
           <div key={str} className="flex items-center space-x-2">
             <RadioGroupItem value={str} id="r1" />
-            <Label htmlFor="r1">{str}</Label>
+            <Label htmlFor="r1">{toPl(str)}</Label>
           </div>
         ))}
       </RadioGroup>
@@ -118,7 +119,7 @@ export function Uploader({
           disabled={files.length <= 0 || isUploading}
           className="self-center w-full max-w-xs"
         >
-          Upload {files.length} files
+          Przekaż {files.length} pliki
         </Button>
       )}
       <ErrorAlert error={error} onAccept={() => setError(undefined)} />
