@@ -16,7 +16,7 @@ export const infoCard = pgTable(
   "info_card",
   {
     id: serial("id").notNull().primaryKey(),
-    categorie: infoCardCategorieEnum("categorie").default("current"),
+    categorie: infoCardCategorieEnum("categorie").default("current").notNull(),
     title: varchar("title").notNull(),
     description: text("description"),
     content: text("content").notNull(),
