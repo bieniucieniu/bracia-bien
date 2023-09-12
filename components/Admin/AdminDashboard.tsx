@@ -23,21 +23,29 @@ export default async function AdminDashboard({
   const session = await getServerSession()
   return (
     <main className="pt-20 pb-4 flex flex-col gap-4 relative">
-      <Card className="flex flex-col w-fit m-auto max-w-6xl">
-        <CardHeader>
-          <CardTitle>Admin dashboard</CardTitle>
-          <CardDescription className="flex items-center justify-around">
-            <span>
-              zalogowany jako{" "}
-              <mark className="px-1 rounded">{session?.user?.name}</mark>
-            </span>
-            <AuthButton signed className="inline-block self-end" />
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Uploader />
-        </CardContent>
-      </Card>
+      <section className="flex flex-row justify-around">
+        <Card className="flex flex-col w-fit m-auto max-w-6xl">
+          <CardHeader>
+            <CardTitle>Admin dashboard</CardTitle>
+            <CardDescription className="flex items-center justify-around">
+              <span>
+                zalogowany jako{" "}
+                <mark className="px-1 rounded">{session?.user?.name}</mark>
+              </span>
+              <AuthButton signed className="inline-block self-end" />
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Uploader />
+          </CardContent>
+        </Card>
+        <Card className="flex flex-col w-fit m-auto max-w-6xl">
+          <CardHeader>
+            <CardTitle>Admin dashboard</CardTitle>
+          </CardHeader>
+          <CardContent></CardContent>
+        </Card>
+      </section>
       <ImageSelesctor imgsData={imgsData} />
     </main>
   )
