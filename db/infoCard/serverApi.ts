@@ -50,7 +50,7 @@ export async function addInfoCards(
 export const cardOmitId = selectCardSchema.omit({ id: true })
 export const cardsId = selectCardSchema.pick({ id: true })
 
-export async function updateInfoCard(
+export async function updateInfoCards(
   data: {
     ids: z.infer<typeof cardsId>[]
     update: Partial<z.infer<typeof cardOmitId>>
@@ -84,7 +84,7 @@ export async function updateInfoCard(
   return { res }
 }
 
-export async function deleteInfoCard(
+export async function deleteInfoCards(
   ids: z.infer<typeof cardsId>[],
 ): Promise<ValidationError | { res: any }> {
   try {

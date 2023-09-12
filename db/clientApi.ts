@@ -5,8 +5,8 @@ import type {
 } from "./imagesData/serverApi"
 import type {
   addInfoCards as addCards,
-  deleteInfoCard as deleteCards,
-  updateInfoCard as updataCards,
+  deleteInfoCards as deleteCards,
+  updateInfoCards as updataCards,
 } from "./infoCard/serverApi"
 export async function addImagesData(
   data: Parameters<typeof addImages>[0] | undefined,
