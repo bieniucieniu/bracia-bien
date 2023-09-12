@@ -70,14 +70,12 @@ export async function addImagesData(
 
 export const imagesOmitKey = insertImagesSchema.omit({ key: true })
 
-export async function updateImagesData({
-  update,
-}: {
+export async function updateImagesData(
   update: {
     keys: z.infer<typeof uuidArraySchema>
     change: Partial<z.infer<typeof imagesOmitKey>>
-  }[]
-}): Promise<ValidationError | { res: any }> {
+  }[],
+): Promise<ValidationError | { res: any }> {
   try {
     const res = await Promise.allSettled(
       update.map(async ({ change, keys }) => {
@@ -102,15 +100,15 @@ export async function updateImagesData({
   }
 }
 
-export async function deleteImagesData(data: {
-  delete: z.infer<typeof uuidArraySchema>
-}): Promise<ValidationError | { res: any; utRes: { success: boolean } }> {
+export async function deleteImagesData(
+  data: z.infer<typeof uuidArraySchema>,
+): Promise<ValidationError | { res: any; utRes: { success: boolean } }> {
   try {
-    uuidArraySchema.parse(data.delete)
-    if (!data.delete.length) throw new Error("empty keys array deleteImages")
+    uuidArraySchema.parse(data)
+    if (!data.length) throw new Error("empty keys array deleteImages")
     const res = await db
       .delete(imagesData)
-      .where(inArray(imagesData.key, data.delete))
+      .where(inArray(imagesData.key, data))
       .returning()
 
     const utRes = await utapi.deleteFiles(res.map((e) => e.key))

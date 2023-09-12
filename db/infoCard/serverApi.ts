@@ -17,7 +17,7 @@ type ValidationError = {
   [key: string]: any
 }
 
-export async function getAllCards() {
+export async function getAllInfoCards() {
   try {
     const res = await db.select().from(infoCard)
     return { res }
@@ -29,7 +29,7 @@ export async function getAllCards() {
   }
 }
 
-export async function addCards(
+export async function addInfoCards(
   data: z.infer<typeof insertCardSchema>[],
 ): Promise<ValidationError | { res: any }> {
   try {
@@ -50,7 +50,7 @@ export async function addCards(
 export const cardOmitId = selectCardSchema.omit({ id: true })
 export const cardsId = selectCardSchema.pick({ id: true })
 
-export async function updateCard(
+export async function updateInfoCard(
   data: {
     ids: z.infer<typeof cardsId>[]
     update: Partial<z.infer<typeof cardOmitId>>
@@ -84,7 +84,7 @@ export async function updateCard(
   return { res }
 }
 
-export async function deleteImages(
+export async function deleteInfoCard(
   ids: z.infer<typeof cardsId>[],
 ): Promise<ValidationError | { res: any }> {
   try {
