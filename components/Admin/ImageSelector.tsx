@@ -28,14 +28,18 @@ import {
 } from "@/components/ui/popover"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Link from "next/link"
-import { imagesCategorieEnum } from "@/db/schema/imagesData"
+import { imagesCategorieEnum, imagesData } from "@/db/schema/imagesData"
 
 import { Label } from "../ui/label"
-import { ImgData } from "./AdminDashboard"
 import { twJoin } from "tailwind-merge"
 import { Input } from "../ui/input"
 import { updateImagesData, deleteImagesData } from "@/db/clientApi"
 import { toPl } from "@/lib/utils"
+import { InferInsertModel } from "drizzle-orm"
+
+interface ImgData extends InferInsertModel<typeof imagesData> {
+  url: string | undefined
+}
 
 export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
   const [imageData, setImageData] = useState<

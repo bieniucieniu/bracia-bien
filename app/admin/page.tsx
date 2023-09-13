@@ -11,14 +11,8 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card"
-import type { InferInsertModel } from "drizzle-orm"
-import type { imagesData } from "@/db/schema/imagesData"
 import CardEditorSlider from "@/components/Admin/CardEditorSlider"
 import ImageSelesctor from "@/components/Admin/ImageSelector"
-
-export interface ImgData extends InferInsertModel<typeof imagesData> {
-  url: string | undefined
-}
 
 export default async function Admin() {
   const session = await getServerSession(authOptions)
