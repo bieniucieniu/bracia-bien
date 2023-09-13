@@ -10,33 +10,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import * as z from "zod"
+import { z } from "zod"
 import { Textarea } from "@/components/ui/textarea"
 import { insertCardSchema } from "@/db/infoCard/serverApi"
-import Slider from "../Slider"
 
-const formSchema = insertCardSchema.omit({ id: true })
-
-export default function CardEditorSlider({
-  data,
-  className,
-}: {
-  data: z.infer<typeof formSchema>[]
-  className?: string
-}) {
-  if (!data.length) return <div></div>
-
-  return (
-    <Slider
-      className={className}
-      renderer={(i) => {
-        const d = data[i]
-        return <CardEditor {...d} onSubmit={() => null} />
-      }}
-      length={data.length}
-    />
-  )
-}
+export const formSchema = insertCardSchema
 
 export function CardEditor({
   onSubmit,
