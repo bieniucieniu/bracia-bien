@@ -14,9 +14,9 @@ import { z } from "zod"
 import { Textarea } from "@/components/ui/textarea"
 import { insertCardSchema } from "@/db/infoCard/serverApi"
 
-export const formSchema = insertCardSchema
+export const formSchema = insertCardSchema.omit({ id: true })
 
-export function CardEditor({
+export default function CardEditor({
   onSubmit,
   ...data
 }: z.infer<typeof formSchema> & {
