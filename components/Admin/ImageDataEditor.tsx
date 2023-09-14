@@ -41,7 +41,7 @@ interface ImgData extends InferInsertModel<typeof imagesData> {
   url: string | undefined
 }
 
-export default function ImageSelesctor({ imgsData }: { imgsData: ImgData[] }) {
+export default function ImageDataEditor({ imgsData }: { imgsData: ImgData[] }) {
   const [imageData, setImageData] = useState<
     (ImgData & {
       newAlt?: string

@@ -4,6 +4,7 @@ import Slider from "../Slider"
 import CardEditor from "./CardEditor"
 import { insertCardSchema } from "@/db/infoCard/serverApi"
 import { addInfoCards, updateInfoCards } from "@/db/clientApi"
+
 export function CardEditorSlider({
   data,
   className,
@@ -17,8 +18,7 @@ export function CardEditorSlider({
     <Slider
       className={className}
       renderer={(i) => {
-        const d = data[i]
-        const id = d.id
+        const { id, ...d } = data[i]
 
         return id ? (
           <CardEditor
@@ -40,7 +40,6 @@ export function CardCreator() {
   return (
     <CardEditor
       onSubmit={(data) => {
-        console.log(data)
         addInfoCards([data])
       }}
     />

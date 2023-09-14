@@ -12,7 +12,7 @@ import {
   CardDescription,
 } from "@/components/ui/card"
 import { CardCreator, CardEditorSlider } from "@/components/Admin/CardDashboard"
-import ImageSelesctor from "@/components/Admin/ImageSelector"
+import ImageSelesctor from "@/components/Admin/ImageDataEditor"
 
 export default async function Admin() {
   const session = await getServerSession(authOptions)
@@ -43,9 +43,21 @@ export default async function Admin() {
     )
 
   return (
-    <main className="pt-20 pb-4 flex flex-col gap-4 relative">
-      <section className="flex flex-row justify-around">
-        <Card className="flex flex-col w-fit m-auto max-w-6xl">
+    <main className="px-10 pt-20 pb-4 flex flex-col gap-4 relative ">
+      <Card className="w-fit">
+        <CardHeader>
+          <CardTitle>Admin dashboard</CardTitle>
+        </CardHeader>
+        <CardContent className="flex items-center justify-around gap-x-3">
+          <span>
+            zalogowany jako{" "}
+            <mark className="px-1 rounded">{session?.user?.name}</mark>
+          </span>
+          <AuthButton signed className="inline-block self-end" />
+        </CardContent>
+      </Card>
+      <section className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-10">
+        <Card className="flex flex-col">
           <CardHeader>
             <CardTitle>Admin dashboard</CardTitle>
             <CardDescription className="flex items-center justify-around">
@@ -60,15 +72,20 @@ export default async function Admin() {
             <Uploader />
           </CardContent>
         </Card>
-        <Card className="flex flex-col w-fit m-auto max-w-6xl">
+        <Card className="flex flex-col">
+          <CardHeader>
+            <CardTitle>Nowa karta</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CardCreator />
+          </CardContent>
+        </Card>
+        <Card className="flex flex-col lg:col-span-2 2xl:col-span-1">
           <CardHeader>
             <CardTitle>Admin dashboard</CardTitle>
           </CardHeader>
           <CardContent>
             <CardEditorSlider data={[]} />
-          </CardContent>
-          <CardContent>
-            <CardCreator />
           </CardContent>
         </Card>
       </section>
