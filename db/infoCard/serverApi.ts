@@ -33,7 +33,7 @@ export async function addInfoCards(
   data: z.infer<typeof insertCardSchema>[],
 ): Promise<ValidationError | { res: any }> {
   try {
-    insertCardSchema.parse(data)
+    insertCardSchema.array().parse(data)
 
     const res = await db.insert(infoCard).values(data).returning()
 

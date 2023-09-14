@@ -13,6 +13,10 @@ export async function addImagesData(
   onCompleat?: (res?: Response | any) => void,
 ) {
   if (!data) return
+  if (!data.length) {
+    throw new Error("no data provided")
+  }
+
   try {
     const res = await fetch("/api/postgres", {
       method: "POST",
@@ -30,11 +34,10 @@ export async function updateImagesData(
   onCompleat?: (res?: Response | any) => void,
 ) {
   if (!data) return
+  if (!data.length) {
+    throw new Error("no data provided")
+  }
   try {
-    if (data.length < 0) {
-      throw new Error("no data provided")
-    }
-
     const res = await fetch("/api/postgres", {
       method: "PATCH",
       body: JSON.stringify({ updateImagesData: data }),
@@ -52,7 +55,7 @@ export async function deleteImagesData(
 ) {
   if (!data) return
   try {
-    if (data.length) {
+    if (!data.length) {
       throw new Error("no data provided")
     }
 
@@ -73,7 +76,7 @@ export async function addInfoCards(
 ) {
   if (!data) return
   try {
-    if (data.length) {
+    if (!data.length) {
       throw new Error("no data provided")
     }
 
@@ -92,11 +95,10 @@ export async function deleteInfoCards(
   onCompleat?: (res?: Response | any) => void,
 ) {
   if (!data) return
+  if (!data.length) {
+    throw new Error("no data provided")
+  }
   try {
-    if (data.length) {
-      throw new Error("no data provided")
-    }
-
     const res = await fetch("/api/postgres", {
       method: "PATCH",
       body: JSON.stringify({ deleteInfoCards: data }),
@@ -113,11 +115,10 @@ export async function updateInfoCards(
   onCompleat?: (res?: Response | any) => void,
 ) {
   if (!data) return
+  if (!data.length) {
+    throw new Error("no data provided")
+  }
   try {
-    if (data.length) {
-      throw new Error("no data provided")
-    }
-
     const res = await fetch("/api/postgres", {
       method: "PATCH",
       body: JSON.stringify({ updateInfoCards: data }),
