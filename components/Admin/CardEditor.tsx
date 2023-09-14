@@ -13,13 +13,15 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Textarea } from "@/components/ui/textarea"
 import { insertCardSchema } from "@/db/infoCard/serverApi"
+import { useEffect } from "react"
 
 export const formSchema = insertCardSchema.omit({ id: true })
 
 export default function CardEditor({
   onSubmit,
-  ...data
-}: z.infer<typeof formSchema> & {
+  data,
+}: {
+  data?: z.infer<typeof formSchema>
   onSubmit: (values: NonNullable<z.infer<typeof formSchema>>) => void
 }) {
   const form = useForm<NonNullable<z.infer<typeof formSchema>>>({
@@ -27,6 +29,12 @@ export default function CardEditor({
     resolver: zodResolver(insertCardSchema),
     defaultValues: data,
   })
+
+  const { isSubmitSuccessful } = form.formState
+
+  useEffect(() => {
+    if (isSubmitSuccessful) form.reset()
+  }, [isSubmitSuccessful])
 
   return (
     <Form {...form}>

@@ -11,7 +11,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card"
-import CardEditorSlider from "@/components/Admin/CardEditorSlider"
+import { CardCreator, CardEditorSlider } from "@/components/Admin/CardDashboard"
 import ImageSelesctor from "@/components/Admin/ImageSelector"
 
 export default async function Admin() {
@@ -66,6 +66,9 @@ export default async function Admin() {
           </CardHeader>
           <CardContent>
             <CardEditorSlider data={[]} />
+          </CardContent>
+          <CardContent>
+            <CardCreator />
           </CardContent>
         </Card>
       </section>

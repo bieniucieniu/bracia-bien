@@ -3,8 +3,8 @@ import { z } from "zod"
 import Slider from "../Slider"
 import CardEditor from "./CardEditor"
 import { insertCardSchema } from "@/db/infoCard/serverApi"
-import { updateInfoCards } from "@/db/clientApi"
-export default function CardEditorSlider({
+import { addInfoCards, updateInfoCards } from "@/db/clientApi"
+export function CardEditorSlider({
   data,
   className,
 }: {
@@ -22,14 +22,27 @@ export default function CardEditorSlider({
 
         return id ? (
           <CardEditor
-            {...d}
-            onSubmit={async (update) => {
-              await updateInfoCards([{ ids: [{ id }], update }])
+            data={d}
+            onSubmit={(update) => {
+              updateInfoCards([{ ids: [{ id }], update }], (res) =>
+                console.log(res),
+              )
             }}
           />
         ) : null
       }}
       length={data.length}
+    />
+  )
+}
+
+export function CardCreator() {
+  return (
+    <CardEditor
+      onSubmit={(data) => {
+        console.log(data)
+        addInfoCards([data])
+      }}
     />
   )
 }
