@@ -34,7 +34,7 @@ export default function CardEditor({
 
   useEffect(() => {
     if (isSubmitSuccessful) form.reset()
-  }, [isSubmitSuccessful])
+  }, [isSubmitSuccessful, form])
 
   return (
     <Form {...form}>
