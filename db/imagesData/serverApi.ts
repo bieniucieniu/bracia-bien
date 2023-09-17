@@ -1,6 +1,6 @@
 import { drizzle } from "drizzle-orm/vercel-postgres"
 import { sql } from "@vercel/postgres"
-import { eq, inArray } from "drizzle-orm"
+import { InferInsertModel, eq, inArray } from "drizzle-orm"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 import { imagesData, imagesCategorieEnum } from "../schema/imagesData"
 import { z } from "zod"
@@ -45,6 +45,40 @@ export async function getAllImagesData() {
       error: e,
       status: 400,
     }
+  }
+}
+
+export async function populateImagesDataWithLinks(
+  data: Awaited<ReturnType<typeof getAllImagesData>>,
+) {
+  try {
+    const allImages = data.res
+    if (!allImages) return []
+
+    const imgsUrls =
+      allImages.length > 0
+        ? await utapi.getFileUrls(allImages.map((k) => k.key))
+        : []
+
+    const imgsData: (InferInsertModel<typeof imagesData> & {
+      url?: string
+    })[] =
+      allImages && allImages.length
+        ? allImages
+            .map((e) => {
+              return {
+                url: imgsUrls.find((u) => e.key === u.key)?.url,
+                ...e,
+              }
+            })
+            .filter((e) => typeof e.url === "string")
+        : []
+
+    return imgsData
+  } catch (e) {
+    const r = [] as [] & { error?: any }
+    r.error = e
+    return r
   }
 }
 
