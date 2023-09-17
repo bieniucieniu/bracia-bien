@@ -1,11 +1,14 @@
 import {
   addImagesData,
   deleteImagesData,
+  getAllImagesData,
+  populateImagesDataWithLinks,
   updateImagesData,
 } from "@/db/imagesData/serverApi"
 import {
   addInfoCards,
   deleteInfoCards,
+  getAllInfoCards,
   updateInfoCards,
 } from "@/db/infoCard/serverApi"
 import { getAuth } from "@/lib/auth"
@@ -43,8 +46,6 @@ export async function PATCH(req: Request) {
     deleteInfoCards: Parameters<typeof deleteInfoCards>[0] | undefined
   }
 
-  console.log(data)
-
   const res: {
     images: { deleted?: any; updated?: any }
     cards: { deleted?: any; updated?: any }
@@ -71,4 +72,21 @@ export async function PATCH(req: Request) {
   }
 
   return NextResponse.json(res)
+}
+
+export async function GET(
+  res: Request,
+  { params }: { params: { get: "images_data" | "info_cards" } },
+) {
+  if (params.get === "images_data") {
+    const data = await populateImagesDataWithLinks(await getAllImagesData())
+    return NextResponse.json(data)
+  }
+
+  if (params.get === "info_cards") {
+    const data = await getAllImagesData()
+    return NextResponse.json(data)
+  }
+
+  return NextResponse.json({})
 }
