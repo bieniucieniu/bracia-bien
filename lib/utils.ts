@@ -13,6 +13,7 @@ const toPlObj = {
   else: "inne",
 }
 
-export function toPl(value: keyof typeof toPlObj) {
+export function toPl(value: keyof typeof toPlObj | undefined | null) {
+  if (!value) return null
   return toPlObj[value]
 }
