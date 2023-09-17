@@ -75,7 +75,7 @@ export async function PATCH(req: Request) {
 }
 
 export async function GET(
-  res: Request,
+  _req: Request,
   { params }: { params: { get: "images_data" | "info_cards" } },
 ) {
   if (params.get === "images_data") {
