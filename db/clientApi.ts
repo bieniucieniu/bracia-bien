@@ -1,13 +1,17 @@
-import type {
-  addImagesData as addImages,
-  deleteImagesData as deleteImages,
-  updateImagesData as updateImages,
+import { InferInsertModel } from "drizzle-orm"
+import {
+  insertImagesSchema,
+  type addImagesData as addImages,
+  type deleteImagesData as deleteImages,
+  type updateImagesData as updateImages,
 } from "./imagesData/serverApi"
 import type {
   addInfoCards as addCards,
   deleteInfoCards as deleteCards,
   updateInfoCards as updataCards,
 } from "./infoCard/serverApi"
+import { imagesData } from "./schema/imagesData"
+import { z } from "zod"
 export async function addImagesData(
   data: Parameters<typeof addImages>[0] | undefined,
   onCompleat?: (res?: Response | any) => void,
@@ -127,5 +131,30 @@ export async function updateInfoCards(
     onCompleat && onCompleat(res)
   } catch (e) {
     onCompleat && onCompleat(e)
+  }
+}
+
+const imagesDataSchema = insertImagesSchema
+  .extend({
+    url: z.string().url().optional(),
+  })
+  .array()
+
+export async function getImagesData(
+  onCompleat?: (data?: z.infer<typeof imagesDataSchema>) => void,
+): Promise<z.infer<typeof imagesDataSchema> | undefined | Error> {
+  try {
+    const res = await fetch("/api/postgres/images_data")
+
+    if (res.status !== 200) return undefined
+
+    const json = await res.json()
+    if (!json.images) return []
+    imagesDataSchema.parse(json.images)
+    onCompleat && onCompleat(json.images)
+    return json.images
+  } catch (e) {
+    if (e instanceof Error) return e
+    console.log(e)
   }
 }
