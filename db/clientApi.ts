@@ -146,7 +146,7 @@ export async function getImagesData(
   try {
     const res = await fetch("/api/postgres/images_data")
 
-    if (res.status !== 200) return undefined
+    if (!res.ok) return undefined
 
     const json = await res.json()
     if (!json.images) return []
