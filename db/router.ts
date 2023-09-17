@@ -85,7 +85,7 @@ export async function GET(
 
   if (params.get === "info_cards") {
     const data = await getAllImagesData()
-    return NextResponse.json(data)
+    return NextResponse.json({ images: data })
   }
 
   return NextResponse.json({})
