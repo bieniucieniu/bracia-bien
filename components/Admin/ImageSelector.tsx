@@ -2,15 +2,13 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { forwardRef, useState } from "react"
-import { getImagesData } from "@/db/clientApi"
 import { Button } from "../ui/button"
 import Image from "next/image"
 import { toPl } from "@/lib/utils"
+import { useAdminContext } from "./AdminContext"
 
 const ImageSelector = forwardRef<
   HTMLButtonElement,
@@ -23,26 +21,24 @@ const ImageSelector = forwardRef<
   }
 >(({ disabled, onBlur, name, onImageSelect }, ref) => {
   const [open, setOpen] = useState<boolean>(false)
-  const [imgsData, setImgsData] = useState<
-    Awaited<ReturnType<typeof getImagesData>>
-  >([])
+  const { imagesData } = useAdminContext()
 
-  if (!imgsData || imgsData instanceof Error) return <p>error</p>
+  if (!imagesData) return <p>error</p>
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          disabled={disabled}
-          onClick={() => getImagesData((data) => data && setImgsData(data))}
-        >
+        <Button ref={ref} disabled={disabled}>
           Wybierz zdjecie
         </Button>
       </DialogTrigger>
       <DialogDescription>{name}</DialogDescription>
-      <DialogContent className="max-h-[calc(100svh_-_20px)] lg:max-w-[calc(100svw_-_100px)] overflow-auto">
+      <DialogContent
+        onBlur={onBlur}
+        className="max-h-[calc(100svh_-_20px)] lg:max-w-[calc(100svw_-_100px)] overflow-auto"
+      >
         <ul className="flex flex-row flex-wrap overflow-auto gap-4">
-          {imgsData.map(({ url, alt, key, categorie }) => (
+          {imagesData.map(({ url, alt, key, categorie }) => (
             <Button
               asChild
               onClick={() => {
@@ -73,5 +69,7 @@ const ImageSelector = forwardRef<
     </Dialog>
   )
 })
+
+ImageSelector.displayName = "ImageSelector"
 
 export default ImageSelector
