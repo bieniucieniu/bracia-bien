@@ -17,6 +17,7 @@ import { infoCardCategorieEnum } from "@/db/schema/infoCard"
 import { useEffect } from "react"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { toPl } from "@/lib/utils"
+import ImageSelector from "./ImageSelector"
 
 export const formSchema = insertCardSchema.omit({ id: true })
 
@@ -107,6 +108,22 @@ export default function CardEditor({
                   {...field}
                   type="text"
                   value={value ?? ""}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="imageKey"
+          render={({ field: { onChange, value, ...field } }) => (
+            <FormItem className="space-y-3">
+              <FormControl>
+                <ImageSelector
+                  onImageSelect={() => {}}
+                  keyValue={value ?? ""}
+                  {...field}
                 />
               </FormControl>
               <FormMessage />
