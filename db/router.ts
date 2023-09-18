@@ -80,12 +80,12 @@ export async function GET(
 ) {
   if (params.get === "images_data") {
     const data = await populateImagesDataWithLinks(await getAllImagesData())
-    return NextResponse.json(data)
+    return NextResponse.json({ images: data })
   }
 
   if (params.get === "info_cards") {
     const data = await getAllImagesData()
-    return NextResponse.json({ images: data })
+    return NextResponse.json({ cards: data })
   }
 
   return NextResponse.json({})
