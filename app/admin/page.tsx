@@ -4,13 +4,7 @@ import { getServerSession } from "next-auth"
 import { utapi } from "uploadthing/server"
 import { Uploader } from "@/components/Admin/Uploader"
 import { getAllImagesData } from "@/db/imagesData/serverApi"
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { CardCreator, CardEditorSlider } from "@/components/Admin/CardDashboard"
 import ImageSelesctor from "@/components/Admin/ImageDataEditor"
 
@@ -59,14 +53,7 @@ export default async function Admin() {
       <section className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-10">
         <Card className="flex flex-col">
           <CardHeader>
-            <CardTitle>Admin dashboard</CardTitle>
-            <CardDescription className="flex items-center justify-around">
-              <span>
-                zalogowany jako{" "}
-                <mark className="px-1 rounded">{session?.user?.name}</mark>
-              </span>
-              <AuthButton signed className="inline-block self-end" />
-            </CardDescription>
+            <CardTitle>Uploader</CardTitle>
           </CardHeader>
           <CardContent>
             <Uploader />
