@@ -78,7 +78,7 @@ export default async function Admin() {
             </CardContent>
           </Card>
         </section>
-        <ImageSelesctor imgsData={imgsData} />
+        <ImageSelesctor />
       </AdminContextProvider>
     </main>
   )

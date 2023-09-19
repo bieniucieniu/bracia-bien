@@ -36,12 +36,14 @@ import { Input } from "../ui/input"
 import { updateImagesData, deleteImagesData } from "@/db/clientApi"
 import { toPl } from "@/lib/utils"
 import { InferInsertModel } from "drizzle-orm"
+import { useAdminContext } from "./AdminContext"
 
 interface ImgData extends InferInsertModel<typeof imagesData> {
-  url: string | undefined
+  url?: string
 }
 
-export default function ImageDataEditor({ imgsData }: { imgsData: ImgData[] }) {
+export default function ImageDataEditor() {
+  const { imagesData: imgsData } = useAdminContext()
   const [imageData, setImageData] = useState<
     (ImgData & {
       newAlt?: string
