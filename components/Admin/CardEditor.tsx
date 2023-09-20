@@ -19,6 +19,7 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { toPl } from "@/lib/utils"
 import ImageSelector from "./ImageSelector"
 import { twMerge } from "tailwind-merge"
+import { Label } from "../ui/label"
 
 export const formSchema = insertCardSchema.omit({ id: true })
 
@@ -54,7 +55,7 @@ export default function CardEditor({
           name="title"
           render={({ field: { value, ...field } }) => (
             <FormItem>
-              <FormLabel>title</FormLabel>
+              <FormLabel>Tytuł</FormLabel>
               <FormControl>
                 <Input
                   placeholder="title"
@@ -72,7 +73,7 @@ export default function CardEditor({
           name="description"
           render={({ field: { value, ...field } }) => (
             <FormItem>
-              <FormLabel>description</FormLabel>
+              <FormLabel>Przypis</FormLabel>
               <FormControl>
                 <Input
                   placeholder="description"
@@ -90,7 +91,7 @@ export default function CardEditor({
           name="content"
           render={({ field: { value, ...field } }) => (
             <FormItem>
-              <FormLabel>content</FormLabel>
+              <FormLabel>Kontent</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="content"
@@ -125,14 +126,20 @@ export default function CardEditor({
           name="imageKey"
           render={({ field: { onChange, value, ...field } }) => (
             <FormItem className="space-y-3">
-              <FormControl>
-                <ImageSelector
-                  onImageSelect={() => {}}
-                  keyValue={value ?? ""}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
+              <FormLabel>Zdjecie</FormLabel>
+              <span className="flex flex-row items-center gap-x-4">
+                <FormControl>
+                  <ImageSelector
+                    onImageSelect={(key) => {
+                      onChange(key)
+                    }}
+                    keyValue={value ?? ""}
+                    {...field}
+                  />
+                </FormControl>
+                <p>{value ?? "not selected"}</p>
+                <FormMessage />
+              </span>
             </FormItem>
           )}
         />
@@ -145,7 +152,7 @@ export default function CardEditor({
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  defaultValue={field.value ?? "current"}
                   className="flex flex-row space-x-1"
                 >
                   {infoCardCategorieEnum.enumValues.map((str) => {
