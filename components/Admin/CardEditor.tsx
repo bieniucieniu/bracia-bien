@@ -19,7 +19,6 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { toPl } from "@/lib/utils"
 import ImageSelector from "./ImageSelector"
 import { twMerge } from "tailwind-merge"
-import { Label } from "../ui/label"
 
 export const formSchema = insertCardSchema.omit({ id: true })
 
