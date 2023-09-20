@@ -2,13 +2,14 @@ import { MenuItem, MenuRoot } from "@/components/PillMenu"
 import { playfair } from "@/lib/fonts"
 
 import { ImageSlider } from "@/components/HomePage/ImageSlider"
-import { AboutCards } from "@/components/HomePage/About"
-import { utapi } from "uploadthing/server"
+import { AboutCards } from "@/components/HomePage/AboutCards"
 import PhotoGalery from "@/components/HomePage/PhotoGallery"
 import Banner from "@/components/HomePage/Banner"
-import { getAllImagesData } from "@/db/imagesData/serverApi"
-import { InferInsertModel } from "drizzle-orm"
-import { imagesData } from "@/db/schema/imagesData"
+import {
+  getAllImagesData,
+  populateImagesDataWithLinks,
+} from "@/db/imagesData/serverApi"
+import { getAllInfoCards } from "@/db/infoCard/serverApi"
 
 export const revalidate = 3600
 
@@ -51,29 +52,36 @@ const infoData: LinkData = [
 ]
 
 export default async function Home() {
-  const { res: allImages, error } = await getAllImagesData()
-  if (error) console.log(error)
-  const imgsUrls =
-    allImages && allImages.length
-      ? await utapi.getFileUrls(allImages.map((k) => k.key))
-      : []
-  const imgsData: (InferInsertModel<typeof imagesData> & {
-    url?: string
-  })[] =
-    allImages && allImages.length
-      ? allImages
-          .map((e) => {
-            return {
-              url: imgsUrls.find((u) => e.key === u.key)?.url,
-              ...e,
-            }
-          })
-          .filter((e) => typeof e.url === "string")
-      : []
+  const imgsData = await populateImagesDataWithLinks(await getAllImagesData())
+  const infoCards = await getAllInfoCards()
 
-  const mainImgs = imgsData.filter((e) => e.categorie === "main")
-  const currentImgs = imgsData.filter((e) => e.categorie === "current")
-  const galleryImgs = imgsData.filter((e) => e.categorie === "gallery")
+  let mainImgs: typeof imgsData = []
+  let currentImgs: typeof imgsData = []
+  let galleryImgs: typeof imgsData = []
+
+  if (imgsData instanceof Array) {
+    mainImgs = imgsData.filter((e) => e.categorie === "main")
+    currentImgs = imgsData.filter((e) => e.categorie === "current")
+    galleryImgs = imgsData.filter((e) => e.categorie === "gallery")
+  }
+
+  let mainCards: typeof infoCards = []
+  let currentCards: typeof infoCards = []
+
+  if (infoCards instanceof Array) {
+    const arr = infoCards.map((e) => {
+      if (e.imageKey) {
+        return {
+          ...e,
+          imageUrl: imgsData.find((img) => img.key === e.imageKey)?.url,
+        }
+      }
+      return e
+    })
+
+    mainCards = arr.filter((e) => e.categorie === "main")
+    currentCards = arr.filter((e) => e.categorie === "current")
+  }
 
   return (
     <>
@@ -89,7 +97,7 @@ export default async function Home() {
           className="m-2 overflow-x-hidden min-h-screen lg:h-auto"
         />
         <div className="bg-red-500 overflow-hidden min-h-screen lg:h-auto">
-          <AboutCards />
+          <AboutCards cards={currentCards} />
         </div>
       </div>
       {galleryImgs.length > 0 ? (
