@@ -1,16 +1,14 @@
-import { InferInsertModel } from "drizzle-orm"
-import {
-  insertImagesSchema,
-  type addImagesData as addImages,
-  type deleteImagesData as deleteImages,
-  type updateImagesData as updateImages,
+import { insertImagesSchema } from "./imagesData/serverApi"
+import type {
+  addImagesData as addImages,
+  deleteImagesData as deleteImages,
+  updateImagesData as updateImages,
 } from "./imagesData/serverApi"
 import type {
   addInfoCards as addCards,
   deleteInfoCards as deleteCards,
   updateInfoCards as updataCards,
 } from "./infoCard/serverApi"
-import { imagesData } from "./schema/imagesData"
 import { z } from "zod"
 export async function addImagesData(
   data: Parameters<typeof addImages>[0] | undefined,
