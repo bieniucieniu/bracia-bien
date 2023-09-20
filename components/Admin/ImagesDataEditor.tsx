@@ -36,19 +36,21 @@ import { Input } from "../ui/input"
 import { updateImagesData, deleteImagesData } from "@/db/clientApi"
 import { toPl } from "@/lib/utils"
 import { InferInsertModel } from "drizzle-orm"
+import { useAdminContext } from "./AdminContext"
 
 interface ImgData extends InferInsertModel<typeof imagesData> {
-  url: string | undefined
+  url?: string | undefined
 }
 
-export default function ImageDataEditor({ imgsData }: { imgsData: ImgData[] }) {
+export default function ImageDataEditor() {
+  const { imagesData } = useAdminContext()
   const [imageData, setImageData] = useState<
     (ImgData & {
       newAlt?: string
       newCategorie?: ImgData["categorie"]
       delete?: boolean
     })[]
-  >(imgsData)
+  >(() => structuredClone(imagesData))
 
   function deleteData(key: ImgData["key"]) {
     const newData = imageData.map((e) => {
@@ -90,7 +92,7 @@ export default function ImageDataEditor({ imgsData }: { imgsData: ImgData[] }) {
   const [altEdit, setAltEdit] = useState<string>("")
 
   function resetChanges() {
-    setImageData(imgsData)
+    setImageData(imagesData)
   }
 
   const [uploading, setUploading] = useState<boolean>(false)
@@ -154,7 +156,7 @@ export default function ImageDataEditor({ imgsData }: { imgsData: ImgData[] }) {
     })
   }
 
-  if (!imgsData || imageData.length <= 0) return "no imgs"
+  if (!imagesData || imageData.length <= 0) return "no imgs"
 
   return (
     <Card className="flex flex-col w-fit m-auto" id="imgSel">
