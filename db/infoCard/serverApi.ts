@@ -52,48 +52,46 @@ export const cardsId = z.number().array()
 
 export async function updateInfoCards(
   data: {
-    ids: (string | number)[]
+    ids: number[]
     update: Partial<z.infer<typeof cardOmitId>>
   }[],
-): Promise<ValidationError | { res: any }> {
-  const res = await Promise.allSettled(
-    data.map(async ({ update, ids }) => {
-      try {
+): Promise<ValidationError | any> {
+  try {
+    const res = await Promise.allSettled(
+      data.map(async ({ update, ids }) => {
         cardOmitId.parse(update)
 
         if (!ids.length) throw new Error("empty id Array")
 
-        console.log("json: ", res)
-
         const r = await db
           .update(infoCard)
           .set(update)
-          .where(inArray(infoCard, ids))
+          .where(inArray(infoCard.id, ids))
 
         return r
-      } catch (e) {
-        return {
-          error: e,
-          ids,
-          data,
-          status: 400,
-        }
-      }
-    }),
-  )
+      }),
+    )
 
-  return { res }
+    console.log("json: ", res)
+    return res
+  } catch (e) {
+    return {
+      error: e,
+      data,
+      status: 400,
+    }
+  }
 }
 
 export async function deleteInfoCards(
-  ids: (number | string)[],
+  ids: number[],
 ): Promise<ValidationError | { res: any }> {
   try {
     cardsId.array().parse(ids)
     if (!ids.length) throw new Error("empty ids array")
     const res = await db
       .delete(infoCard)
-      .where(inArray(infoCard, ids))
+      .where(inArray(infoCard.id, ids))
       .returning()
 
     return { res }

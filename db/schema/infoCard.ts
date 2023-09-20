@@ -16,10 +16,10 @@ export const infoCard = pgTable(
   "info_card",
   {
     id: serial("id").notNull().primaryKey(),
-    categorie: infoCardCategorieEnum("categorie").default("current").notNull(),
+    categorie: infoCardCategorieEnum("categorie").default("current"),
     title: varchar("title").notNull(),
     description: text("description"),
-    content: text("content").notNull(),
+    content: text("content"),
     link: varchar("link"),
     imageKey: varchar("image_key"),
   },
