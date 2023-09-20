@@ -1,14 +1,10 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { forwardRef, useState } from "react"
 import { Button } from "../ui/button"
 import Image from "next/image"
 import { toPl } from "@/lib/utils"
 import { useAdminContext } from "./AdminContext"
+import { twJoin, twMerge } from "tailwind-merge"
 
 const ImageSelector = forwardRef<
   HTMLButtonElement,
@@ -19,7 +15,7 @@ const ImageSelector = forwardRef<
     name?: string
     onImageSelect: (key: string) => void
   }
->(({ disabled, onBlur, onImageSelect }, ref) => {
+>(({ keyValue, disabled, onBlur, onImageSelect, className, ...props }, ref) => {
   const [open, setOpen] = useState<boolean>(false)
   const { imagesData } = useAdminContext()
 
@@ -28,7 +24,12 @@ const ImageSelector = forwardRef<
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="min-w-[138px]" ref={ref} disabled={disabled}>
+        <Button
+          className={twMerge("min-w-[138px]", className)}
+          {...props}
+          ref={ref}
+          disabled={disabled}
+        >
           Wybierz zdjecie
         </Button>
       </DialogTrigger>
@@ -36,7 +37,7 @@ const ImageSelector = forwardRef<
         onBlur={onBlur}
         className="max-h-[calc(100svh_-_20px)] lg:max-w-[calc(100svw_-_100px)] overflow-auto"
       >
-        <ul className="flex flex-row flex-wrap overflow-auto gap-4">
+        <ul className="flex flex-row flex-wrap overflow-auto gap-4 p-2">
           {imagesData.map(({ url, alt, key, categorie }) => (
             <Button
               asChild
@@ -45,7 +46,12 @@ const ImageSelector = forwardRef<
                 setOpen(false)
               }}
               key={key}
-              className="p-0 m-0 h-fit flex flex-col"
+              className={twJoin(
+                "p-0 m-0 h-fit flex flex-col",
+                keyValue == key
+                  ? "outline outline-2 outline-offset-2 outline-red-500"
+                  : "",
+              )}
             >
               <li>
                 {url ? (
@@ -57,7 +63,7 @@ const ImageSelector = forwardRef<
                     src={url}
                   />
                 ) : (
-                  <p>inage error</p>
+                  <p>image error</p>
                 )}
                 <p>{toPl(categorie)}</p>
               </li>
