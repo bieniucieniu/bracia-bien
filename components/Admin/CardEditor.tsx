@@ -18,15 +18,18 @@ import { useEffect } from "react"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { toPl } from "@/lib/utils"
 import ImageSelector from "./ImageSelector"
+import { twMerge } from "tailwind-merge"
 
 export const formSchema = insertCardSchema.omit({ id: true })
 
 export default function CardEditor({
   onSubmit,
   data,
+  className,
 }: {
   data?: z.infer<typeof formSchema>
   onSubmit: (values: NonNullable<z.infer<typeof formSchema>>) => void
+  className?: string
 }) {
   const form = useForm<NonNullable<z.infer<typeof formSchema>>>({
     // @ts-ignore
@@ -42,7 +45,10 @@ export default function CardEditor({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className={twMerge("space-y-8", className)}
+      >
         <FormField
           control={form.control}
           name="title"
