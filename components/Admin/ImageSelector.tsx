@@ -19,7 +19,7 @@ const ImageSelector = forwardRef<
     name?: string
     onImageSelect: (key: string) => void
   }
->(({ disabled, onBlur, name, onImageSelect }, ref) => {
+>(({ disabled, onBlur, onImageSelect }, ref) => {
   const [open, setOpen] = useState<boolean>(false)
   const { imagesData } = useAdminContext()
 
@@ -28,11 +28,10 @@ const ImageSelector = forwardRef<
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button ref={ref} disabled={disabled}>
+        <Button className="min-w-[138px]" ref={ref} disabled={disabled}>
           Wybierz zdjecie
         </Button>
       </DialogTrigger>
-      <DialogDescription>{name}</DialogDescription>
       <DialogContent
         onBlur={onBlur}
         className="max-h-[calc(100svh_-_20px)] lg:max-w-[calc(100svw_-_100px)] overflow-auto"
