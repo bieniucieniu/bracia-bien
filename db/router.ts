@@ -1,14 +1,12 @@
 import {
   addImagesData,
   deleteImagesData,
-  getAllImagesData,
   populateImagesDataWithLinks,
   updateImagesData,
 } from "@/db/imagesData/serverApi"
 import {
   addInfoCards,
   deleteInfoCards,
-  getAllInfoCards,
   updateInfoCards,
 } from "@/db/infoCard/serverApi"
 import { getAuth } from "@/lib/auth"
@@ -72,21 +70,4 @@ export async function PATCH(req: Request) {
   }
 
   return NextResponse.json(res)
-}
-
-export async function GET(
-  _req: Request,
-  { params }: { params: { get: "images_data" | "info_cards" } },
-) {
-  if (params.get === "images_data") {
-    const data = await populateImagesDataWithLinks(await getAllImagesData())
-    return NextResponse.json({ images: data })
-  }
-
-  if (params.get === "info_cards") {
-    const data = await getAllImagesData()
-    return NextResponse.json({ cards: data })
-  }
-
-  return NextResponse.json({})
 }
