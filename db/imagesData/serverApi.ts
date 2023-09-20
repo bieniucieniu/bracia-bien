@@ -38,7 +38,7 @@ export async function getImagesDataByCategorie(
 export async function getAllImagesData() {
   try {
     const res = await db.select().from(imagesData)
-    return { res }
+    return res
   } catch (e) {
     return {
       massage: "error in get all images",
@@ -52,19 +52,16 @@ export async function populateImagesDataWithLinks(
   data: Awaited<ReturnType<typeof getAllImagesData>>,
 ) {
   try {
-    const allImages = data.res
-    if (!allImages) return []
+    if (!(data instanceof Array)) return []
 
     const imgsUrls =
-      allImages.length > 0
-        ? await utapi.getFileUrls(allImages.map((k) => k.key))
-        : []
+      data.length > 0 ? await utapi.getFileUrls(data.map((k) => k.key)) : []
 
     const imgsData: (InferInsertModel<typeof imagesData> & {
       url?: string
     })[] =
-      allImages && allImages.length
-        ? allImages
+      data && data.length
+        ? data
             .map((e) => {
               return {
                 url: imgsUrls.find((u) => e.key === u.key)?.url,

@@ -20,7 +20,7 @@ type ValidationError = {
 export async function getAllInfoCards() {
   try {
     const res = await db.select().from(infoCard)
-    return { res }
+    return res
   } catch (e) {
     return {
       error: e,
