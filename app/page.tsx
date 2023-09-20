@@ -2,7 +2,7 @@ import { MenuItem, MenuRoot } from "@/components/PillMenu"
 import { playfair } from "@/lib/fonts"
 
 import { ImageSlider } from "@/components/HomePage/ImageSlider"
-import { AboutCards } from "@/components/HomePage/AboutCards"
+import { InfoCards } from "@/components/HomePage/InfoCard"
 import PhotoGalery from "@/components/HomePage/PhotoGallery"
 import Banner from "@/components/HomePage/Banner"
 import {
@@ -73,7 +73,7 @@ export default async function Home() {
       if (e.imageKey) {
         return {
           ...e,
-          imageUrl: imgsData.find((img) => img.key === e.imageKey)?.url,
+          imageUrl: imgsData.find((img) => img.key == e.imageKey)?.url,
         }
       }
       return e
@@ -97,7 +97,7 @@ export default async function Home() {
           className="m-2 overflow-x-hidden min-h-screen lg:h-auto"
         />
         <div className="bg-red-500 overflow-hidden min-h-screen lg:h-auto">
-          <AboutCards cards={currentCards} />
+          <InfoCards cards={currentCards} />
         </div>
       </div>
       {galleryImgs.length > 0 ? (
