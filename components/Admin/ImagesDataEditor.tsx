@@ -185,7 +185,7 @@ export default function ImageDataEditor() {
                 )}
 
                 <span className="truncate">{key}</span>
-                <section className="flex justify-around flex-wrap items-center pb-2">
+                <section className="flex flex-col items-start gap-y-4 px-2 pb-2">
                   {categorie ? null : "error in categorie"}
                   <RadioGroup
                     disabled={uploading}
@@ -193,7 +193,7 @@ export default function ImageDataEditor() {
                     onValueChange={(e: NonNullable<ImgData["categorie"]>) => {
                       SetNewCategorie(key, e)
                     }}
-                    className="flex flex-row"
+                    className="flex flex-row flex-wrap"
                   >
                     {imagesCategorieEnum.enumValues.map((str, i) => (
                       <div
@@ -210,48 +210,50 @@ export default function ImageDataEditor() {
                       </div>
                     ))}
                   </RadioGroup>
-                  <Popover
-                    modal
-                    onOpenChange={() => setAltEdit(newAlt ?? alt ?? "")}
-                  >
-                    <PopoverTrigger asChild>
-                      <Button
-                        disabled={uploading}
-                        variant={newAlt ? "green" : "outline"}
-                      >
-                        edit alt
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="flex flex-col">
-                      <Input
-                        disabled={uploading}
-                        type="text"
-                        onChange={(e) => setAltEdit(e.target.value)}
-                        value={altEdit ?? alt}
-                      />
-                      <div className="flex flex-row gap-x-2 justify-end mt-2">
+                  <section className="flex gap-x-3">
+                    <Popover
+                      modal
+                      onOpenChange={() => setAltEdit(newAlt ?? alt ?? "")}
+                    >
+                      <PopoverTrigger asChild>
                         <Button
-                          variant={
-                            newAlt === altEdit ? "destructive" : "default"
-                          }
-                          onClick={() => {
-                            SetNewAlt(key, altEdit)
-                          }}
+                          disabled={uploading}
+                          variant={newAlt ? "green" : "outline"}
                         >
-                          {newAlt === altEdit ? "reset" : "set"}
+                          edit alt
                         </Button>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                  <Button
-                    variant={toDelete ? "destructive" : "default"}
-                    onClick={() => {
-                      deleteData(key)
-                    }}
-                    className="outline outline-2 outline-offset-2 outline-red-500"
-                  >
-                    delete
-                  </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="flex flex-col">
+                        <Input
+                          disabled={uploading}
+                          type="text"
+                          onChange={(e) => setAltEdit(e.target.value)}
+                          value={altEdit ?? alt}
+                        />
+                        <div className="flex flex-row gap-x-2 justify-end mt-2">
+                          <Button
+                            variant={
+                              newAlt === altEdit ? "destructive" : "default"
+                            }
+                            onClick={() => {
+                              SetNewAlt(key, altEdit)
+                            }}
+                          >
+                            {newAlt === altEdit ? "reset" : "set"}
+                          </Button>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                    <Button
+                      variant={toDelete ? "destructive" : "default"}
+                      onClick={() => {
+                        deleteData(key)
+                      }}
+                      className="outline outline-2 outline-offset-2 outline-red-500"
+                    >
+                      delete
+                    </Button>
+                  </section>
                 </section>
               </li>
             ),
@@ -262,7 +264,7 @@ export default function ImageDataEditor() {
         <div className="sticky bottom-2 flex gap-1 bg-white shadow-sm rounded-xl p-2">
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button disabled={uploading} variant="destructive">
+              <Button disabled={uploading} variant="green">
                 submit changes
               </Button>
             </AlertDialogTrigger>
@@ -288,7 +290,7 @@ export default function ImageDataEditor() {
           </AlertDialog>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button disabled={uploading} variant="green">
+              <Button disabled={uploading} variant="destructive">
                 reset changes
               </Button>
             </AlertDialogTrigger>
