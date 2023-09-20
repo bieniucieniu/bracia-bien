@@ -31,6 +31,7 @@ export function CardEditorSlider({
           />
         ) : null
       }}
+      autoSlide={false}
       length={data.length}
     />
   )
