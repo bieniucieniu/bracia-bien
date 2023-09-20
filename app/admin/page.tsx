@@ -64,6 +64,7 @@ export default async function Admin() {
             </CardHeader>
             <CardContent>
               <CardEditorSlider
+                className="min-h-[668px] min-w-[517px] overflow-hidden"
                 data={infoCards instanceof Array ? infoCards : []}
               />
             </CardContent>

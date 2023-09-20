@@ -23,6 +23,7 @@ export function CardEditorSlider({
         return id ? (
           <CardEditor
             data={d}
+            className="w-[calc(100%_-_105px)]"
             onSubmit={(update) => {
               updateInfoCards([{ ids: [{ id }], update }], (res) =>
                 console.log(res),
