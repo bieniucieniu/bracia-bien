@@ -288,7 +288,7 @@ export default function ImageDataEditor() {
           </AlertDialog>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button disabled={uploading} variant="destructive">
+              <Button disabled={uploading} variant="green">
                 reset changes
               </Button>
             </AlertDialogTrigger>
