@@ -40,6 +40,14 @@ export function Topbar() {
               <Link href="/#info">informacje</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              asChild
+              className={navigationMenuTriggerStyle()}
+            >
+              <Link href="/#gallery">galleria produktów</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
       <div className="flex flex-row justify-between w-full md:w-auto md:justify-end">
