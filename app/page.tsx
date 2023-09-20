@@ -97,11 +97,14 @@ export default async function Home() {
           className="m-2 overflow-x-hidden min-h-screen lg:h-auto"
         />
         <div className="bg-red-500 overflow-hidden min-h-screen lg:h-auto">
-          <InfoCards cards={currentCards} />
+          <InfoCards cards={mainCards} />
         </div>
       </div>
       {galleryImgs.length > 0 ? (
-        <div className="min-h-screen relative flex justify-stretch items-stretch">
+        <div
+          id="gallery"
+          className="min-h-screen relative flex justify-stretch items-stretch"
+        >
           <PhotoGalery data={galleryImgs} className="m-4 w-full" />
         </div>
       ) : null}
