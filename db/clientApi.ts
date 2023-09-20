@@ -42,7 +42,6 @@ export async function updateImagesData(
       method: "PATCH",
       body: JSON.stringify({ updateImagesData: data }),
     })
-
     onCompleat && onCompleat(res)
   } catch (e) {
     onCompleat && onCompleat(e)
@@ -123,6 +122,9 @@ export async function updateInfoCards(
       method: "PATCH",
       body: JSON.stringify({ updateInfoCards: data }),
     })
+
+    const json = await res.json()
+    console.log(json)
 
     onCompleat && onCompleat(res)
   } catch (e) {

@@ -48,21 +48,22 @@ export async function addInfoCards(
 }
 
 export const cardOmitId = selectCardSchema.omit({ id: true })
-export const cardsId = selectCardSchema.pick({ id: true })
+export const cardsId = z.number().array()
 
 export async function updateInfoCards(
   data: {
-    ids: z.infer<typeof cardsId>[]
+    ids: (string | number)[]
     update: Partial<z.infer<typeof cardOmitId>>
   }[],
 ): Promise<ValidationError | { res: any }> {
   const res = await Promise.allSettled(
     data.map(async ({ update, ids }) => {
       try {
-        cardsId.array().parse(ids)
         cardOmitId.parse(update)
 
         if (!ids.length) throw new Error("empty id Array")
+
+        console.log("json: ", res)
 
         const r = await db
           .update(infoCard)
@@ -85,7 +86,7 @@ export async function updateInfoCards(
 }
 
 export async function deleteInfoCards(
-  ids: z.infer<typeof cardsId>[],
+  ids: (number | string)[],
 ): Promise<ValidationError | { res: any }> {
   try {
     cardsId.array().parse(ids)
