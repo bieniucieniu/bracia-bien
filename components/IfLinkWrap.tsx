@@ -5,7 +5,7 @@ export default function InLinkWrap({
   href,
   children,
 }: {
-  href?: Url
+  href?: Url | undefined | null
   children: React.ReactNode
 }) {
   if (href) return <Link href={href}>{children}</Link>
