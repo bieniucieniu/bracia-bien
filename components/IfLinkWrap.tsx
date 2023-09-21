@@ -1,13 +1,15 @@
 import { Url } from "next/dist/shared/lib/router/router"
 import Link from "next/link"
 
-export default function InLinkWrap({
-  href,
-  children,
-}: {
+type Props = Omit<Parameters<typeof Link>[0], "href"> & {
   href?: Url | undefined | null
-  children: React.ReactNode
-}) {
-  if (href) return <Link href={href}>{children}</Link>
+}
+export default function InLinkWrap({ href, children, ...props }: Props) {
+  if (href)
+    return (
+      <Link href={href} {...props}>
+        {children}
+      </Link>
+    )
   return children
 }
