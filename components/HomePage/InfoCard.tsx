@@ -13,7 +13,7 @@ import type { insertCardSchema } from "@/db/infoCard/serverApi"
 import type { z } from "zod"
 import Image from "next/image"
 import { twMerge } from "tailwind-merge"
-import { ScrollArea, ScrollBar } from "../ui/scroll-area"
+import { ScrollArea } from "../ui/scroll-area"
 
 export function InfoCards({
   cards,
