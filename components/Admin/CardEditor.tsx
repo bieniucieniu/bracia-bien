@@ -26,10 +26,12 @@ export default function CardEditor({
   onSubmit,
   data,
   className,
+  children,
 }: {
   data?: z.infer<typeof formSchema>
   onSubmit: (values: NonNullable<z.infer<typeof formSchema>>) => void
   className?: string
+  children?: React.ReactNode
 }) {
   const form = useForm<NonNullable<z.infer<typeof formSchema>>>({
     // @ts-ignore
@@ -175,7 +177,10 @@ export default function CardEditor({
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <section className="flex flex-row justify-start items-center flex-wrap gap-2">
+          <Button type="submit">Submit</Button>
+          {children}
+        </section>
       </form>
     </Form>
   )
