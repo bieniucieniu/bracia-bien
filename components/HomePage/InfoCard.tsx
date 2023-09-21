@@ -43,7 +43,7 @@ export function InfoCards({
               <CardContent className="flex flex-col gap-y-3 h-full ">
                 <p>{d.content}</p>
                 {d.imageUrl ? (
-                  <IfLinkWrap href={d.link}>
+                  <IfLinkWrap href={d.link} target="_blank">
                     <Image
                       className="object-top rounded-xl bg-black w-full h-full"
                       src={d.imageUrl}
