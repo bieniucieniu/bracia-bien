@@ -85,16 +85,16 @@ export async function updateInfoCards(
 
 export async function deleteInfoCards(
   ids: number[],
-): Promise<ValidationError | { res: any }> {
+): Promise<ValidationError | any> {
   try {
-    cardsId.array().parse(ids)
+    cardsId.parse(ids)
     if (!ids.length) throw new Error("empty ids array")
     const res = await db
       .delete(infoCard)
       .where(inArray(infoCard.id, ids))
       .returning()
 
-    return { res }
+    return res
   } catch (e) {
     return {
       error: e,
