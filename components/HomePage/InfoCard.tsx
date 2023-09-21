@@ -14,6 +14,7 @@ import type { z } from "zod"
 import Image from "next/image"
 import { twMerge } from "tailwind-merge"
 import { ScrollArea } from "../ui/scroll-area"
+import IfLinkWrap from "@/components/IfLinkWrap"
 
 export function InfoCards({
   cards,
@@ -42,13 +43,15 @@ export function InfoCards({
               <CardContent className="flex flex-col gap-y-3 h-full ">
                 <p>{d.content}</p>
                 {d.imageUrl ? (
-                  <Image
-                    className="object-top rounded-xl bg-black w-full h-full"
-                    src={d.imageUrl}
-                    alt={d.imageKey ?? ""}
-                    width={400}
-                    height={400}
-                  />
+                  <IfLinkWrap href={d.link}>
+                    <Image
+                      className="object-top rounded-xl bg-black w-full h-full"
+                      src={d.imageUrl}
+                      alt={d.imageKey ?? ""}
+                      width={400}
+                      height={400}
+                    />
+                  </IfLinkWrap>
                 ) : null}
               </CardContent>
               <CardFooter>
