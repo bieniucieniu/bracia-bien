@@ -86,15 +86,18 @@ export default async function Home() {
       >
         <ImageSlider
           data={currentImgs}
-          className="m-2 overflow-x-hidden min-h-screen lg:h-auto"
+          className="m-2 object-contain overflow-hidden h-screen"
         />
-        <div className="bg-red-500 overflow-hidden min-h-screen lg:h-auto">
+        <div className="bg-red-500 overflow-hidden min-h-screen ">
           <AboutCards />
         </div>
       </div>
       {galleryImgs.length > 0 ? (
-        <div className="min-h-screen relative flex justify-stretch items-stretch">
-          <PhotoGalery data={galleryImgs} className="m-4 w-full" />
+        <div className="min-h-screen relative flex justify-stretch items-stretch p-4">
+          <PhotoGalery
+            data={galleryImgs}
+            className="h-[calc(100vh_-_32px)] w-[calc(100vw_-_32px)]"
+          />
         </div>
       ) : null}
       <footer
