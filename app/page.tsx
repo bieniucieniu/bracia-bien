@@ -10,6 +10,8 @@ import {
   populateImagesDataWithLinks,
 } from "@/db/imagesData/serverApi"
 import { getAllInfoCards } from "@/db/infoCard/serverApi"
+import Image from "next/image"
+import Link from "next/link"
 
 export const revalidate = 3600
 
@@ -86,19 +88,54 @@ export default async function Home() {
   return (
     <>
       <div className="min-h-screen relative grid overflow-x-hidden pt-4">
-        <Banner data={mainImgs} />
+        <Image
+          src="/logo.png"
+          priority
+          className={"object-contain transition-opacity m-10 md:m-auto"}
+          alt="logo"
+          width={638}
+          height={189}
+        />
       </div>
       <div
         id="about"
-        className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center"
+        className="bg-red-400 flex justify-center items-center py-10"
       >
-        <ImageSlider
-          data={currentImgs}
-          className="m-2 object-contain overflow-hidden h-screen"
-        />
-        <div className="bg-red-500 overflow-hidden min-h-screen lg:h-auto">
-          <InfoCards cards={mainCards} />
-        </div>
+        <article className="max-w-6xl mx-auto px-20 flex flex-col lg:grid lg:grid-cols-3 lg:grid-rows-[auto_auto_auto] gap-4">
+          <div className="col-span-2 bg-yellow-50 px-10 py-8 rounded-lg text-lg shadow-lg">
+            <h2 className="flex flex-row gap-x-2 items-center text-2xl font-black pb-2">
+              Jestesmy rodzinna firma
+            </h2>
+            <p>
+              Oferujemy bogaty asortyment bielizny, rajstop, skarpet i pizam dla
+              kobiet, mezczyzn i dzieci. <br /> Siedziba firmy zanjduje sie w
+              Kaliszu przy ul. Stawiszyńskiej 125, Prowadzimy zarowno sprzedaz
+              hurtowa jak i detaliczna.
+            </p>
+          </div>
+          <div className="row-start-1 row-end-3 col-start-3 bg-orange-100 px-10 py-8 rounded-lg text-lg shadow-lg">
+            <h2 className="text-2xl font-black pb-2">
+              Zapraszamy takze <br /> do naszych sklepow <br /> w Kaliszu
+            </h2>
+            <ul className="list-disc flex flex-col gap-2">
+              <li>
+                Pod Zegarem. Centrum handlowe
+                <Link href="#">ul. Górnośląska 76A </Link>
+              </li>
+              <li>
+                Złote Centrum. Centrum handlowe
+                <Link href="#">ul. Polna 14 </Link>
+              </li>
+              <li>
+                Mini Park. Centrum handlowe
+                <Link href="#">ul. Prymasa Stefana Wyszyńskiego 42a </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="bg-red-100 row-span-2 col-span-2 rounded-lg shadow-lg overflow-hidden min-h-[500px] p-4">
+            <Banner data={mainImgs} />
+          </div>
+        </article>
       </div>
       {galleryImgs.length > 0 ? (
         <div className="min-h-screen relative flex justify-stretch items-stretch p-4">
