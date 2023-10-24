@@ -8,7 +8,7 @@ export function ImageSlider({
   data,
   className,
 }: {
-  data: (InferInsertModel<typeof imagesData> & { url?: string })[]
+  data: (InferInsertModel<typeof imagesData> & { src?: string })[]
   className?: string
 }) {
   if (!data.length) return <div></div>
@@ -18,11 +18,11 @@ export function ImageSlider({
       className={className}
       renderer={(i) => {
         const d = data[i]
-        if (!d.url) return null
+        if (!d.src) return null
         return (
           <Image
             alt={d.alt ?? `image-${i}`}
-            src={d.url}
+            src={d.src}
             width={1920}
             height={800}
             className="object-contain"

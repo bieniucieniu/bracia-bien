@@ -1,6 +1,5 @@
 "use client"
 import Image from "next/image"
-import { useEffect, useState } from "react"
 import Slider from "../Slider"
 import { InferInsertModel } from "drizzle-orm"
 import { imagesData } from "@/db/schema/imagesData"

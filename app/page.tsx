@@ -1,10 +1,7 @@
 import { MenuItem, MenuRoot } from "@/components/PillMenu"
 import { playfair } from "@/lib/fonts"
-
 import { ImageSlider } from "@/components/HomePage/ImageSlider"
-import { InfoCards } from "@/components/HomePage/InfoCard"
 import PhotoGalery from "@/components/HomePage/PhotoGallery"
-import Banner from "@/components/HomePage/Banner"
 import {
   getAllImagesData,
   populateImagesDataWithLinks,
@@ -75,7 +72,7 @@ export default async function Home() {
       if (e.imageKey) {
         return {
           ...e,
-          imageUrl: imgsData.find((img) => img.key == e.imageKey)?.url,
+          imageSrc: imgsData.find((img) => img.key == e.imageKey)?.src,
         }
       }
       return e
@@ -136,9 +133,9 @@ export default async function Home() {
             <div className="overflow-x-hidden">
               <ImageSlider
                 data={[
-                  { url: "/blob.svg", key: "a" },
-                  { url: "/blob.svg", key: "b" },
-                  { url: "/blob.svg", key: "c" },
+                  { src: "/blob.svg", key: "a" },
+                  { src: "/blob.svg", key: "b" },
+                  { src: "/blob.svg", key: "c" },
                 ]}
               />
             </div>

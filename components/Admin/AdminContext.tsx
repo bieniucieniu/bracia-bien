@@ -4,7 +4,7 @@ import type { insertCardSchema } from "@/db/infoCard/serverApi"
 import { createContext, useContext, useState } from "react"
 import { z } from "zod"
 
-type ImagesData = (z.infer<typeof insertImagesSchema> & { url?: string })[]
+type ImagesData = (z.infer<typeof insertImagesSchema> & { src?: string })[]
 type InfoCards = z.infer<typeof insertCardSchema>[]
 
 type AdminContext = {

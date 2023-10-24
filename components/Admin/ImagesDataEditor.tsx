@@ -39,7 +39,7 @@ import { InferInsertModel } from "drizzle-orm"
 import { useAdminContext } from "./AdminContext"
 
 interface ImgData extends InferInsertModel<typeof imagesData> {
-  url?: string | undefined
+  src?: string | undefined
 }
 
 export default function ImageDataEditor() {
@@ -167,21 +167,21 @@ export default function ImageDataEditor() {
       <CardContent>
         <ul className="flex flex-row flex-wrap p-2 gap-2">
           {imageData.map(
-            ({ url, key, alt, categorie, newAlt, delete: toDelete }) => (
+            ({ src, key, alt, categorie, newAlt, delete: toDelete }) => (
               <li
                 className="flex flex-col gap-2 overflow-hidden rounded-xl shadow-md"
                 key={key}
               >
-                {url ? (
+                {src ? (
                   <Image
                     alt={alt ?? ""}
-                    src={url ?? ""}
+                    src={src ?? ""}
                     width={400}
                     height={300}
                     className={twJoin("object-contain h-auto transition")}
                   />
                 ) : (
-                  `invalid url ${url}`
+                  `invalid src path ${src}`
                 )}
 
                 <span className="truncate">{key}</span>
