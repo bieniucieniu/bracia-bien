@@ -84,6 +84,12 @@ export default async function Home() {
   }
 
   return (
+    <main className="w-screen h-screen flex justify-center items-center">
+      <h2 className="text-5xl">in prodaction</h2>
+    </main>
+  )
+
+  return (
     <>
       <div className="min-h-screen relative grid overflow-x-hidden pt-4">
         <Banner data={mainImgs} />
