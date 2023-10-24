@@ -10,7 +10,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { twMerge } from "tailwind-merge"
-import { Clock, Medal, Minimize2 } from "lucide-react"
+import { Baby, Clock, Medal, Minimize2, Smile } from "lucide-react"
 
 export const revalidate = 3600
 
@@ -84,27 +84,52 @@ export default async function Home() {
               className="w-auto rounded-lg object-contain m-auto"
             />
           </div>
-          <Card className="col-span-3 lg:col-span-2 bg-orange-100">
-            <CardHeader
-              className={twMerge(playfair.className, "text-2xl font-bold pb-2")}
-            >
-              Jestesmy rodzinna firma
-            </CardHeader>
-            <CardContent>
-              <p>
-                Oferujemy bogaty asortyment bielizny, rajstop, skarpet i pizam
-                dla kobiet, mezczyzn i dzieci. <br /> Siedziba firmy zanjduje
-                sie w Kaliszu przy{" "}
-                <Link
-                  href="https://goo.gl/maps/BfMbTwFQTeVjVR717"
-                  target="_blank"
-                  className="hover:underline text-indigo-500"
-                >
-                  ul. Stawiszyńskiej 125{" "}
-                </Link>
-                , Prowadzimy zarowno sprzedaz hurtowa jak i detaliczna.
-              </p>
-            </CardContent>
+          <Card className="col-span-3 lg:col-span-2 bg-orange-100 grid grid-cols-[1fr_30px] pr-5">
+            <div>
+              <CardHeader
+                className={twMerge(
+                  playfair.className,
+                  "text-2xl font-bold pb-2",
+                )}
+              >
+                Jestesmy rodzinna firma
+              </CardHeader>
+              <CardContent>
+                <p>
+                  Oferujemy bogaty asortyment bielizny, rajstop, skarpet i pizam
+                  dla kobiet, mezczyzn i dzieci. <br /> Siedziba firmy zanjduje
+                  sie w Kaliszu przy{" "}
+                  <Link
+                    href="https://goo.gl/maps/BfMbTwFQTeVjVR717"
+                    target="_blank"
+                    className="hover:underline text-indigo-500"
+                  >
+                    ul. Stawiszyńskiej 125{" "}
+                  </Link>
+                  , Prowadzimy zarowno sprzedaz hurtowa jak i detaliczna.
+                </p>
+              </CardContent>
+            </div>
+            <div className="flex flex-col justify-around">
+              <Image
+                src="/boxers-boxer.svg"
+                alt="boxers"
+                width={30}
+                height={30}
+              />
+              <Image
+                src="/boxers-briefs.svg"
+                alt="boxers"
+                width={30}
+                height={30}
+              />
+              <Image
+                src="/socks-solid.svg"
+                alt="boxers"
+                width={30}
+                height={30}
+              />
+            </div>
           </Card>
           <Card className="bg-white col-span-3 sm:col-span-2">
             <CardHeader
