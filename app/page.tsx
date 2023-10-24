@@ -97,12 +97,12 @@ export default async function Home() {
           height={189}
         />
       </div>
-      <div
+      <section
         id="about"
         className="bg-red-400 flex justify-center items-center py-10"
       >
-        <article className="max-w-6xl mx-auto px-20 flex flex-col lg:grid lg:grid-cols-3 lg:grid-rows-[auto_auto_auto] gap-4">
-          <div className="col-span-2 bg-yellow-50 px-10 py-8 rounded-lg text-lg shadow-lg">
+        <div className="max-w-6xl mx-auto px-20 flex flex-col gap-4">
+          <article className="col-span-2 bg-yellow-50 px-10 py-8 rounded-lg text-base shadow-lg">
             <h2 className="flex flex-row gap-x-2 items-center text-2xl font-black pb-2">
               Jestesmy rodzinna firma
             </h2>
@@ -112,38 +112,49 @@ export default async function Home() {
               Kaliszu przy ul. Stawiszyńskiej 125, Prowadzimy zarowno sprzedaz
               hurtowa jak i detaliczna.
             </p>
+          </article>
+          <div className="grid grid-cols-[2fr_1fr] gap-x-3">
+            <article className="bg-orange-100 px-10 py-8 rounded-lg text-base shadow-lg">
+              <h2 className="text-2xl font-black pb-2">
+                Zapraszamy takze do naszych sklepow w Kaliszu
+              </h2>
+              <ul className="list-disc flex flex-col gap-2">
+                <li>
+                  Pod Zegarem. Centrum handlowe
+                  <Link href="#">ul. Górnośląska 76A </Link>
+                </li>
+                <li>
+                  Złote Centrum. Centrum handlowe
+                  <Link href="#">ul. Polna 14 </Link>
+                </li>
+                <li>
+                  Mini Park. Centrum handlowe
+                  <Link href="#">ul. Prymasa Stefana Wyszyńskiego 42a </Link>
+                </li>
+              </ul>
+            </article>
+            <div className="overflow-x-hidden">
+              <ImageSlider
+                data={[
+                  { url: "/blob.svg", key: "a" },
+                  { url: "/blob.svg", key: "b" },
+                  { url: "/blob.svg", key: "c" },
+                ]}
+              />
+            </div>
           </div>
-          <div className="row-start-1 row-end-3 col-start-3 bg-orange-100 px-10 py-8 rounded-lg text-lg shadow-lg">
-            <h2 className="text-2xl font-black pb-2">
-              Zapraszamy takze <br /> do naszych sklepow <br /> w Kaliszu
-            </h2>
-            <ul className="list-disc flex flex-col gap-2">
-              <li>
-                Pod Zegarem. Centrum handlowe
-                <Link href="#">ul. Górnośląska 76A </Link>
-              </li>
-              <li>
-                Złote Centrum. Centrum handlowe
-                <Link href="#">ul. Polna 14 </Link>
-              </li>
-              <li>
-                Mini Park. Centrum handlowe
-                <Link href="#">ul. Prymasa Stefana Wyszyńskiego 42a </Link>
-              </li>
-            </ul>
-          </div>
-          <div className="bg-red-100 row-span-2 col-span-2 rounded-lg shadow-lg overflow-hidden min-h-[500px] p-4">
-            <Banner data={mainImgs} />
-          </div>
-        </article>
-      </div>
+          {
+            //<Banner data={mainImgs} />
+          }
+        </div>
+      </section>
       {galleryImgs.length > 0 ? (
-        <div className="min-h-screen relative flex justify-stretch items-stretch p-4">
+        <section className="min-h-screen relative flex justify-stretch items-stretch p-4">
           <PhotoGalery
             data={galleryImgs}
             className="h-[calc(100vh_-_32px)] w-[calc(100vw_-_32px)]"
           />
-        </div>
+        </section>
       ) : null}
       <footer
         id="info"
