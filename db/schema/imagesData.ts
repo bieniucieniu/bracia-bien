@@ -14,6 +14,7 @@ export const imagesData = pgTable(
     categorie: imagesCategorieEnum("categorie").default("gallery").notNull(),
     alt: varchar("alt").default("").notNull(),
     message: text("massage"),
+    link: text("link"),
   },
   (table) => {
     return {
