@@ -7,9 +7,13 @@ import { imagesData } from "@/db/schema/imagesData"
 export function ImageSlider({
   data,
   className,
+  width,
+  height,
 }: {
   data: (InferInsertModel<typeof imagesData> & { src?: string })[]
   className?: string
+  width?: number
+  height?: number
 }) {
   if (!data.length) return <div></div>
 
@@ -23,8 +27,8 @@ export function ImageSlider({
           <Image
             alt={d.alt ?? `image-${i}`}
             src={d.src}
-            width={1920}
-            height={800}
+            width={width ?? 1920}
+            height={height ?? 800}
             className="object-contain rounded-lg max-h-full w-auto m-auto"
           />
         )
