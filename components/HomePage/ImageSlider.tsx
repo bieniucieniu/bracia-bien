@@ -25,7 +25,7 @@ export function ImageSlider({
             src={d.src}
             width={1920}
             height={800}
-            className="object-contain"
+            className="object-contain rounded-lg max-h-full w-auto m-auto"
           />
         )
       }}

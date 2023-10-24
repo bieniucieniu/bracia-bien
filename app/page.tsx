@@ -8,6 +8,9 @@ import {
 } from "@/db/imagesData/serverApi"
 import Image from "next/image"
 import Link from "next/link"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { twMerge } from "tailwind-merge"
+import { Clock, Medal, Minimize2 } from "lucide-react"
 
 export const revalidate = 3600
 
@@ -64,65 +67,96 @@ export default async function Home() {
 
   return (
     <>
-      <div className="min-h-screen relative grid overflow-x-hidden pt-4">
-        <Image
-          src="/logo.png"
-          priority
-          className={"object-contain transition-opacity m-10 md:m-auto"}
-          alt="logo"
-          width={638}
-          height={189}
-        />
+      <div className="min-h-screen pt-4 flex justify-center items-center px-4">
+        <Image src="/logo.png" priority alt="logo" width={638} height={189} />
       </div>
       <section
         id="about"
         className="bg-red-400 flex justify-center items-center py-10"
       >
-        <div className="max-w-6xl mx-auto px-20 flex flex-col gap-4">
-          <article className="col-span-2 bg-yellow-50 px-10 py-8 rounded-lg text-base shadow-lg">
-            <h2 className="flex flex-row gap-x-2 items-center text-2xl font-black pb-2">
+        <div className="max-w-6xl mx-auto px-4 lg:px-20 grid grid-cols-3 gap-x-3 gap-y-4">
+          <div className="col-span-1 rougded-xl p-1.5 hidden bg-white rounded-xl lg:block">
+            <Image
+              src="/blob.svg"
+              alt="hurtownia"
+              width={900}
+              height={600}
+              className="w-auto rounded-lg object-contain m-auto"
+            />
+          </div>
+          <Card className="col-span-3 lg:col-span-2 bg-orange-100">
+            <CardHeader
+              className={twMerge(playfair.className, "text-2xl font-bold pb-2")}
+            >
               Jestesmy rodzinna firma
-            </h2>
-            <p>
-              Oferujemy bogaty asortyment bielizny, rajstop, skarpet i pizam dla
-              kobiet, mezczyzn i dzieci. <br /> Siedziba firmy zanjduje sie w
-              Kaliszu przy ul. Stawiszyńskiej 125, Prowadzimy zarowno sprzedaz
-              hurtowa jak i detaliczna.
-            </p>
-          </article>
-          <div className="grid grid-cols-[2fr_1fr] gap-x-3">
-            <article className="bg-orange-100 px-10 py-8 rounded-lg text-base shadow-lg">
-              <h2 className="text-2xl font-black pb-2">
-                Zapraszamy takze do naszych sklepow w Kaliszu */{" "}
-              </h2>
-              <ul className="list-disc flex flex-col gap-2">
-                <li>
+            </CardHeader>
+            <CardContent>
+              <p>
+                Oferujemy bogaty asortyment bielizny, rajstop, skarpet i pizam
+                dla kobiet, mezczyzn i dzieci. <br /> Siedziba firmy zanjduje
+                sie w Kaliszu przy{" "}
+                <Link
+                  href="https://goo.gl/maps/BfMbTwFQTeVjVR717"
+                  target="_blank"
+                  className="hover:underline text-indigo-500"
+                >
+                  ul. Stawiszyńskiej 125{" "}
+                </Link>
+                , Prowadzimy zarowno sprzedaz hurtowa jak i detaliczna.
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="bg-white col-span-3 sm:col-span-2">
+            <CardHeader
+              className={twMerge(playfair.className, "text-2xl font-bold pb-2")}
+            >
+              Zapraszamy takze do naszych sklepow w Kaliszu
+            </CardHeader>
+            <CardContent>
+              <ul className="flex flex-col gap-4 pl-5">
+                <li className="flex justify-start items-center gap-x-2">
+                  <Clock />
                   Pod Zegarem. Centrum handlowe
-                  <Link href="#">ul. Górnośląska 76A </Link>
+                  <Link
+                    href="#"
+                    className="text-sm text-stone-500 hover:underline"
+                  >
+                    ul. Górnośląska 76A{" "}
+                  </Link>
                 </li>
-                <li>
+                <li className="flex justify-start items-center gap-x-2">
+                  <Medal />
                   Złote Centrum. Centrum handlowe
-                  <Link href="#">ul. Polna 14 </Link>
+                  <Link
+                    href="#"
+                    className="text-sm text-stone-500 hover:underline"
+                  >
+                    ul. Polna 14{" "}
+                  </Link>
                 </li>
-                <li>
+                <li className="flex justify-start items-center gap-x-2">
+                  <Minimize2 />
                   Mini Park. Centrum handlowe
-                  <Link href="#">ul. Prymasa Stefana Wyszyńskiego 42a </Link>
+                  <Link
+                    href="#"
+                    className="text-sm text-stone-500 hover:underline"
+                  >
+                    ul. Prymasa Stefana Wyszyńskiego 42a{" "}
+                  </Link>
                 </li>
               </ul>
-            </article>
-            <div className="overflow-x-hidden">
-              <ImageSlider
-                data={[
-                  { src: "/blob.svg", key: "a" },
-                  { src: "/blob.svg", key: "b" },
-                  { src: "/blob.svg", key: "c" },
-                ]}
-              />
-            </div>
+            </CardContent>
+          </Card>
+          <div className="overflow-hidden col-span-1 bg-white rounded-xl py-1.5 hidden sm:block">
+            <ImageSlider
+              className="flex justify-center items-center h-full"
+              data={[
+                { src: "/blob.svg", key: "a" },
+                { src: "/blob.svg", key: "b" },
+                { src: "/blob.svg", key: "c" },
+              ]}
+            />
           </div>
-          {
-            //<Banner data={mainImgs} />
-          }
         </div>
       </section>
       {galleryImgs.length > 0 ? (
