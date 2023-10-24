@@ -6,7 +6,6 @@ import {
   getAllImagesData,
   populateImagesDataWithLinks,
 } from "@/db/imagesData/serverApi"
-import { getAllInfoCards } from "@/db/infoCard/serverApi"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -52,7 +51,6 @@ const infoData: LinkData = [
 
 export default async function Home() {
   const imgsData = await populateImagesDataWithLinks(await getAllImagesData())
-  const infoCards = await getAllInfoCards()
 
   let mainImgs: typeof imgsData = []
   let currentImgs: typeof imgsData = []
@@ -62,24 +60,6 @@ export default async function Home() {
     mainImgs = imgsData.filter((e) => e.categorie === "main")
     currentImgs = imgsData.filter((e) => e.categorie === "current")
     galleryImgs = imgsData.filter((e) => e.categorie === "gallery")
-  }
-
-  let mainCards: typeof infoCards = []
-  let currentCards: typeof infoCards = []
-
-  if (infoCards instanceof Array) {
-    const arr = infoCards.map((e) => {
-      if (e.imageKey) {
-        return {
-          ...e,
-          imageSrc: imgsData.find((img) => img.key == e.imageKey)?.src,
-        }
-      }
-      return e
-    })
-
-    mainCards = arr.filter((e) => e.categorie === "main")
-    currentCards = arr.filter((e) => e.categorie === "current")
   }
 
   return (
@@ -113,7 +93,7 @@ export default async function Home() {
           <div className="grid grid-cols-[2fr_1fr] gap-x-3">
             <article className="bg-orange-100 px-10 py-8 rounded-lg text-base shadow-lg">
               <h2 className="text-2xl font-black pb-2">
-                Zapraszamy takze do naszych sklepow w Kaliszu
+                Zapraszamy takze do naszych sklepow w Kaliszu */{" "}
               </h2>
               <ul className="list-disc flex flex-col gap-2">
                 <li>

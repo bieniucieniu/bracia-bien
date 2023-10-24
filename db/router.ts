@@ -1,14 +1,8 @@
 import {
   addImagesData,
   deleteImagesData,
-  populateImagesDataWithLinks,
   updateImagesData,
 } from "@/db/imagesData/serverApi"
-import {
-  addInfoCards,
-  deleteInfoCards,
-  updateInfoCards,
-} from "@/db/infoCard/serverApi"
 import { getAuth } from "@/lib/auth"
 import { NextResponse } from "next/server"
 
@@ -19,17 +13,11 @@ export async function POST(req: Request) {
 
   const data = (await req.json()) as {
     addImagesData: Parameters<typeof addImagesData>[0] | undefined
-    addInfoCards: Parameters<typeof addInfoCards>[0] | undefined
   }
   if (data.addImagesData !== undefined) {
     const res = await addImagesData(data.addImagesData)
     return NextResponse.json(res)
   }
-  if (data.addInfoCards !== undefined) {
-    const res = await addInfoCards(data.addInfoCards)
-    return NextResponse.json(res)
-  }
-
   NextResponse.json({ message: "no data provaided" })
 }
 export async function PATCH(req: Request) {
@@ -40,8 +28,6 @@ export async function PATCH(req: Request) {
   const data = (await req.json()) as {
     updateImagesData: Parameters<typeof updateImagesData>[0] | undefined
     deleteImagesData: Parameters<typeof deleteImagesData>[0] | undefined
-    updateInfoCards: Parameters<typeof updateInfoCards>[0] | undefined
-    deleteInfoCards: Parameters<typeof deleteInfoCards>[0] | undefined
   }
 
   const res: {
@@ -58,16 +44,5 @@ export async function PATCH(req: Request) {
     const deleted = await deleteImagesData(data.deleteImagesData)
     res.images.deleted = deleted
   }
-
-  if (data.updateInfoCards !== undefined) {
-    const updated = await updateInfoCards(data.updateInfoCards)
-    res.cards.updated = updated
-  }
-
-  if (data.deleteInfoCards !== undefined) {
-    const deleted = await deleteInfoCards(data.deleteInfoCards)
-    res.cards.deleted = deleted
-  }
-
   return NextResponse.json(res)
 }

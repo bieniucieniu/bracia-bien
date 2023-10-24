@@ -3,11 +3,6 @@ import type {
   deleteImagesData as deleteImages,
   updateImagesData as updateImages,
 } from "./imagesData/serverApi"
-import type {
-  addInfoCards as addCards,
-  deleteInfoCards as deleteCards,
-  updateInfoCards as updataCards,
-} from "./infoCard/serverApi"
 export async function addImagesData(
   data: Parameters<typeof addImages>[0] | undefined,
   onCompleat?: (res?: Response | any) => void,
@@ -62,69 +57,6 @@ export async function deleteImagesData(
       method: "PATCH",
       body: JSON.stringify({ deleteImagesData: data }),
     })
-
-    onCompleat && onCompleat(res)
-  } catch (e) {
-    onCompleat && onCompleat(e)
-  }
-}
-
-export async function addInfoCards(
-  data: Parameters<typeof addCards>[0] | undefined,
-  onCompleat?: (res?: Response | any) => void,
-) {
-  if (!data) return
-  try {
-    if (!data.length) {
-      throw new Error("no data provided")
-    }
-
-    const res = await fetch("/api/postgres", {
-      method: "POST",
-      body: JSON.stringify({ addInfoCards: data }),
-    })
-
-    onCompleat && onCompleat(res)
-  } catch (e) {
-    onCompleat && onCompleat(e)
-  }
-}
-export async function deleteInfoCards(
-  data: Parameters<typeof deleteCards>[0] | undefined,
-  onCompleat?: (res?: Response | any) => void,
-) {
-  if (!data) return
-  if (!data.length) {
-    throw new Error("no data provided")
-  }
-  try {
-    const res = await fetch("/api/postgres", {
-      method: "PATCH",
-      body: JSON.stringify({ deleteInfoCards: data }),
-    })
-
-    onCompleat && onCompleat(res)
-  } catch (e) {
-    onCompleat && onCompleat(e)
-  }
-}
-
-export async function updateInfoCards(
-  data: Parameters<typeof updataCards>[0] | undefined,
-  onCompleat?: (res?: Response | any) => void,
-) {
-  if (!data) return
-  if (!data.length) {
-    throw new Error("no data provided")
-  }
-  try {
-    const res = await fetch("/api/postgres", {
-      method: "PATCH",
-      body: JSON.stringify({ updateInfoCards: data }),
-    })
-
-    const json = await res.json()
-    console.log(json)
 
     onCompleat && onCompleat(res)
   } catch (e) {
