@@ -13,10 +13,10 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body
-        className={`${roboto.className} scroll-smooth overflow-auto snap-y snap-proximity h-screen`}
-        style={{ scrollbarGutter: "stable", scrollBehavior: "smooth" }}
+        className={`${roboto.className} overflow-auto snap-y snap-proximity h-screen`}
+        style={{ scrollbarGutter: "stable" }}
       >
         <Topbar />
         {children}
