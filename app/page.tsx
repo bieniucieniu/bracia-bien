@@ -10,7 +10,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { twMerge } from "tailwind-merge"
-import { Baby, Clock, Medal, Minimize2, Smile } from "lucide-react"
+import { Clock, Medal, Minimize2 } from "lucide-react"
 
 export const revalidate = 3600
 
