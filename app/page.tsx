@@ -66,7 +66,7 @@ export default async function Home() {
   }
 
   return (
-    <>
+    <main>
       <div className="min-h-screen pt-4 flex justify-center items-center px-4">
         <Image src="/logo.png" priority alt="logo" width={638} height={189} />
       </div>
@@ -245,6 +245,6 @@ export default async function Home() {
           </div>
         </MenuRoot>
       </footer>
-    </>
+    </main>
   )
 }
