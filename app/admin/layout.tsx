@@ -5,7 +5,6 @@ import {
   populateImagesDataWithLinks,
 } from "@/db/imagesData/serverApi"
 import { getAuth } from "@/lib/auth"
-import { Card, CardContent } from "@/components/ui/card"
 
 export const metadata = {
   title: "admin page",
