@@ -31,15 +31,13 @@ export default async function AdminLayout({
 
   return (
     <AdminContextProvider imagesData={imagesData}>
-      <Card className="pt-24 lg:pt-16">
-        <CardContent className="flex items-center justify-between gap-x-3">
-          <span>
-            zalogowany jako{" "}
-            <mark className="px-1 rounded">{auth.user?.name}</mark>
-          </span>
-          <AuthButton signed className="inline-block self-end" />
-        </CardContent>
-      </Card>
+      <div className="fixed bottom-0 inset-x-0 bg-white z-50 flex justify-between items-center p-4 border-t shadow-inner">
+        <span>
+          zalogowany jako{" "}
+          <mark className="px-1 rounded">{auth.user?.name}</mark>
+        </span>
+        <AuthButton signed className="inline-block self-end" />
+      </div>
 
       {children}
     </AdminContextProvider>
