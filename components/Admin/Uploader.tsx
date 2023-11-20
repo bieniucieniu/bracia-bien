@@ -70,9 +70,11 @@ export function Uploader({
 
         e.forEach(({ key, url }) => {
           imagesData.set(key, {
+            key,
             src: url,
-            categorie: categorie,
+            categorie,
             alt,
+            change: {},
           })
         })
 
