@@ -38,7 +38,7 @@ const ImageSelector = forwardRef<
         className="max-h-[calc(100svh_-_20px)] lg:max-w-[calc(100svw_-_100px)] overflow-auto"
       >
         <ul className="flex flex-row flex-wrap overflow-auto gap-4 p-2">
-          {imagesData.map(({ src, alt, key, categorie }) => (
+          {[...imagesData.values()].map(({ src, alt, key, categorie }) => (
             <Button
               asChild
               onClick={() => {
