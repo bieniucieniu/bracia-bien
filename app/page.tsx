@@ -84,91 +84,83 @@ export default async function Home() {
   }
 
   return (
-    <main className="w-screen h-screen flex justify-center items-center">
-      <h2 className="text-5xl">in prodaction</h2>
-    </main>
-  )
+    <>
+      <div className="min-h-screen relative grid overflow-x-hidden pt-4">
+        <Banner data={mainImgs} />
+      </div>
+      <div
+        id="about"
+        className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center"
+      >
+        <ImageSlider
+          data={currentImgs}
+          className="m-2 object-contain overflow-hidden h-screen"
+        />
+        <div className="bg-red-500 overflow-hidden min-h-screen lg:h-auto">
+          <InfoCards cards={mainCards} />
+        </div>
+      </div>
+      {galleryImgs.length > 0 ? (
+        <div className="min-h-screen relative flex justify-stretch items-stretch p-4">
+          <PhotoGalery
+            data={galleryImgs}
+            className="h-[calc(100vh_-_32px)] w-[calc(100vw_-_32px)]"
+          />
+        </div>
+      ) : null}
+      <footer
+        id="info"
+        className="min-h-screen grid grid-cols-1 xl:grid-cols-3 snap-center"
+      >
+        <MenuRoot
+          className="flex bg-red-500 justify-center relative overflow-hidden col-span-2"
+          styleMotion={{ backgroundColor: "lightblue" }}
+        >
+          <div className="max-w-fit m-auto flex flex-col gap-0">
+            <h1
+              className={playfair.className + " text-4xl font-bold z-10 mb-8"}
+            >
+              Skontaktuj się <br /> z nami
+            </h1>
 
-  /*
-	  return (
-		<>
-		  <div className="min-h-screen relative grid overflow-x-hidden pt-4">
-			<Banner data={mainImgs} />
-		  </div>
-		  <div
-			id="about"
-			className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center"
-		  >
-			<ImageSlider
-			  data={currentImgs}
-			  className="m-2 object-contain overflow-hidden h-screen"
-			/>
-			<div className="bg-red-500 overflow-hidden min-h-screen lg:h-auto">
-			  <InfoCards cards={mainCards} />
-			</div>
-		  </div>
-		  {galleryImgs.length > 0 ? (
-			<div className="min-h-screen relative flex justify-stretch items-stretch p-4">
-			  <PhotoGalery
-				data={galleryImgs}
-				className="h-[calc(100vh_-_32px)] w-[calc(100vw_-_32px)]"
-			  />
-			</div>
-		  ) : null}
-		  <footer
-			id="info"
-			className="min-h-screen grid grid-cols-1 xl:grid-cols-3 snap-center"
-		  >
-			<MenuRoot
-			  className="flex bg-red-500 justify-center relative overflow-hidden col-span-2"
-			  styleMotion={{ backgroundColor: "lightblue" }}
-			>
-			  <div className="max-w-fit m-auto flex flex-col gap-0">
-				<h1
-				  className={playfair.className + " text-4xl font-bold z-10 mb-8"}
-				>
-				  Skontaktuj się <br /> z nami
-				</h1>
-	
-				{contactsData.map(({ name, ...props }, i) => (
-				  <MenuItem
-					key={i}
-					className="relative px-4 py-2 rounded-lg z-10 w-fit hover:underline"
-					styleMotion={{
-					  backgroundColor: "lightblue",
-					  borderRadius: "10px",
-					}}
-				  >
-					<a {...props}>{name}</a>
-				  </MenuItem>
-				))}
-			  </div>
-			</MenuRoot>
-			<MenuRoot
-			  className="flex bg-sky-100 justify-center relative overflow-hidden"
-			  styleMotion={{ backgroundColor: "pink" }}
-			>
-			  <div className="max-w-fit m-auto flex flex-col gap-0">
-				<h1
-				  className={playfair.className + " text-4xl font-bold z-10 mb-8"}
-				>
-				  informacje
-				</h1>
-				{infoData.map(({ name, ...props }, i) => (
-				  <MenuItem
-					key={i}
-					className="relative px-4 py-2 rounded-lg z-10 w-fit hover:underline"
-					styleMotion={{
-					  borderRadius: "10px",
-					}}
-				  >
-					<a {...props}>{name}</a>
-				  </MenuItem>
-				))}
-			  </div>
-			</MenuRoot>
-		  </footer>
-		</>
-	  )
-	  */
+            {contactsData.map(({ name, ...props }, i) => (
+              <MenuItem
+                key={i}
+                className="relative px-4 py-2 rounded-lg z-10 w-fit hover:underline"
+                styleMotion={{
+                  backgroundColor: "lightblue",
+                  borderRadius: "10px",
+                }}
+              >
+                <a {...props}>{name}</a>
+              </MenuItem>
+            ))}
+          </div>
+        </MenuRoot>
+        <MenuRoot
+          className="flex bg-sky-100 justify-center relative overflow-hidden"
+          styleMotion={{ backgroundColor: "pink" }}
+        >
+          <div className="max-w-fit m-auto flex flex-col gap-0">
+            <h1
+              className={playfair.className + " text-4xl font-bold z-10 mb-8"}
+            >
+              informacje
+            </h1>
+            {infoData.map(({ name, ...props }, i) => (
+              <MenuItem
+                key={i}
+                className="relative px-4 py-2 rounded-lg z-10 w-fit hover:underline"
+                styleMotion={{
+                  borderRadius: "10px",
+                }}
+              >
+                <a {...props}>{name}</a>
+              </MenuItem>
+            ))}
+          </div>
+        </MenuRoot>
+      </footer>
+    </>
+  )
 }
