@@ -16,7 +16,6 @@ export default async function AdminLayout({
   children: React.ReactNode
 }) {
   const auth = await getAuth()
-  const imagesData = await populateImagesDataWithLinks(await getAllImagesData())
 
   if (!auth)
     return (
@@ -27,6 +26,8 @@ export default async function AdminLayout({
         <AuthButton />
       </main>
     )
+
+  const imagesData = await populateImagesDataWithLinks(await getAllImagesData())
 
   return (
     <AdminContextProvider imagesData={imagesData}>

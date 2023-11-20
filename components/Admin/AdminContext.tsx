@@ -7,7 +7,7 @@ export type ImageData = z.infer<typeof insertImagesSchema>
 
 type ImagesData = Map<
   string,
-  Omit<ImageData, "key"> & {
+  ImageData & {
     src?: string
     change: {
       alt?: ImageData["alt"]
@@ -28,12 +28,16 @@ export function AdminContextProvider({
   imagesData: newImagesData,
   children,
 }: {
-  imagesData: ImagesData | undefined | null
+  imagesData: ImageData[] | undefined | null
   children: React.ReactNode
 }) {
-  const [imagesData, setImagesData] = useState<ImagesData>(
-    () => new Map(newImagesData) ?? new Map(),
-  )
+  const [imagesData, setImagesData] = useState<ImagesData>(() => {
+    const map = new Map()
+    newImagesData?.forEach((img) => {
+      map.set(img.key, img)
+    })
+    return map
+  })
   return (
     <adminContext.Provider value={{ imagesData, setImagesData }}>
       {children}
