@@ -3,7 +3,19 @@ import type { insertImagesSchema } from "@/db/imagesData/serverApi"
 import { createContext, useContext, useState } from "react"
 import { z } from "zod"
 
-type ImagesData = (z.infer<typeof insertImagesSchema> & { src?: string })[]
+export type ImageData = z.infer<typeof insertImagesSchema>
+
+type ImagesData = Map<
+  string,
+  Omit<ImageData, "key"> & {
+    src?: string
+    change: {
+      alt?: ImageData["alt"]
+      categorie?: ImageData["categorie"]
+      delete?: true
+    }
+  }
+>
 
 type AdminContext = {
   imagesData: ImagesData
@@ -20,7 +32,7 @@ export function AdminContextProvider({
   children: React.ReactNode
 }) {
   const [imagesData, setImagesData] = useState<ImagesData>(
-    () => structuredClone(newImagesData) ?? [],
+    () => new Map(newImagesData) ?? new Map(),
   )
   return (
     <adminContext.Provider value={{ imagesData, setImagesData }}>

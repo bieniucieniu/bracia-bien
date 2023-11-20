@@ -28,71 +28,50 @@ import {
 } from "@/components/ui/popover"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Link from "next/link"
-import { imagesCategorieEnum, imagesData } from "@/db/schema/imagesData"
+import { imagesCategorieEnum } from "@/db/schema/imagesData"
+import type { ImageData } from "./AdminContext"
 
 import { Label } from "../ui/label"
 import { twJoin } from "tailwind-merge"
 import { Input } from "../ui/input"
 import { updateImagesData, deleteImagesData } from "@/db/clientApi"
 import { toPl } from "@/lib/utils"
-import { InferInsertModel } from "drizzle-orm"
 import { useAdminContext } from "./AdminContext"
 
-interface ImgData extends InferInsertModel<typeof imagesData> {
-  src?: string | undefined
-}
-
 export default function ImageDataEditor() {
-  const { imagesData } = useAdminContext()
-  const [imageData, setImageData] = useState<
-    (ImgData & {
-      newAlt?: string
-      newCategorie?: ImgData["categorie"]
-      delete?: boolean
-    })[]
-  >(() => structuredClone(imagesData))
+  const { imagesData, setImagesData } = useAdminContext()
+  function deleteData(key: string) {
+    const d = imagesData.get(key)
 
-  function deleteData(key: ImgData["key"]) {
-    const newData = imageData.map((e) => {
-      if (e.key === key) {
-        if (e.delete === true) return { ...e, delete: undefined }
-        return { ...e, delete: true }
-      }
-      return e
-    })
+    if (!d) return
+    d.change.delete = true
 
-    setImageData(newData)
+    setImagesData(new Map(imagesData))
   }
-  function SetNewAlt(key: ImgData["key"], alt: string) {
-    const newData = imageData.map((e) => {
-      if (e.key === key) {
-        if (alt === e.alt || alt === e.newAlt)
-          return { ...e, newAlt: undefined }
-        return { ...e, newAlt: alt }
-      }
-      return e
-    })
+  function SetNewAlt(key: string, alt: string) {
+    const d = imagesData.get(key)
 
-    setImageData(newData)
+    if (!d) return
+    d.change.alt = alt
+
+    setImagesData(new Map(imagesData))
   }
-  function SetNewCategorie(
-    key: ImgData["key"],
-    categorie: ImgData["categorie"],
-  ) {
-    const newData = imageData.map((e) => {
-      if (e.key === key) {
-        if (categorie === e.categorie) return { ...e, newCategorie: undefined }
-        return { ...e, newCategorie: categorie }
-      }
-      return e
-    })
+  function SetNewCategorie(key: string, categorie: ImageData["categorie"]) {
+    const d = imagesData.get(key)
 
-    setImageData(newData)
+    if (!d) return
+    d.change.categorie = categorie
+
+    setImagesData(new Map(imagesData))
   }
   const [altEdit, setAltEdit] = useState<string>("")
 
   function resetChanges() {
-    setImageData(imagesData)
+    imagesData.forEach((value) => {
+      value.change = {}
+    })
+
+    setImagesData(new Map(imagesData))
   }
 
   const [uploading, setUploading] = useState<boolean>(false)
@@ -100,49 +79,41 @@ export default function ImageDataEditor() {
   function submitChanges() {
     setUploading(true)
 
-    const toDelete = imageData
-      .filter((e) => e.delete === true)
-      .map((e) => e.key)
-    const toUpdateCategorie = imagesCategorieEnum.enumValues.map(
-      (categorie) => {
-        const keys = imageData
-          .filter(
-            (e) =>
-              e.newCategorie === categorie && e.newCategorie !== e.categorie,
-          )
-          .map((e) => e.key)
-        return { keys, change: { categorie } }
-      },
-    )
-    const toUpdateAlt = imageData
-      .filter((e) => e.newAlt && e.newAlt !== e.alt)
-      .map((e) => ({
-        keys: [e.key],
-        change: { alt: e.newAlt },
-      }))
+    const toDelete: string[] = []
+    const toUpdate: {
+      keys: string[]
+      change: {
+        categorie?: ImageData["categorie"]
+        alt?: string
+      }
+    }[] = []
 
-    updateImagesData(
-      toUpdateCategorie.length || toUpdateAlt.length
-        ? [...toUpdateCategorie, ...toUpdateAlt]
-        : undefined,
-      (res) => {
-        setUploading(true)
-        if (res instanceof Response && res.status === 200) {
-          const newData: ImgData[] = imageData.map((e) => ({
-            ...e,
-            alt: e.newAlt ?? e.alt,
-            categorie: e.newCategorie ?? e.categorie,
-            newAlt: undefined,
-            newCategorie: undefined,
-          }))
+    imagesData.forEach((value, key) => {
+      if (value.change.delete) toDelete.push(key)
+      if (value.change.categorie || value.change.alt)
+        toUpdate.push({
+          keys: [key],
+          change: value.change,
+        })
+    })
 
-          setImageData(newData)
-        } else {
-          console.log(res)
-        }
-        setUploading(false)
-      },
-    )
+    updateImagesData(toUpdate.length ? toUpdate : undefined, (res) => {
+      setUploading(true)
+      if (res instanceof Response && res.status === 200) {
+        const newData: ImgData[] = imageData.map((e) => ({
+          ...e,
+          alt: e.newAlt ?? e.alt,
+          categorie: e.newCategorie ?? e.categorie,
+          newAlt: undefined,
+          newCategorie: undefined,
+        }))
+
+        setImageData(newData)
+      } else {
+        console.log(res)
+      }
+      setUploading(false)
+    })
     deleteImagesData(toDelete.length ? toDelete : undefined, (res) => {
       setUploading(true)
       if (res instanceof Response && res.status === 200) {
@@ -175,7 +146,7 @@ export default function ImageDataEditor() {
                 {src ? (
                   <Image
                     alt={alt ?? ""}
-                    src={src ?? ""}
+                    src={src}
                     width={400}
                     height={300}
                     className={twJoin("object-contain h-auto transition")}
