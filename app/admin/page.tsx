@@ -6,15 +6,12 @@ import {
   populateImagesDataWithLinks,
 } from "@/db/imagesData/serverApi"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CardCreator, CardEditorSlider } from "@/components/Admin/CardDashboard"
 import ImagesDataEditor from "@/components/Admin/ImagesDataEditor"
 import { AdminContextProvider } from "@/components/Admin/AdminContext"
-import { getAllInfoCards } from "@/db/infoCard/serverApi"
 
 export default async function Admin() {
   const auth = await getAuth()
   const imagesData = await populateImagesDataWithLinks(await getAllImagesData())
-  const infoCards = await getAllInfoCards()
 
   if (!auth)
     return (
@@ -48,25 +45,6 @@ export default async function Admin() {
             </CardHeader>
             <CardContent>
               <Uploader />
-            </CardContent>
-          </Card>
-          <Card className="flex flex-col">
-            <CardHeader>
-              <CardTitle>Nowa karta</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardCreator />
-            </CardContent>
-          </Card>
-          <Card className="flex flex-col lg:col-span-2 2xl:col-span-1">
-            <CardHeader>
-              <CardTitle>Admin dashboard</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardEditorSlider
-                className="min-h-[668px] min-w-[517px] overflow-hidden"
-                data={infoCards instanceof Array ? infoCards : []}
-              />
             </CardContent>
           </Card>
         </section>
