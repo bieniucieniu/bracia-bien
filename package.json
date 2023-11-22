@@ -58,6 +58,7 @@
   "devDependencies": {
     "@types/pg": "^8.10.9",
     "drizzle-kit": "^0.19.13",
-    "pg": "^8.11.3"
+    "pg": "^8.11.3",
+    "shadcn-ui": "^0.4.1"
   }
 }
