@@ -74,11 +74,14 @@ export function Uploader({
             src: url,
             categorie,
             alt,
-            change: {},
+            change: {
+              alt: undefined,
+              categorie: undefined,
+            },
           })
         })
 
-        setImagesData(new Map())
+        setImagesData(new Map(imagesData))
       }
       setFiles([])
     },
