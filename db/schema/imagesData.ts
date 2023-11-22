@@ -13,7 +13,7 @@ export const imagesData = pgTable(
     key: varchar("key").primaryKey().notNull(),
     categorie: imagesCategorieEnum("categorie").default("gallery").notNull(),
     alt: varchar("alt").default("").notNull(),
-    description: text("massage"),
+    description: text("description"),
     link: text("link"),
   },
   (table) => {
