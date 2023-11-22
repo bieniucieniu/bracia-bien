@@ -34,7 +34,10 @@ export function AdminContextProvider({
   const [imagesData, setImagesData] = useState<ImagesData>(() => {
     const map = new Map()
     newImagesData?.forEach((img) => {
-      map.set(img.key, img)
+      map.set(img.key, {
+        ...img,
+        change: { alt: undefined, categorie: undefined },
+      })
     })
     return map
   })

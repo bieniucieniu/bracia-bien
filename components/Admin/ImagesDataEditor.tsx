@@ -40,6 +40,7 @@ import { useAdminContext } from "./AdminContext"
 
 export default function ImageDataEditor() {
   const { imagesData, setImagesData } = useAdminContext()
+
   function deleteData(key: string) {
     const d = imagesData.get(key)
 
@@ -56,6 +57,7 @@ export default function ImageDataEditor() {
 
     setImagesData(new Map(imagesData))
   }
+
   function SetNewCategorie(key: string, categorie: ImageData["categorie"]) {
     const d = imagesData.get(key)
 
@@ -68,7 +70,11 @@ export default function ImageDataEditor() {
 
   function resetChanges() {
     imagesData.forEach((value) => {
-      value.change = {}
+      value.change = {
+        categorie: undefined,
+        delete: undefined,
+        alt: undefined,
+      }
     })
 
     setImagesData(new Map(imagesData))
@@ -89,8 +95,8 @@ export default function ImageDataEditor() {
     }[] = []
 
     imagesData.forEach((value, key) => {
-      if (value.change.delete) toDelete.push(key)
-      if (value.change.categorie || value.change.alt)
+      if (value.change?.delete) toDelete.push(key)
+      if (value.change?.categorie || value.change?.alt)
         toUpdate.push({
           keys: [key],
           change: value.change,
@@ -103,8 +109,8 @@ export default function ImageDataEditor() {
         imagesData.forEach((e, key) => {
           imagesData.set(key, {
             ...e,
-            alt: e.change.alt ?? e.alt,
-            categorie: e.change.categorie ?? e.categorie,
+            alt: e.change?.alt ?? e.alt,
+            categorie: e.change?.categorie ?? e.categorie,
             change: {},
           })
         })
@@ -118,7 +124,7 @@ export default function ImageDataEditor() {
       setUploading(true)
       if (res instanceof Response && res.status === 200) {
         imagesData.forEach((e, key) => {
-          if (e.change.delete === true) {
+          if (e.change?.delete === true) {
             imagesData.delete(key)
           }
         })
@@ -187,12 +193,12 @@ export default function ImageDataEditor() {
                   <section className="flex gap-x-3">
                     <Popover
                       modal
-                      onOpenChange={() => setAltEdit(change.alt ?? alt ?? "")}
+                      onOpenChange={() => setAltEdit(change?.alt ?? alt ?? "")}
                     >
                       <PopoverTrigger asChild>
                         <Button
                           disabled={uploading}
-                          variant={change.alt ? "green" : "outline"}
+                          variant={change?.alt ? "green" : "outline"}
                         >
                           edit alt
                         </Button>
@@ -207,19 +213,21 @@ export default function ImageDataEditor() {
                         <div className="flex flex-row gap-x-2 justify-end mt-2">
                           <Button
                             variant={
-                              change.alt === altEdit ? "destructive" : "default"
+                              change?.alt === altEdit
+                                ? "destructive"
+                                : "default"
                             }
                             onClick={() => {
                               SetNewAlt(key, altEdit)
                             }}
                           >
-                            {change.alt === altEdit ? "reset" : "set"}
+                            {change?.alt === altEdit ? "reset" : "set"}
                           </Button>
                         </div>
                       </PopoverContent>
                     </Popover>
                     <Button
-                      variant={change.delete ? "destructive" : "default"}
+                      variant={change?.delete ? "destructive" : "default"}
                       onClick={() => {
                         deleteData(key)
                       }}
@@ -247,14 +255,14 @@ export default function ImageDataEditor() {
                 <AlertDialogTitle>
                   Delete of{" "}
                   {
-                    [...imagesData.values()].filter((e) => e.change.delete)
+                    [...imagesData.values()].filter((e) => e.change?.delete)
                       .length
                   }{" "}
                   files?
                   <br />
                   Update categorie of{" "}
                   {
-                    [...imagesData.values()].filter((e) => e.change.categorie)
+                    [...imagesData.values()].filter((e) => e.change?.categorie)
                       .length
                   }{" "}
                   files?
@@ -285,14 +293,14 @@ export default function ImageDataEditor() {
                   <br />
                   Delete of{" "}
                   {
-                    [...imagesData.values()].filter((e) => e.change.delete)
+                    [...imagesData.values()].filter((e) => e.change?.delete)
                       .length
                   }{" "}
                   files?
                   <br />
                   Update categorie of{" "}
                   {
-                    [...imagesData.values()].filter((e) => e.change.categorie)
+                    [...imagesData.values()].filter((e) => e.change?.categorie)
                       .length
                   }{" "}
                   files?
