@@ -10,7 +10,6 @@ import Image from "next/image"
 import Link from "next/link"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { twMerge } from "tailwind-merge"
-import { Clock, Medal, Minimize2 } from "lucide-react"
 
 export const revalidate = 3600
 
@@ -84,52 +83,25 @@ export default async function Home() {
               className="w-auto rounded-lg object-contain m-auto"
             />
           </div>
-          <Card className="col-span-3 lg:col-span-2 bg-orange-100 grid grid-cols-[1fr_30px] pr-5">
-            <div>
-              <CardHeader
-                className={twMerge(
-                  playfair.className,
-                  "text-2xl font-bold pb-2",
-                )}
-              >
-                Jestesmy rodzinna firma
-              </CardHeader>
-              <CardContent>
-                <p>
-                  Oferujemy bogaty asortyment bielizny, rajstop, skarpet i pizam
-                  dla kobiet, mezczyzn i dzieci. <br /> Siedziba firmy zanjduje
-                  sie w Kaliszu przy{" "}
-                  <Link
-                    href="https://goo.gl/maps/BfMbTwFQTeVjVR717"
-                    target="_blank"
-                    className="hover:underline text-indigo-500"
-                  >
-                    ul. Stawiszyńskiej 125{" "}
-                  </Link>
-                  , Prowadzimy zarowno sprzedaz hurtowa jak i detaliczna.
-                </p>
-              </CardContent>
-            </div>
-            <div className="flex flex-col justify-around">
-              <Image
-                src="/boxers-boxer.svg"
-                alt="boxers"
-                width={30}
-                height={30}
-              />
-              <Image
-                src="/boxers-briefs.svg"
-                alt="boxers"
-                width={30}
-                height={30}
-              />
-              <Image
-                src="/socks-solid.svg"
-                alt="boxers"
-                width={30}
-                height={30}
-              />
-            </div>
+          <Card className="col-span-3 lg:col-span-2 bg-orange-100 pr-5">
+            <CardHeader
+              className={twMerge(playfair.className, "text-2xl font-bold pb-2")}
+            ></CardHeader>
+            <CardContent>
+              <p>
+                Oferujemy bogaty asortyment bielizny, rajstop, skarpet i pizam
+                dla kobiet, mezczyzn i dzieci. <br /> Siedziba firmy zanjduje
+                sie w Kaliszu przy{" "}
+                <Link
+                  href="https://goo.gl/maps/BfMbTwFQTeVjVR717"
+                  target="_blank"
+                  className="hover:underline text-indigo-500"
+                >
+                  ul. Stawiszyńskiej 125{" "}
+                </Link>
+                , Prowadzimy zarowno sprzedaz hurtowa jak i detaliczna.
+              </p>
+            </CardContent>
           </Card>
           <Card className="bg-white col-span-3 sm:col-span-2">
             <CardHeader
@@ -137,40 +109,7 @@ export default async function Home() {
             >
               Zapraszamy takze do naszych sklepow w Kaliszu
             </CardHeader>
-            <CardContent>
-              <ul className="flex flex-col gap-4 pl-5">
-                <li className="flex justify-start items-center gap-x-2">
-                  <Clock />
-                  Pod Zegarem. Centrum handlowe
-                  <Link
-                    href="#"
-                    className="text-sm text-stone-500 hover:underline"
-                  >
-                    ul. Górnośląska 76A{" "}
-                  </Link>
-                </li>
-                <li className="flex justify-start items-center gap-x-2">
-                  <Medal />
-                  Złote Centrum. Centrum handlowe
-                  <Link
-                    href="#"
-                    className="text-sm text-stone-500 hover:underline"
-                  >
-                    ul. Polna 14{" "}
-                  </Link>
-                </li>
-                <li className="flex justify-start items-center gap-x-2">
-                  <Minimize2 />
-                  Mini Park. Centrum handlowe
-                  <Link
-                    href="#"
-                    className="text-sm text-stone-500 hover:underline"
-                  >
-                    ul. Prymasa Stefana Wyszyńskiego 42a{" "}
-                  </Link>
-                </li>
-              </ul>
-            </CardContent>
+            <CardContent></CardContent>
           </Card>
           <div className="overflow-hidden col-span-1 bg-white rounded-xl py-1.5 hidden sm:block">
             <ImageSlider
