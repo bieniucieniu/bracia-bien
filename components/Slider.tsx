@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import Image from "next/image"
 import { twMerge } from "tailwind-merge"
 import { v4 as uuidv4 } from "uuid"
+import { ArrowLeft, ArrowRight } from "lucide-react"
 const variants: Parameters<typeof motion.div>[0]["variants"] = {
   enter: ({
     direction,
@@ -96,7 +96,7 @@ export default function Slider({
   }, [state, autoSlide])
 
   return (
-    <div className={twMerge("relative h-full", className)}>
+    <div className={twMerge("relative", className)}>
       <AnimatePresence
         custom={{
           direction: state.direction,
@@ -111,7 +111,7 @@ export default function Slider({
           }}
           key={uuidv4()}
           variants={variants}
-          className="w-full h-full flex justify-center items-center"
+          className="h-full w-full"
           initial="enter"
           animate="center"
           exit="exit"
@@ -136,28 +136,16 @@ export default function Slider({
         </motion.div>
       </AnimatePresence>
       <button
-        className="absolute z-10 top-[calc(50%_-_20px)] left-[15px] w-[40px] h-[40px] rounded-full bg-white opacity-0 md:opacity-50 hover:opacity-70 transition-all"
+        className="absolute z-10 top-[calc(50%_-_20px)] left-[15px] w-[40px] h-[40px] rounded-full bg-white opacity-0 md:opacity-50 hover:opacity-70 transition-all select-none"
         onClick={() => dispach("previous")}
       >
-        <Image
-          src="/angle-left.svg"
-          alt="left arrow"
-          className="object-contain absolute top-[calc(50%_-_15px)] left-[3px]"
-          width={30}
-          height={30}
-        ></Image>
+        <ArrowLeft className="absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-1/2" />
       </button>
       <button
-        className="absolute z-10 top-[calc(50%_-_20px)] right-[15px] w-[40px] h-[40px] rounded-full bg-white opacity-0 md:opacity-50 hover:opacity-70 transition-all"
+        className="absolute z-10 top-[calc(50%_-_20px)] right-[15px] w-[40px] h-[40px] rounded-full bg-white opacity-0 md:opacity-50 hover:opacity-70 transition-all select-none"
         onClick={() => dispach("next")}
       >
-        <Image
-          src="/angle-right.svg"
-          alt="left right"
-          className="object-contain absolute top-[calc(50%_-_15px)] right-[3px]"
-          width={30}
-          height={30}
-        ></Image>
+        <ArrowRight className="absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-1/2" />
       </button>
     </div>
   )

@@ -1,15 +1,15 @@
 import { MenuItem, MenuRoot } from "@/components/PillMenu"
 import { playfair } from "@/lib/fonts"
-
 import { ImageSlider } from "@/components/HomePage/ImageSlider"
-import { InfoCards } from "@/components/HomePage/InfoCard"
 import PhotoGalery from "@/components/HomePage/PhotoGallery"
-import Banner from "@/components/HomePage/Banner"
 import {
   getAllImagesData,
   populateImagesDataWithLinks,
 } from "@/db/imagesData/serverApi"
-import { getAllInfoCards } from "@/db/infoCard/serverApi"
+import Image from "next/image"
+import Link from "next/link"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { twMerge } from "tailwind-merge"
 
 export const revalidate = 3600
 
@@ -53,7 +53,6 @@ const infoData: LinkData = [
 
 export default async function Home() {
   const imgsData = await populateImagesDataWithLinks(await getAllImagesData())
-  const infoCards = await getAllInfoCards()
 
   let mainImgs: typeof imgsData = []
   let currentImgs: typeof imgsData = []
@@ -65,48 +64,72 @@ export default async function Home() {
     galleryImgs = imgsData.filter((e) => e.categorie === "gallery")
   }
 
-  let mainCards: typeof infoCards = []
-  let currentCards: typeof infoCards = []
-
-  if (infoCards instanceof Array) {
-    const arr = infoCards.map((e) => {
-      if (e.imageKey) {
-        return {
-          ...e,
-          imageUrl: imgsData.find((img) => img.key == e.imageKey)?.url,
-        }
-      }
-      return e
-    })
-
-    mainCards = arr.filter((e) => e.categorie === "main")
-    currentCards = arr.filter((e) => e.categorie === "current")
-  }
-
   return (
-    <>
-      <div className="min-h-screen relative grid overflow-x-hidden pt-4">
-        <Banner data={mainImgs} />
+    <main>
+      <div className="min-h-screen pt-4 flex justify-center items-center px-4">
+        <Image src="/logo.png" priority alt="logo" width={638} height={189} />
       </div>
-      <div
+      <section
         id="about"
-        className="min-h-screen grid grid-cols-1 lg:grid-cols-2 snap-center"
+        className="bg-red-400 flex justify-center items-center py-10"
       >
-        <ImageSlider
-          data={currentImgs}
-          className="m-2 object-contain overflow-hidden h-screen"
-        />
-        <div className="bg-red-500 overflow-hidden min-h-screen lg:h-auto">
-          <InfoCards cards={mainCards} />
+        <div className="max-w-6xl mx-auto px-4 lg:px-20 grid grid-cols-3 gap-x-3 gap-y-4">
+          <div className="col-span-1 rougded-xl p-1.5 hidden bg-white rounded-xl lg:block">
+            <Image
+              src="/blob.svg"
+              alt="hurtownia"
+              width={900}
+              height={600}
+              className="w-auto rounded-lg object-contain m-auto"
+            />
+          </div>
+          <Card className="col-span-3 lg:col-span-2 bg-orange-100 pr-5">
+            <CardHeader
+              className={twMerge(playfair.className, "text-2xl font-bold pb-2")}
+            ></CardHeader>
+            <CardContent>
+              <p>
+                Oferujemy bogaty asortyment bielizny, rajstop, skarpet i pizam
+                dla kobiet, mezczyzn i dzieci. <br /> Siedziba firmy zanjduje
+                sie w Kaliszu przy{" "}
+                <Link
+                  href="https://goo.gl/maps/BfMbTwFQTeVjVR717"
+                  target="_blank"
+                  className="hover:underline text-indigo-500"
+                >
+                  ul. Stawiszyńskiej 125{" "}
+                </Link>
+                , Prowadzimy zarowno sprzedaz hurtowa jak i detaliczna.
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="bg-white col-span-3 sm:col-span-2">
+            <CardHeader
+              className={twMerge(playfair.className, "text-2xl font-bold pb-2")}
+            >
+              Zapraszamy takze do naszych sklepow w Kaliszu
+            </CardHeader>
+            <CardContent></CardContent>
+          </Card>
+          <div className="overflow-hidden col-span-1 bg-white rounded-xl py-1.5 hidden sm:block">
+            <ImageSlider
+              className="flex justify-center items-center h-full"
+              data={[
+                { src: "/blob.svg", key: "a" },
+                { src: "/blob.svg", key: "b" },
+                { src: "/blob.svg", key: "c" },
+              ]}
+            />
+          </div>
         </div>
-      </div>
+      </section>
       {galleryImgs.length > 0 ? (
-        <div className="min-h-screen relative flex justify-stretch items-stretch p-4">
+        <section className="min-h-screen relative flex justify-stretch items-stretch p-4">
           <PhotoGalery
             data={galleryImgs}
             className="h-[calc(100vh_-_32px)] w-[calc(100vw_-_32px)]"
           />
-        </div>
+        </section>
       ) : null}
       <footer
         id="info"
@@ -161,6 +184,6 @@ export default async function Home() {
           </div>
         </MenuRoot>
       </footer>
-    </>
+    </main>
   )
 }

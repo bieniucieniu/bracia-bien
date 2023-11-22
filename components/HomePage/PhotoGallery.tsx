@@ -8,7 +8,7 @@ export default function PhotoGalery({
   className,
 }: {
   data: (Omit<InferInsertModel<typeof imagesData>, "categorie"> & {
-    url?: string
+    src?: string
   })[]
   className?: string
 }) {
@@ -20,12 +20,12 @@ export default function PhotoGalery({
         </CardHeader>
         <CardContent>
           <div className="flex flex-row w-full justify-around gap-3 flex-wrap">
-            {data.map(({ url, key, alt }, i) => {
-              if (!url) return null
+            {data.map(({ src, key, alt }, i) => {
+              if (!src) return null
               return (
                 <Image
                   key={key}
-                  src={url}
+                  src={src}
                   alt={alt ?? `photo-${i}`}
                   height={800}
                   width={1920}

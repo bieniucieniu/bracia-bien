@@ -1,4 +1,4 @@
-import { pgTable, pgEnum, unique, varchar } from "drizzle-orm/pg-core"
+import { pgTable, pgEnum, unique, varchar, text } from "drizzle-orm/pg-core"
 
 export const imagesCategorieEnum = pgEnum("images_categorie", [
   "gallery",
@@ -13,6 +13,8 @@ export const imagesData = pgTable(
     key: varchar("key").primaryKey().notNull(),
     categorie: imagesCategorieEnum("categorie").default("gallery").notNull(),
     alt: varchar("alt").default("").notNull(),
+    message: text("massage"),
+    link: text("link"),
   },
   (table) => {
     return {

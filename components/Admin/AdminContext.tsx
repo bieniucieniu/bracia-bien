@@ -1,41 +1,48 @@
 "use client"
 import type { insertImagesSchema } from "@/db/imagesData/serverApi"
-import type { insertCardSchema } from "@/db/infoCard/serverApi"
 import { createContext, useContext, useState } from "react"
 import { z } from "zod"
 
-type ImagesData = (z.infer<typeof insertImagesSchema> & { url?: string })[]
-type InfoCards = z.infer<typeof insertCardSchema>[]
+export type ImageData = z.infer<typeof insertImagesSchema>
+
+type ImagesData = Map<
+  string,
+  ImageData & {
+    src?: string
+    change: {
+      alt?: ImageData["alt"]
+      categorie?: ImageData["categorie"]
+      delete?: true
+    }
+  }
+>
 
 type AdminContext = {
   imagesData: ImagesData
   setImagesData: React.Dispatch<React.SetStateAction<ImagesData>>
-  infoCards: InfoCards
-  setInfoCards: React.Dispatch<React.SetStateAction<InfoCards>>
 }
 
 const adminContext = createContext<AdminContext | null>(null)
 
 export function AdminContextProvider({
   imagesData: newImagesData,
-  infoCards: newInfoCards,
   children,
 }: {
-  imagesData: ImagesData | undefined | null
-  infoCards: InfoCards | undefined | null
+  imagesData: ImageData[] | undefined | null
   children: React.ReactNode
 }) {
-  const [imagesData, setImagesData] = useState<ImagesData>(
-    () => structuredClone(newImagesData) ?? [],
-  )
-  const [infoCards, setInfoCards] = useState<InfoCards>(
-    () => structuredClone(newInfoCards) ?? [],
-  )
-
+  const [imagesData, setImagesData] = useState<ImagesData>(() => {
+    const map = new Map()
+    newImagesData?.forEach((img) => {
+      map.set(img.key, {
+        ...img,
+        change: { alt: undefined, categorie: undefined },
+      })
+    })
+    return map
+  })
   return (
-    <adminContext.Provider
-      value={{ imagesData, setImagesData, infoCards, setInfoCards }}
-    >
+    <adminContext.Provider value={{ imagesData, setImagesData }}>
       {children}
     </adminContext.Provider>
   )

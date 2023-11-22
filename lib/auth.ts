@@ -1,4 +1,5 @@
-import { getServerSession, Session, type NextAuthOptions } from "next-auth"
+import { getServerSession, Session } from "next-auth"
+import type { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 
 const allowed = ["bienmikolaj@gmail.com", "braciabien@gmail.com"]
@@ -11,6 +12,7 @@ const authOptions: NextAuthOptions = {
     }),
   ],
 }
+
 export default authOptions
 
 export async function getAuth(): Promise<undefined | Session> {

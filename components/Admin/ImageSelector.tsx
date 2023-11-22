@@ -38,7 +38,7 @@ const ImageSelector = forwardRef<
         className="max-h-[calc(100svh_-_20px)] lg:max-w-[calc(100svw_-_100px)] overflow-auto"
       >
         <ul className="flex flex-row flex-wrap overflow-auto gap-4 p-2">
-          {imagesData.map(({ url, alt, key, categorie }) => (
+          {[...imagesData.values()].map(({ src, alt, key, categorie }) => (
             <Button
               asChild
               onClick={() => {
@@ -54,13 +54,13 @@ const ImageSelector = forwardRef<
               )}
             >
               <li>
-                {url ? (
+                {src ? (
                   <Image
                     className="object-contain h-[150px] w-[200px]"
                     width={200}
                     height={150}
                     alt={alt ?? "image"}
-                    src={url}
+                    src={src}
                   />
                 ) : (
                   <p>image error</p>

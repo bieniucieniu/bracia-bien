@@ -15,9 +15,13 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { addImagesData } from "@/db/clientApi"
-import { imagesCategorieEnum, imagesData } from "@/db/schema/imagesData"
+import {
+  imagesCategorieEnum,
+  imagesData as dbImageDataSchema,
+} from "@/db/schema/imagesData"
 import { InferInsertModel } from "drizzle-orm"
 import { toPl } from "@/lib/utils"
+import { useAdminContext } from "./AdminContext"
 
 const { useUploadThing } = generateReactHelpers<FileRouter>()
 
@@ -52,6 +56,8 @@ export function Uploader({
     onDrop,
   })
 
+  const { imagesData, setImagesData } = useAdminContext()
+
   const { isUploading, startUpload } = useUploadThing(endpoint ?? "image", {
     onClientUploadComplete: (e) => {
       if (Array.isArray(e)) {
@@ -61,6 +67,21 @@ export function Uploader({
           alt,
         }))
         addImagesData(items)
+
+        e.forEach(({ key, url }) => {
+          imagesData.set(key, {
+            key,
+            src: url,
+            categorie,
+            alt,
+            change: {
+              alt: undefined,
+              categorie: undefined,
+            },
+          })
+        })
+
+        setImagesData(new Map(imagesData))
       }
       setFiles([])
     },
@@ -71,53 +92,64 @@ export function Uploader({
       setProgress(p)
     },
   })
-  type Categorie = NonNullable<InferInsertModel<typeof imagesData>["categorie"]>
+  type Categorie = NonNullable<
+    InferInsertModel<typeof dbImageDataSchema>["categorie"]
+  >
 
   const [alt, setAlt] = useState<string>()
   const [categorie, setCategorie] = useState<Categorie>("gallery")
 
   return (
-    <div className={twMerge("flex flex-col gap-y-4 items-center", className)}>
+    <div className={twMerge("flex flex-col items-center", className)}>
       <div
-        {...getRootProps({
-          className:
-            "border-2 border-dashed border-black rounded-xl p-5 min-w-[300px] lg:min-w-[400px] lg:min-h-[300px] max-w-full max-h-full",
-        })}
+        className={twMerge(
+          "flex flex-col gap-y-4 items-center",
+          isUploading ? "blur-sm" : "",
+        )}
       >
-        <input {...getInputProps({ disabled: isUploading })} />
-        <span className="font-semibold text-gray-700">
-          Upuść pliki tutaj lub kliknij
-        </span>
+        <div
+          {...getRootProps({
+            className:
+              "border-2 border-dashed border-black rounded-xl p-5 min-w-[300px] lg:min-w-[400px] lg:min-h-[300px] max-w-full max-h-full",
+          })}
+        >
+          <input {...getInputProps({ disabled: isUploading })} />
+          <span className="font-semibold text-gray-700">
+            Upuść pliki tutaj lub kliknij
+          </span>
+        </div>
+
+        <Input
+          type="text"
+          placeholder="alt"
+          value={alt}
+          disabled={isUploading}
+          onChange={(e) => setAlt(e.target.value)}
+        />
+        <RadioGroup
+          defaultValue={categorie}
+          onValueChange={(e: Categorie) => setCategorie(e)}
+          disabled={isUploading}
+          className="flex flex-row"
+        >
+          {imagesCategorieEnum.enumValues.map((str) => (
+            <div key={str} className="flex items-center space-x-2">
+              <RadioGroupItem value={str} id="r1" />
+              <Label htmlFor="r1">{toPl(str)}</Label>
+            </div>
+          ))}
+        </RadioGroup>
       </div>
-
-      <Input
-        type="text"
-        placeholder="alt"
-        value={alt}
-        disabled={isUploading}
-        onChange={(e) => setAlt(e.target.value)}
-      />
-      <RadioGroup
-        defaultValue={categorie}
-        onValueChange={(e: Categorie) => setCategorie(e)}
-        disabled={isUploading}
-        className="flex flex-row"
-      >
-        {imagesCategorieEnum.enumValues.map((str) => (
-          <div key={str} className="flex items-center space-x-2">
-            <RadioGroupItem value={str} id="r1" />
-            <Label htmlFor="r1">{toPl(str)}</Label>
-          </div>
-        ))}
-      </RadioGroup>
-
       {isUploading ? (
-        <Progress value={progress} className="w-full h-9 rounded-md max-w-xs" />
+        <Progress
+          value={progress}
+          className="w-full h-9 rounded-md max-w-xs mt-6"
+        />
       ) : (
         <Button
           onClick={() => startUpload(files)}
           disabled={files.length <= 0 || isUploading}
-          className="self-center w-full max-w-xs"
+          className="w-full max-w-xs mt-6"
         >
           Przekaż {files.length} pliki
         </Button>

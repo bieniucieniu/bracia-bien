@@ -28,71 +28,56 @@ import {
 } from "@/components/ui/popover"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Link from "next/link"
-import { imagesCategorieEnum, imagesData } from "@/db/schema/imagesData"
+import { imagesCategorieEnum } from "@/db/schema/imagesData"
+import type { ImageData } from "./AdminContext"
 
 import { Label } from "../ui/label"
 import { twJoin } from "tailwind-merge"
 import { Input } from "../ui/input"
 import { updateImagesData, deleteImagesData } from "@/db/clientApi"
 import { toPl } from "@/lib/utils"
-import { InferInsertModel } from "drizzle-orm"
 import { useAdminContext } from "./AdminContext"
 
-interface ImgData extends InferInsertModel<typeof imagesData> {
-  url?: string | undefined
-}
-
 export default function ImageDataEditor() {
-  const { imagesData } = useAdminContext()
-  const [imageData, setImageData] = useState<
-    (ImgData & {
-      newAlt?: string
-      newCategorie?: ImgData["categorie"]
-      delete?: boolean
-    })[]
-  >(() => structuredClone(imagesData))
+  const { imagesData, setImagesData } = useAdminContext()
 
-  function deleteData(key: ImgData["key"]) {
-    const newData = imageData.map((e) => {
-      if (e.key === key) {
-        if (e.delete === true) return { ...e, delete: undefined }
-        return { ...e, delete: true }
-      }
-      return e
-    })
+  function deleteData(key: string) {
+    const d = imagesData.get(key)
 
-    setImageData(newData)
+    if (!d) return
+    d.change.delete = true
+
+    setImagesData(new Map(imagesData))
   }
-  function SetNewAlt(key: ImgData["key"], alt: string) {
-    const newData = imageData.map((e) => {
-      if (e.key === key) {
-        if (alt === e.alt || alt === e.newAlt)
-          return { ...e, newAlt: undefined }
-        return { ...e, newAlt: alt }
-      }
-      return e
-    })
+  function SetNewAlt(key: string, alt: string) {
+    const d = imagesData.get(key)
 
-    setImageData(newData)
+    if (!d) return
+    d.change.alt = alt
+
+    setImagesData(new Map(imagesData))
   }
-  function SetNewCategorie(
-    key: ImgData["key"],
-    categorie: ImgData["categorie"],
-  ) {
-    const newData = imageData.map((e) => {
-      if (e.key === key) {
-        if (categorie === e.categorie) return { ...e, newCategorie: undefined }
-        return { ...e, newCategorie: categorie }
-      }
-      return e
-    })
 
-    setImageData(newData)
+  function SetNewCategorie(key: string, categorie: ImageData["categorie"]) {
+    const d = imagesData.get(key)
+
+    if (!d) return
+    d.change.categorie = categorie
+
+    setImagesData(new Map(imagesData))
   }
   const [altEdit, setAltEdit] = useState<string>("")
 
   function resetChanges() {
-    setImageData(imagesData)
+    imagesData.forEach((value) => {
+      value.change = {
+        categorie: undefined,
+        delete: undefined,
+        alt: undefined,
+      }
+    })
+
+    setImagesData(new Map(imagesData))
   }
 
   const [uploading, setUploading] = useState<boolean>(false)
@@ -100,55 +85,50 @@ export default function ImageDataEditor() {
   function submitChanges() {
     setUploading(true)
 
-    const toDelete = imageData
-      .filter((e) => e.delete === true)
-      .map((e) => e.key)
-    const toUpdateCategorie = imagesCategorieEnum.enumValues.map(
-      (categorie) => {
-        const keys = imageData
-          .filter(
-            (e) =>
-              e.newCategorie === categorie && e.newCategorie !== e.categorie,
-          )
-          .map((e) => e.key)
-        return { keys, change: { categorie } }
-      },
-    )
-    const toUpdateAlt = imageData
-      .filter((e) => e.newAlt && e.newAlt !== e.alt)
-      .map((e) => ({
-        keys: [e.key],
-        change: { alt: e.newAlt },
-      }))
+    const toDelete: string[] = []
+    const toUpdate: {
+      keys: string[]
+      change: {
+        categorie?: ImageData["categorie"]
+        alt?: string
+      }
+    }[] = []
 
-    updateImagesData(
-      toUpdateCategorie.length || toUpdateAlt.length
-        ? [...toUpdateCategorie, ...toUpdateAlt]
-        : undefined,
-      (res) => {
-        setUploading(true)
-        if (res instanceof Response && res.status === 200) {
-          const newData: ImgData[] = imageData.map((e) => ({
+    imagesData.forEach((value, key) => {
+      if (value.change?.delete) toDelete.push(key)
+      if (value.change?.categorie || value.change?.alt)
+        toUpdate.push({
+          keys: [key],
+          change: value.change,
+        })
+    })
+
+    updateImagesData(toUpdate.length ? toUpdate : undefined, (res) => {
+      setUploading(true)
+      if (res instanceof Response && res.status === 200) {
+        imagesData.forEach((e, key) => {
+          imagesData.set(key, {
             ...e,
-            alt: e.newAlt ?? e.alt,
-            categorie: e.newCategorie ?? e.categorie,
-            newAlt: undefined,
-            newCategorie: undefined,
-          }))
-
-          setImageData(newData)
-        } else {
-          console.log(res)
-        }
-        setUploading(false)
-      },
-    )
+            alt: e.change?.alt ?? e.alt,
+            categorie: e.change?.categorie ?? e.categorie,
+            change: {},
+          })
+        })
+        setImagesData(new Map(imagesData))
+      } else {
+        console.log(res)
+      }
+      setUploading(false)
+    })
     deleteImagesData(toDelete.length ? toDelete : undefined, (res) => {
       setUploading(true)
       if (res instanceof Response && res.status === 200) {
-        const newData: ImgData[] = imageData.filter((e) => !e.delete)
-
-        setImageData(newData)
+        imagesData.forEach((e, key) => {
+          if (e.change?.delete === true) {
+            imagesData.delete(key)
+          }
+        })
+        setImagesData(new Map(imagesData))
       } else {
         console.log(res)
       }
@@ -156,7 +136,7 @@ export default function ImageDataEditor() {
     })
   }
 
-  if (!imagesData || imageData.length <= 0) return "no imgs"
+  if (!imagesData || [...imagesData.keys()].length <= 0) return "no imgs"
 
   return (
     <Card className="flex flex-col w-fit m-auto" id="imgSel">
@@ -166,22 +146,22 @@ export default function ImageDataEditor() {
       </CardHeader>
       <CardContent>
         <ul className="flex flex-row flex-wrap p-2 gap-2">
-          {imageData.map(
-            ({ url, key, alt, categorie, newAlt, delete: toDelete }) => (
+          {[...imagesData.values()].map(
+            ({ src, key, alt, categorie, change }) => (
               <li
                 className="flex flex-col gap-2 overflow-hidden rounded-xl shadow-md"
                 key={key}
               >
-                {url ? (
+                {src ? (
                   <Image
                     alt={alt ?? ""}
-                    src={url ?? ""}
+                    src={src}
                     width={400}
                     height={300}
                     className={twJoin("object-contain h-auto transition")}
                   />
                 ) : (
-                  `invalid url ${url}`
+                  `invalid src path ${src}`
                 )}
 
                 <span className="truncate">{key}</span>
@@ -190,7 +170,7 @@ export default function ImageDataEditor() {
                   <RadioGroup
                     disabled={uploading}
                     defaultValue={categorie}
-                    onValueChange={(e: NonNullable<ImgData["categorie"]>) => {
+                    onValueChange={(e: NonNullable<ImageData["categorie"]>) => {
                       SetNewCategorie(key, e)
                     }}
                     className="flex flex-row flex-wrap"
@@ -213,12 +193,12 @@ export default function ImageDataEditor() {
                   <section className="flex gap-x-3">
                     <Popover
                       modal
-                      onOpenChange={() => setAltEdit(newAlt ?? alt ?? "")}
+                      onOpenChange={() => setAltEdit(change?.alt ?? alt ?? "")}
                     >
                       <PopoverTrigger asChild>
                         <Button
                           disabled={uploading}
-                          variant={newAlt ? "green" : "outline"}
+                          variant={change?.alt ? "green" : "outline"}
                         >
                           edit alt
                         </Button>
@@ -233,19 +213,21 @@ export default function ImageDataEditor() {
                         <div className="flex flex-row gap-x-2 justify-end mt-2">
                           <Button
                             variant={
-                              newAlt === altEdit ? "destructive" : "default"
+                              change?.alt === altEdit
+                                ? "destructive"
+                                : "default"
                             }
                             onClick={() => {
                               SetNewAlt(key, altEdit)
                             }}
                           >
-                            {newAlt === altEdit ? "reset" : "set"}
+                            {change?.alt === altEdit ? "reset" : "set"}
                           </Button>
                         </div>
                       </PopoverContent>
                     </Popover>
                     <Button
-                      variant={toDelete ? "destructive" : "default"}
+                      variant={change?.delete ? "destructive" : "default"}
                       onClick={() => {
                         deleteData(key)
                       }}
@@ -271,12 +253,22 @@ export default function ImageDataEditor() {
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  Delete {imageData.filter((e) => e.delete).length} files?
+                  Delete of{" "}
+                  {
+                    [...imagesData.values()].filter((e) => e.change?.delete)
+                      .length
+                  }{" "}
+                  files?
                   <br />
                   Update categorie of{" "}
-                  {imageData.filter((e) => e.newCategorie).length} files?
+                  {
+                    [...imagesData.values()].filter((e) => e.change?.categorie)
+                      .length
+                  }{" "}
+                  files?
                   <br />
-                  Update alt of {imageData.filter((e) => e.alt).length} files?
+                  Update alt of{" "}
+                  {[...imagesData.values()].filter((e) => e.alt).length} files?
                 </AlertDialogTitle>
                 <AlertDialogDescription>are you sure</AlertDialogDescription>
               </AlertDialogHeader>
@@ -299,13 +291,22 @@ export default function ImageDataEditor() {
                 <AlertDialogTitle>
                   reset
                   <br />
-                  delete {imageData.filter((e) => e.delete).length} files?
+                  Delete of{" "}
+                  {
+                    [...imagesData.values()].filter((e) => e.change?.delete)
+                      .length
+                  }{" "}
+                  files?
                   <br />
                   Update categorie of{" "}
-                  {imageData.filter((e) => e.newCategorie).length} files?
-                  <br />
-                  Update alt of {imageData.filter((e) => e.newAlt).length}{" "}
+                  {
+                    [...imagesData.values()].filter((e) => e.change?.categorie)
+                      .length
+                  }{" "}
                   files?
+                  <br />
+                  Update alt of{" "}
+                  {[...imagesData.values()].filter((e) => e.alt).length} files?
                 </AlertDialogTitle>
                 <AlertDialogDescription>are you sure</AlertDialogDescription>
               </AlertDialogHeader>

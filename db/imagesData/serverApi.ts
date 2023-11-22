@@ -58,17 +58,17 @@ export async function populateImagesDataWithLinks(
       data.length > 0 ? await utapi.getFileUrls(data.map((k) => k.key)) : []
 
     const imgsData: (InferInsertModel<typeof imagesData> & {
-      url?: string
+      src?: string
     })[] =
       data && data.length
         ? data
             .map((e) => {
               return {
-                url: imgsUrls.find((u) => e.key === u.key)?.url,
+                src: imgsUrls.find((u) => e.key === u.key)?.url,
                 ...e,
               }
             })
-            .filter((e) => typeof e.url === "string")
+            .filter((e) => typeof e.src === "string")
         : []
 
     return imgsData
