@@ -32,7 +32,7 @@ export function AdminContextProvider({
   children: React.ReactNode
 }) {
   const [imagesData, setImagesData] = useState<ImagesData>(() => {
-    const map = new Map()
+    const map: ImagesData = new Map()
     newImagesData?.forEach((img) => {
       map.set(img.key, {
         ...img,
