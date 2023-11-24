@@ -16,7 +16,7 @@ const items: { title: string; href: string }[] = [
   },
   {
     title: "informacje",
-    href: "/#info",
+    href: "/info",
   },
   {
     title: "galleria produktów",
