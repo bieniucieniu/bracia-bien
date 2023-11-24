@@ -64,7 +64,7 @@ MenuRoot.displayName = "PillMenuRoot"
 
 interface ItemProps extends React.HTMLAttributes<HTMLDivElement> {
   classNameMotion?: string
-  styleMotion: Parameters<typeof motion.div>[0]["style"]
+  styleMotion?: Parameters<typeof motion.div>[0]["style"]
 }
 
 const MenuItem = forwardRef<HTMLDivElement, ItemProps>(

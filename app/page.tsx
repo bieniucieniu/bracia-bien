@@ -76,7 +76,7 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto px-4 lg:px-20 grid grid-cols-3 gap-x-3 gap-y-4">
           <div className="col-span-1 rougded-xl p-1.5 hidden bg-white rounded-xl lg:block">
             <Image
-              src="/blob.svg"
+              src="https://placehold.co/900x600/png"
               alt="hurtownia"
               width={900}
               height={600}
@@ -113,11 +113,11 @@ export default async function Home() {
           </Card>
           <div className="overflow-hidden col-span-1 bg-white rounded-xl py-1.5 hidden sm:block">
             <ImageSlider
-              className="flex justify-center items-center h-full"
+              className="flex justify-center items-center h-[207px]"
               data={[
-                { src: "/blob.svg", key: "a" },
-                { src: "/blob.svg", key: "b" },
-                { src: "/blob.svg", key: "c" },
+                { src: "https://placehold.co/900x600/png", key: "a" },
+                { src: "https://placehold.co/900x600/png", key: "b" },
+                { src: "https://placehold.co/900x600/png", key: "c" },
               ]}
             />
           </div>
@@ -158,6 +158,15 @@ export default async function Home() {
                 <a {...props}>{name}</a>
               </MenuItem>
             ))}
+            <MenuItem
+              className="relative px-4 py-2 rounded-lg z-10 w-fit hover:underline"
+              styleMotion={{
+                backgroundColor: "lightblue",
+                borderRadius: "10px",
+              }}
+            >
+              <a>wiecej</a>
+            </MenuItem>
           </div>
         </MenuRoot>
         <MenuRoot
