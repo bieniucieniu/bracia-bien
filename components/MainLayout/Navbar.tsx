@@ -24,7 +24,7 @@ const items: { title: string; href: string }[] = [
   },
 ]
 
-export function Topbar() {
+export default function Navbar() {
   return (
     <nav className="bg-white fixed top-0 left-0 right-0 z-40 drop-shadow-sm p-1 flex flex-wrap-reverse md:grid md:grid-cols-3">
       <NavigationMenu className="m-auto p-1 md:col-start-2">
