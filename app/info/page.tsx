@@ -1,5 +1,6 @@
 import { playfair } from "@/lib/fonts"
 import { twJoin } from "tailwind-merge"
+import { AnimateContentMain } from "@/components/MainLayout/Animation"
 
 const classes = () => ({
   label: "text-muted-foreground text-sm",
@@ -8,7 +9,7 @@ const classes = () => ({
 
 export default function Info() {
   return (
-    <main className="flex flex-col lg:flex-row gap-20 justify-center items-center mt-20">
+    <AnimateContentMain className="flex flex-col lg:flex-row gap-20 justify-center items-center mt-20">
       <div className="px-4">
         <h1 className={twJoin(playfair.className, "font-bold text-6xl mb-10")}>
           Kontakt
@@ -88,6 +89,6 @@ export default function Info() {
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
       ></iframe>
-    </main>
+    </AnimateContentMain>
   )
 }

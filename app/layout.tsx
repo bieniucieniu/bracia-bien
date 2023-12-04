@@ -1,6 +1,8 @@
 import "./globals.css"
 import { roboto } from "@/lib/fonts"
 import Navbar from "@/components/MainLayout/Navbar"
+import { AnimationProvider } from "@/components/MainLayout/Animation"
+import { ThemeProvider } from "@/components/MainLayout/ThemeProvider"
 
 export const metadata = {
   title: "Bracia Bien",
@@ -15,8 +17,17 @@ export default async function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={roboto.className}>
-        <Navbar />
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AnimationProvider>
+            <Navbar />
+            {children}
+          </AnimationProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

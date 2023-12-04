@@ -10,6 +10,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { twMerge } from "tailwind-merge"
+import { AnimateContentMain } from "@/components/MainLayout/Animation"
 
 export const revalidate = 3600
 
@@ -65,7 +66,7 @@ export default async function Home() {
   }
 
   return (
-    <main>
+    <AnimateContentMain>
       <div className="min-h-screen pt-4 flex justify-center items-center px-4">
         <Image src="/logo.png" priority alt="logo" width={638} height={189} />
       </div>
@@ -193,6 +194,6 @@ export default async function Home() {
           </div>
         </MenuRoot>
       </footer>
-    </main>
+    </AnimateContentMain>
   )
 }
