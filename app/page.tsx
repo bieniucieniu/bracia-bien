@@ -72,10 +72,10 @@ export default async function Home() {
       </div>
       <section
         id="about"
-        className="bg-red-400 flex justify-center items-center py-10"
+        className="bg-red-400 dark:bg-red-900 flex justify-center items-center py-10"
       >
         <div className="max-w-6xl mx-auto px-4 lg:px-20 grid grid-cols-3 gap-x-3 gap-y-4">
-          <div className="col-span-1 rougded-xl p-1.5 hidden bg-white rounded-xl lg:block">
+          <div className="col-span-1 rougded-xl p-1.5 hidden bg-accent rounded-xl lg:block">
             <Image
               src="https://placehold.co/900x600/png"
               alt="hurtownia"
@@ -84,7 +84,7 @@ export default async function Home() {
               className="w-auto rounded-lg object-contain m-auto"
             />
           </div>
-          <Card className="col-span-3 lg:col-span-2 bg-orange-100 pr-5">
+          <Card className="col-span-3 lg:col-span-2 bg-orange-100 dark:bg-orange-950 pr-5">
             <CardHeader
               className={twMerge(playfair.className, "text-2xl font-bold pb-2")}
             ></CardHeader>
@@ -104,7 +104,7 @@ export default async function Home() {
               </p>
             </CardContent>
           </Card>
-          <Card className="bg-white col-span-3 sm:col-span-2">
+          <Card className="col-span-3 sm:col-span-2">
             <CardHeader
               className={twMerge(playfair.className, "text-2xl font-bold pb-2")}
             >
@@ -112,7 +112,7 @@ export default async function Home() {
             </CardHeader>
             <CardContent></CardContent>
           </Card>
-          <div className="overflow-hidden col-span-1 bg-white rounded-xl py-1.5 hidden sm:block">
+          <div className="overflow-hidden col-span-1 bg-accent rounded-xl py-1.5 hidden sm:block">
             <ImageSlider
               className="flex justify-center items-center h-[207px]"
               data={[
@@ -142,7 +142,10 @@ export default async function Home() {
         >
           <div className="max-w-fit m-auto flex flex-col gap-0">
             <h1
-              className={playfair.className + " text-4xl font-bold z-10 mb-8"}
+              className={
+                playfair.className +
+                " text-4xl font-bold z-10 mb-8 text-zinc-800"
+              }
             >
               Skontaktuj się <br /> z nami
             </h1>
@@ -150,7 +153,7 @@ export default async function Home() {
             {contactsData.map(({ name, ...props }, i) => (
               <MenuItem
                 key={i}
-                className="relative px-4 py-2 rounded-lg z-10 w-fit hover:underline"
+                className="text-zinc-900 px-4 py-2 rounded-lg z-10 w-fit hover:underline"
                 styleMotion={{
                   backgroundColor: "lightblue",
                   borderRadius: "10px",
@@ -160,13 +163,13 @@ export default async function Home() {
               </MenuItem>
             ))}
             <MenuItem
-              className="relative px-4 py-2 rounded-lg z-10 w-fit hover:underline"
+              className="text-zinc-900 px-4 py-2 rounded-lg z-10 w-fit hover:underline"
               styleMotion={{
                 backgroundColor: "lightblue",
                 borderRadius: "10px",
               }}
             >
-              <a>wiecej</a>
+              <a href="/info">wiecej</a>
             </MenuItem>
           </div>
         </MenuRoot>
@@ -176,14 +179,17 @@ export default async function Home() {
         >
           <div className="max-w-fit m-auto flex flex-col gap-0">
             <h1
-              className={playfair.className + " text-4xl font-bold z-10 mb-8"}
+              className={
+                playfair.className +
+                " text-4xl font-bold z-10 mb-8 text-zinc-800"
+              }
             >
               informacje
             </h1>
             {infoData.map(({ name, ...props }, i) => (
               <MenuItem
                 key={i}
-                className="relative px-4 py-2 rounded-lg z-10 w-fit hover:underline"
+                className="text-zinc-900 px-4 py-2 rounded-lg z-10 w-fit hover:underline"
                 styleMotion={{
                   borderRadius: "10px",
                 }}

@@ -81,7 +81,7 @@ export default function Info() {
         </ul>
       </div>
       <iframe
-        className="w-full p-6 md:p-0 md:w-[600px]"
+        className="w-full p-6 rounded-lg md:p-0 md:w-[600px]"
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d531.7855185953554!2d18.090270058012734!3d51.781739966495984!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471ac5101b3da60d%3A0x501f9365fc7a3711!2sBracia%20Bie%C5%84%20hurtownia%20bielizny!5e0!3m2!1sen!2spl!4v1700738202950!5m2!1sen!2spl"
         width="600"
         height="450"
