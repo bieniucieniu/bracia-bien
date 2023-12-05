@@ -111,7 +111,7 @@ export default function Slider({
           }}
           key={uuidv4()}
           variants={variants}
-          className="h-full w-full grid items-center"
+          className="h-full w-full"
           initial="enter"
           animate="center"
           exit="exit"

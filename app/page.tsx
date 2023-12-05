@@ -61,9 +61,16 @@ export default async function Home() {
   let galleryImgs: typeof imgsData = []
 
   if (imgsData instanceof Array) {
-    mainImgs = imgsData.filter((e) => e.categorie === "main")
-    currentImgs = imgsData.filter((e) => e.categorie === "current")
-    galleryImgs = imgsData.filter((e) => e.categorie === "gallery")
+    imgsData.forEach((e) => {
+      switch (e.categorie) {
+        case "main":
+          mainImgs.push(e)
+        case "current":
+          currentImgs.push(e)
+        case "gallery":
+          galleryImgs.push(e)
+      }
+    })
   }
 
   return (
