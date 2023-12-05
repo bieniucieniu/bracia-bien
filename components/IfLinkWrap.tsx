@@ -4,7 +4,7 @@ import Link from "next/link"
 type Props = Omit<Parameters<typeof Link>[0], "href"> & {
   href?: Url | undefined | null
 }
-export default function InLinkWrap({ href, children, ...props }: Props) {
+export default function IfLinkWrap({ href, children, ...props }: Props) {
   if (href)
     return (
       <Link href={href} {...props}>
