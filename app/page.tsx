@@ -11,6 +11,7 @@ import Link from "next/link"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { twMerge } from "tailwind-merge"
 import { AnimateContentMain } from "@/components/MainLayout/Animation"
+import Banner from "@/components/HomePage/Banner"
 
 export const revalidate = 3600
 
@@ -67,8 +68,8 @@ export default async function Home() {
 
   return (
     <AnimateContentMain>
-      <div className="min-h-screen pt-4 flex justify-center items-center px-4">
-        <Image src="/logo.png" priority alt="logo" width={638} height={189} />
+      <div className="mt-[124px] sm:mt-auto min-h-[280px] sm:min-h-screen pt-4 grid px-4 overflow-x-hidden">
+        <Banner swapAfter={2000} />
       </div>
       <section
         id="about"

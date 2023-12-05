@@ -16,7 +16,7 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={roboto.className}>
+      <body style={{ scrollbarGutter: "stable" }} className={roboto.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
