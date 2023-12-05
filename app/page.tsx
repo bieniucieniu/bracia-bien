@@ -75,7 +75,7 @@ export default async function Home() {
 
   return (
     <AnimateContentMain>
-      <div className="mt-[124px] sm:mt-auto min-h-[280px] sm:min-h-screen pt-4 grid px-4 overflow-x-hidden">
+      <div className="mt-[124px] md:mt-[52px] min-h-[280px] sm:min-h-screen pt-4 grid px-4 overflow-x-hidden">
         <Banner swapAfter={2000} />
       </div>
       <section
