@@ -10,6 +10,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { twMerge } from "tailwind-merge"
+import { AnimateContentMain } from "@/components/MainLayout/Animation"
+import Banner from "@/components/HomePage/Banner"
 
 export const revalidate = 3600
 
@@ -56,34 +58,38 @@ export default async function Home() {
 
   let mainImgs: typeof imgsData = []
   let currentImgs: typeof imgsData = []
-  let galleryImgs: typeof imgsData = []
 
   if (imgsData instanceof Array) {
-    mainImgs = imgsData.filter((e) => e.categorie === "main")
-    currentImgs = imgsData.filter((e) => e.categorie === "current")
-    galleryImgs = imgsData.filter((e) => e.categorie === "gallery")
+    imgsData.forEach((e) => {
+      switch (e.categorie) {
+        case "main":
+          mainImgs.push(e)
+        case "current":
+          currentImgs.push(e)
+      }
+    })
   }
 
   return (
-    <main>
-      <div className="min-h-screen pt-4 flex justify-center items-center px-4">
-        <Image src="/logo.png" priority alt="logo" width={638} height={189} />
+    <AnimateContentMain>
+      <div className="mt-[124px] md:mt-[52px] min-h-[600px] sm:min-h-screen pt-4 grid px-4 overflow-x-hidden">
+        <Banner swapAfter={2000} />
       </div>
       <section
         id="about"
-        className="bg-red-400 flex justify-center items-center py-10"
+        className="bg-red-400 dark:bg-red-900 flex justify-center items-center py-10"
       >
         <div className="max-w-6xl mx-auto px-4 lg:px-20 grid grid-cols-3 gap-x-3 gap-y-4">
-          <div className="col-span-1 rougded-xl p-1.5 hidden bg-white rounded-xl lg:block">
+          <div className="col-span-1 rougded-xl p-1.5 hidden bg-accent rounded-xl lg:block">
             <Image
-              src="/blob.svg"
+              src="https://placehold.co/900x600/png"
               alt="hurtownia"
               width={900}
               height={600}
               className="w-auto rounded-lg object-contain m-auto"
             />
           </div>
-          <Card className="col-span-3 lg:col-span-2 bg-orange-100 pr-5">
+          <Card className="col-span-3 lg:col-span-2 bg-orange-100 dark:bg-orange-950 pr-5">
             <CardHeader
               className={twMerge(playfair.className, "text-2xl font-bold pb-2")}
             ></CardHeader>
@@ -103,7 +109,7 @@ export default async function Home() {
               </p>
             </CardContent>
           </Card>
-          <Card className="bg-white col-span-3 sm:col-span-2">
+          <Card className="col-span-3 sm:col-span-2">
             <CardHeader
               className={twMerge(playfair.className, "text-2xl font-bold pb-2")}
             >
@@ -111,26 +117,18 @@ export default async function Home() {
             </CardHeader>
             <CardContent></CardContent>
           </Card>
-          <div className="overflow-hidden col-span-1 bg-white rounded-xl py-1.5 hidden sm:block">
+          <div className="overflow-hidden col-span-1 bg-accent rounded-xl py-1.5 hidden sm:block">
             <ImageSlider
-              className="flex justify-center items-center h-full"
+              className="flex justify-center items-center h-[207px]"
               data={[
-                { src: "/blob.svg", key: "a" },
-                { src: "/blob.svg", key: "b" },
-                { src: "/blob.svg", key: "c" },
+                { src: "https://placehold.co/900x600/png", key: "a" },
+                { src: "https://placehold.co/900x600/png", key: "b" },
+                { src: "https://placehold.co/900x600/png", key: "c" },
               ]}
             />
           </div>
         </div>
       </section>
-      {galleryImgs.length > 0 ? (
-        <section className="min-h-screen relative flex justify-stretch items-stretch p-4">
-          <PhotoGalery
-            data={galleryImgs}
-            className="h-[calc(100vh_-_32px)] w-[calc(100vw_-_32px)]"
-          />
-        </section>
-      ) : null}
       <footer
         id="info"
         className="min-h-screen grid grid-cols-1 xl:grid-cols-3 snap-center"
@@ -141,7 +139,10 @@ export default async function Home() {
         >
           <div className="max-w-fit m-auto flex flex-col gap-0">
             <h1
-              className={playfair.className + " text-4xl font-bold z-10 mb-8"}
+              className={
+                playfair.className +
+                " text-4xl font-bold z-10 mb-8 text-zinc-800"
+              }
             >
               Skontaktuj się <br /> z nami
             </h1>
@@ -149,7 +150,7 @@ export default async function Home() {
             {contactsData.map(({ name, ...props }, i) => (
               <MenuItem
                 key={i}
-                className="relative px-4 py-2 rounded-lg z-10 w-fit hover:underline"
+                className="text-zinc-900 px-4 py-2 rounded-lg z-10 w-fit hover:underline"
                 styleMotion={{
                   backgroundColor: "lightblue",
                   borderRadius: "10px",
@@ -158,6 +159,15 @@ export default async function Home() {
                 <a {...props}>{name}</a>
               </MenuItem>
             ))}
+            <MenuItem
+              className="text-zinc-900 px-4 py-2 rounded-lg z-10 w-fit hover:underline"
+              styleMotion={{
+                backgroundColor: "lightblue",
+                borderRadius: "10px",
+              }}
+            >
+              <a href="/info">wiecej</a>
+            </MenuItem>
           </div>
         </MenuRoot>
         <MenuRoot
@@ -166,14 +176,17 @@ export default async function Home() {
         >
           <div className="max-w-fit m-auto flex flex-col gap-0">
             <h1
-              className={playfair.className + " text-4xl font-bold z-10 mb-8"}
+              className={
+                playfair.className +
+                " text-4xl font-bold z-10 mb-8 text-zinc-800"
+              }
             >
               informacje
             </h1>
             {infoData.map(({ name, ...props }, i) => (
               <MenuItem
                 key={i}
-                className="relative px-4 py-2 rounded-lg z-10 w-fit hover:underline"
+                className="text-zinc-900 px-4 py-2 rounded-lg z-10 w-fit hover:underline"
                 styleMotion={{
                   borderRadius: "10px",
                 }}
@@ -184,6 +197,6 @@ export default async function Home() {
           </div>
         </MenuRoot>
       </footer>
-    </main>
+    </AnimateContentMain>
   )
 }

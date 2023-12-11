@@ -8,6 +8,9 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 import { FacebookIcon, InstagramIcon } from "lucide-react"
+import { ModeToggle } from "@/components/ui/theme-mode-toggle"
+import { Button } from "../ui/button"
+import { Separator } from "@/components/ui/separator"
 
 const items: { title: string; href: string }[] = [
   {
@@ -16,17 +19,17 @@ const items: { title: string; href: string }[] = [
   },
   {
     title: "informacje",
-    href: "/#info",
+    href: "/info",
   },
   {
     title: "galleria produktów",
-    href: "/#gallery",
+    href: "/gallery",
   },
 ]
 
-export function Topbar() {
+export default function Navbar() {
   return (
-    <nav className="bg-white fixed top-0 left-0 right-0 z-40 drop-shadow-sm p-1 flex flex-wrap-reverse md:grid md:grid-cols-3">
+    <nav className="bg-background fixed top-0 left-0 right-0 z-40 drop-shadow-sm p-1 flex flex-wrap-reverse md:grid md:grid-cols-3">
       <NavigationMenu className="m-auto p-1 md:col-start-2">
         <NavigationMenuList className="flex flex-wrap justify-around sm:justify-normal sm:flex-nowrap">
           {items.map(({ title, href }, i) => (
@@ -46,35 +49,43 @@ export function Topbar() {
           <Image
             src="/logo.png"
             priority
-            className="m-auto object-contain select-none transition-opacity opacity-60 hover:opacity-100 justify-self-start h-8 w-28"
+            className="m-auto object-contain select-none transition-opacity opacity-60 hover:opacity-100 justify-self-start h-8 w-auto"
             alt="logo"
             width={638}
             height={189}
           ></Image>
         </Link>
-        <div className="flex my-auto flex-row gap-4 md:gap-8 md:mr-8 justify-end">
-          <Link
-            href="https://www.instagram.com/braciabien/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <InstagramIcon
-              width={30}
-              height={30}
-              className="opacity-50 hover:opacity-80 transition-opacity"
-            />
-          </Link>
-          <Link
-            href="https://www.facebook.com/BraciaBien/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FacebookIcon
-              height={30}
-              width={30}
-              className="opacity-50 hover:opacity-80 transition-opacity"
-            />
-          </Link>
+        <div className="flex my-auto flex-row md:mr-4 justify-end items-center">
+          <div className="flex gap-x-1.5">
+            <Button variant="outline" size="icon">
+              <Link
+                href="https://www.instagram.com/braciabien/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <InstagramIcon
+                  width={25}
+                  height={25}
+                  className="opacity-50 hover:opacity-80 transition-opacity"
+                />
+              </Link>
+            </Button>
+            <Button variant="outline" size="icon">
+              <Link
+                href="https://www.facebook.com/BraciaBien/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FacebookIcon
+                  height={25}
+                  width={25}
+                  className="opacity-50 hover:opacity-80 transition-opacity"
+                />
+              </Link>
+            </Button>
+          </div>
+          <Separator orientation="vertical" className="mx-[7px] h-8" />
+          <ModeToggle />
         </div>
       </div>
     </nav>

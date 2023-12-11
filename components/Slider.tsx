@@ -136,13 +136,13 @@ export default function Slider({
         </motion.div>
       </AnimatePresence>
       <button
-        className="absolute z-10 top-[calc(50%_-_20px)] left-[15px] w-[40px] h-[40px] rounded-full bg-white opacity-0 md:opacity-50 hover:opacity-70 transition-all select-none"
+        className="absolute z-10 top-[calc(50%_-_20px)] left-[15px] w-[40px] h-[40px] rounded-full bg-accent opacity-0 md:opacity-50 hover:opacity-70 transition-all select-none"
         onClick={() => dispach("previous")}
       >
         <ArrowLeft className="absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-1/2" />
       </button>
       <button
-        className="absolute z-10 top-[calc(50%_-_20px)] right-[15px] w-[40px] h-[40px] rounded-full bg-white opacity-0 md:opacity-50 hover:opacity-70 transition-all select-none"
+        className="absolute z-10 top-[calc(50%_-_20px)] right-[15px] w-[40px] h-[40px] rounded-full bg-accent opacity-0 md:opacity-50 hover:opacity-70 transition-all select-none"
         onClick={() => dispach("next")}
       >
         <ArrowRight className="absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-1/2" />
