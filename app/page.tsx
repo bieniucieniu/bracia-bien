@@ -58,7 +58,6 @@ export default async function Home() {
 
   let mainImgs: typeof imgsData = []
   let currentImgs: typeof imgsData = []
-  let galleryImgs: typeof imgsData = []
 
   if (imgsData instanceof Array) {
     imgsData.forEach((e) => {
@@ -67,8 +66,6 @@ export default async function Home() {
           mainImgs.push(e)
         case "current":
           currentImgs.push(e)
-        case "gallery":
-          galleryImgs.push(e)
       }
     })
   }
@@ -132,14 +129,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-      {galleryImgs.length > 0 ? (
-        <section className="min-h-screen relative flex justify-stretch items-stretch p-4">
-          <PhotoGalery
-            data={galleryImgs}
-            className="h-[calc(100vh_-_32px)] w-[calc(100vw_-_32px)]"
-          />
-        </section>
-      ) : null}
       <footer
         id="info"
         className="min-h-screen grid grid-cols-1 xl:grid-cols-3 snap-center"

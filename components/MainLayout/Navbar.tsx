@@ -23,7 +23,7 @@ const items: { title: string; href: string }[] = [
   },
   {
     title: "galleria produktów",
-    href: "/#gallery",
+    href: "/gallery",
   },
 ]
 
