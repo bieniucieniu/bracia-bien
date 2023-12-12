@@ -1,7 +1,6 @@
 import { MenuItem, MenuRoot } from "@/components/PillMenu"
 import { playfair } from "@/lib/fonts"
 import { ImageSlider } from "@/components/HomePage/ImageSlider"
-import PhotoGalery from "@/components/HomePage/PhotoGallery"
 import {
   getAllImagesData,
   populateImagesDataWithLinks,
@@ -12,6 +11,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { twMerge } from "tailwind-merge"
 import { AnimateContentMain } from "@/components/MainLayout/Animation"
 import Banner from "@/components/HomePage/Banner"
+import ShopesBanner from "@/components/HomePage/ShopsBanner"
 
 export const revalidate = 3600
 
@@ -75,21 +75,18 @@ export default async function Home() {
       <div className="mt-[124px] md:mt-[52px] min-h-[600px] sm:min-h-screen pt-4 grid px-4 overflow-x-hidden">
         <Banner swapAfter={2000} />
       </div>
-      <section
-        id="about"
-        className="bg-red-400 dark:bg-red-900 flex justify-center items-center py-10"
-      >
-        <div className="max-w-6xl mx-auto px-4 lg:px-20 grid grid-cols-3 gap-x-3 gap-y-4">
-          <div className="col-span-1 rougded-xl p-1.5 hidden bg-accent rounded-xl lg:block">
+      <section id="about" className="bg-red-400 dark:bg-red-900 py-10">
+        <div className="mx-auto lg:px-20 grid grid-cols-6 gap-x-3 gap-y-4">
+          <div className="col-span-2 hidden lg:flex justify-center items-center">
             <Image
               src="https://placehold.co/900x600/png"
               alt="hurtownia"
               width={900}
               height={600}
-              className="w-auto rounded-lg object-contain m-auto"
+              className="w-full h-auto rounded-xl object-contain"
             />
           </div>
-          <Card className="col-span-3 lg:col-span-2 bg-orange-100 dark:bg-orange-950 pr-5">
+          <Card className="col-start-2 col-span-3 lg:col-span-2 bg-orange-100 dark:bg-orange-950 pr-5">
             <CardHeader
               className={twMerge(playfair.className, "text-2xl font-bold pb-2")}
             ></CardHeader>
@@ -109,7 +106,7 @@ export default async function Home() {
               </p>
             </CardContent>
           </Card>
-          <Card className="col-span-3 sm:col-span-2">
+          <Card className="col-start-2 col-span-3">
             <CardHeader
               className={twMerge(playfair.className, "text-2xl font-bold pb-2")}
             >
@@ -117,15 +114,8 @@ export default async function Home() {
             </CardHeader>
             <CardContent></CardContent>
           </Card>
-          <div className="overflow-hidden col-span-1 bg-accent rounded-xl py-1.5 hidden sm:block">
-            <ImageSlider
-              className="flex justify-center items-center h-[207px]"
-              data={[
-                { src: "https://placehold.co/900x600/png", key: "a" },
-                { src: "https://placehold.co/900x600/png", key: "b" },
-                { src: "https://placehold.co/900x600/png", key: "c" },
-              ]}
-            />
+          <div className="overflow-hidden w-full col-start-5 col-span-2 row-start-1 row-span-2 hidden sm:block">
+            <ShopesBanner />
           </div>
         </div>
       </section>
