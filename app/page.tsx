@@ -1,17 +1,23 @@
 import { MenuItem, MenuRoot } from "@/components/PillMenu"
 import { playfair } from "@/lib/fonts"
-import { ImageSlider } from "@/components/HomePage/ImageSlider"
 import {
   getAllImagesData,
   populateImagesDataWithLinks,
 } from "@/db/imagesData/serverApi"
 import Image from "next/image"
 import Link from "next/link"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { twMerge } from "tailwind-merge"
 import { AnimateContentMain } from "@/components/MainLayout/Animation"
 import Banner from "@/components/HomePage/Banner"
 import ShopesBanner from "@/components/HomePage/ShopsBanner"
+import { ArrowRight } from "lucide-react"
 
 export const revalidate = 3600
 
@@ -76,7 +82,7 @@ export default async function Home() {
         <Banner swapAfter={2000} />
       </div>
       <section id="about" className="bg-red-400 dark:bg-red-900 py-10">
-        <div className="mx-auto lg:px-20 grid grid-cols-6 gap-x-3 gap-y-4">
+        <div className="mx-auto px-20 flex flex-col sm:grid grid-cols-6 gap-x-3 gap-y-4">
           <div className="col-span-2 hidden lg:flex justify-center items-center">
             <Image
               src="https://placehold.co/900x600/png"
@@ -87,9 +93,9 @@ export default async function Home() {
             />
           </div>
           <Card className="col-start-2 col-span-3 lg:col-span-2 bg-orange-100 dark:bg-orange-950 pr-5">
-            <CardHeader
-              className={twMerge(playfair.className, "text-2xl font-bold pb-2")}
-            ></CardHeader>
+            <CardHeader className={twMerge(playfair.className, "pb-2")}>
+              <CardTitle>title</CardTitle>
+            </CardHeader>
             <CardContent>
               <p>
                 Oferujemy bogaty asortyment bielizny, rajstop, skarpet i pizam
@@ -105,16 +111,20 @@ export default async function Home() {
                 , Prowadzimy zarowno sprzedaz hurtowa jak i detaliczna.
               </p>
             </CardContent>
+            <CardFooter>footer</CardFooter>
           </Card>
           <Card className="col-start-2 col-span-3">
-            <CardHeader
-              className={twMerge(playfair.className, "text-2xl font-bold pb-2")}
+            <CardTitle
+              className={twMerge(
+                playfair.className,
+                "px-10 py-6 flex flex-row justify-between items-center",
+              )}
             >
-              Zapraszamy takze do naszych sklepow w Kaliszu
-            </CardHeader>
-            <CardContent></CardContent>
+              Zapraszamy takze do naszych sklepow w Kaliszu{" "}
+              <ArrowRight className="hidden sm:inline-block" />
+            </CardTitle>
           </Card>
-          <div className="overflow-hidden w-full col-start-5 col-span-2 row-start-1 row-span-2 hidden sm:block">
+          <div className="overflow-hidden grid w-full col-start-5 col-span-2 row-start-1 row-span-2 mx-auto sm:mx-0 min-h-[380px] max-w-[300px]">
             <ShopesBanner />
           </div>
         </div>
