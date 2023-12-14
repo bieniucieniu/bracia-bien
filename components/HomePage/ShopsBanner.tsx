@@ -11,6 +11,7 @@ const panels: React.ReactNode[] = [
       width={900}
       height={600}
       alt="placeholder"
+      className="pointer-events-none"
     />
     <CardHeader>Zlote Centrum</CardHeader>
     <CardContent></CardContent>
@@ -21,6 +22,7 @@ const panels: React.ReactNode[] = [
       width={900}
       height={600}
       alt="placeholder"
+      className="pointer-events-none"
     />
     <CardHeader>Pod Zegarem</CardHeader>
     <CardContent></CardContent>
@@ -31,6 +33,7 @@ const panels: React.ReactNode[] = [
       width={900}
       height={600}
       alt="placeholder"
+      className="pointer-events-none"
     />
     <CardHeader>
       <CardTitle>Mini Park</CardTitle>
