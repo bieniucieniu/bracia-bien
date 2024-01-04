@@ -1,9 +1,5 @@
 import { AdminContextProvider } from "@/components/Admin/AdminContext"
 import AuthButton from "@/components/Auth"
-import {
-  getAllImagesData,
-  populateImagesDataWithLinks,
-} from "@/db/imagesData/serverApi"
 import { getAuth } from "@/lib/auth"
 
 export const metadata = {
@@ -27,10 +23,8 @@ export default async function AdminLayout({
       </main>
     )
 
-  const imagesData = await populateImagesDataWithLinks(await getAllImagesData())
-
   return (
-    <AdminContextProvider imagesData={imagesData}>
+    <AdminContextProvider imagesData={[]}>
       <div className="fixed bottom-0 inset-x-0 bg-white z-50 flex justify-between items-center p-4 border-t shadow-inner">
         <span>
           zalogowany jako{" "}

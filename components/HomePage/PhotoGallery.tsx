@@ -1,14 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { imagesData } from "@/db/schema/imagesData"
-import { InferInsertModel } from "drizzle-orm"
 import Image from "next/image"
 export default function PhotoGalery({
   data,
   className,
 }: {
-  data: (Omit<InferInsertModel<typeof imagesData>, "categorie"> & {
+  data: {
     src?: string
-  })[]
+  }[]
   className?: string
 }) {
   return (
@@ -18,11 +16,12 @@ export default function PhotoGalery({
       </CardHeader>
       <CardContent>
         <div className="flex flex-row w-full justify-around gap-3 flex-wrap">
-          {data.map(({ src, key, alt }, i) => {
+          {data.map(({ src }, i) => {
             if (!src) return null
+            const alt = src.split("_")[0]
             return (
               <Image
-                key={key}
+                key={alt}
                 src={src}
                 alt={alt ?? `photo-${i}`}
                 height={800}

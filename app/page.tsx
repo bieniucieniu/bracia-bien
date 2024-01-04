@@ -1,9 +1,5 @@
 import { MenuItem, MenuRoot } from "@/components/PillMenu"
 import { playfair } from "@/lib/fonts"
-import {
-  getAllImagesData,
-  populateImagesDataWithLinks,
-} from "@/db/imagesData/serverApi"
 import Image from "next/image"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -54,22 +50,6 @@ const infoData: LinkData = [
 ]
 
 export default async function Home() {
-  const imgsData = await populateImagesDataWithLinks(await getAllImagesData())
-
-  let mainImgs: typeof imgsData = []
-  let currentImgs: typeof imgsData = []
-
-  if (imgsData instanceof Array) {
-    imgsData.forEach((e) => {
-      switch (e.categorie) {
-        case "main":
-          mainImgs.push(e)
-        case "current":
-          currentImgs.push(e)
-      }
-    })
-  }
-
   return (
     <AnimateContentMain>
       <div className="mt-[124px] md:mt-[52px] min-h-[600px] sm:min-h-screen pt-4 grid px-4 overflow-x-hidden">

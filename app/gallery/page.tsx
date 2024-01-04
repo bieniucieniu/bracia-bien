@@ -1,23 +1,7 @@
 import PhotoGalery from "@/components/HomePage/PhotoGallery"
 import { AnimateContentMain } from "@/components/MainLayout/Animation"
-import {
-  getAllImagesData,
-  populateImagesDataWithLinks,
-} from "@/db/imagesData/serverApi"
-
 export default async function Gallery() {
-  const imgsData = await populateImagesDataWithLinks(await getAllImagesData())
-
-  let galleryImgs: typeof imgsData = []
-
-  if (imgsData instanceof Array) {
-    imgsData.forEach((e) => {
-      switch (e.categorie) {
-        case "gallery":
-          galleryImgs.push(e)
-      }
-    })
-  }
+  let galleryImgs: { src?: string }[] = []
 
   return (
     <AnimateContentMain>

@@ -1,6 +1,4 @@
-import { Uploader } from "@/components/Admin/Uploader"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import ImagesDataEditor from "@/components/Admin/ImagesDataEditor"
 
 export default async function Admin() {
   return (
@@ -9,11 +7,8 @@ export default async function Admin() {
         <CardHeader>
           <CardTitle>Uploader</CardTitle>
         </CardHeader>
-        <CardContent>
-          <Uploader />
-        </CardContent>
+        <CardContent></CardContent>
       </Card>
-      <ImagesDataEditor />
     </main>
   )
 }

@@ -1,21 +1,7 @@
 "use client"
-import type { insertImagesSchema } from "@/db/imagesData/serverApi"
 import { createContext, useContext, useState } from "react"
-import { z } from "zod"
 
-export type ImageData = z.infer<typeof insertImagesSchema>
-
-type ImagesData = Map<
-  string,
-  ImageData & {
-    src?: string
-    change: {
-      alt?: ImageData["alt"]
-      categorie?: ImageData["categorie"]
-      delete?: true
-    }
-  }
->
+type ImagesData = Map<string, { src?: string }>
 
 type AdminContext = {
   imagesData: ImagesData
@@ -28,15 +14,14 @@ export function AdminContextProvider({
   imagesData: newImagesData,
   children,
 }: {
-  imagesData: ImageData[] | undefined | null
+  imagesData: { src?: string }[] | undefined | null
   children: React.ReactNode
 }) {
   const [imagesData, setImagesData] = useState<ImagesData>(() => {
     const map: ImagesData = new Map()
     newImagesData?.forEach((img) => {
-      map.set(img.key, {
+      map.set(img.src?.split("_")[0] ?? "", {
         ...img,
-        change: { alt: undefined, categorie: undefined },
       })
     })
     return map
