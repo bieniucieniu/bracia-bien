@@ -157,9 +157,9 @@ export default function Slider({
       </button>
       <button
         onClick={() => setLock((s) => !s)}
-        className="absolute z-10 top-1 left-1 opacity-0 group-hover:opacity-70 transition-opacity bg-accent px-1 rounded-md"
+        className="absolute z-10 top-1 left-1 opacity-0 md:opacity-70 transition-opacity bg-accent px-1 rounded-md group-hover:opacity-70"
       >
-        {lock ? "panel locked" : "click to lock"}
+        {lock ? "odblokuj panel" : "zablokuj panel"}
       </button>
     </div>
   )
