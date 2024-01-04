@@ -40,6 +40,8 @@ const swipePower = (offset: number, velocity: number) => {
   return Math.abs(offset) * velocity
 }
 
+type Slide = { idx: number; direction: "left" | "right" }
+
 export default function Slider({
   className,
   length,
@@ -51,10 +53,11 @@ export default function Slider({
   length: number
   autoSlide?: number | false
 }) {
-  type Slide = { idx: number; direction: "left" | "right" }
+  const [lock, setLock] = useState(false)
 
   const reducer = useCallback(
     (state: Slide, action: "next" | "previous"): Slide => {
+      setLock(false)
       switch (action) {
         case "next":
           return {
@@ -91,12 +94,17 @@ export default function Slider({
 
   useEffect(() => {
     if (!autoSlide) return
-    const interval = setInterval(() => dispach("next"), 1000 * 6)
+    const interval = setInterval(
+      () => {
+        if (!lock) dispach("next")
+      },
+      autoSlide ?? 1000 * 6,
+    )
     return () => clearInterval(interval)
-  }, [state, autoSlide])
+  }, [state, autoSlide, lock])
 
   return (
-    <div className={twMerge("relative", className)}>
+    <div className={twMerge("relative group", className)}>
       <AnimatePresence
         custom={{
           direction: state.direction,
@@ -146,6 +154,12 @@ export default function Slider({
         onClick={() => dispach("next")}
       >
         <ArrowRight className="absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-1/2" />
+      </button>
+      <button
+        onClick={() => setLock((s) => !s)}
+        className="absolute z-10 top-1 left-1 opacity-0 group-hover:opacity-70 transition-opacity bg-accent px-1 rounded-md"
+      >
+        {lock ? "panel locked" : "click to lock"}
       </button>
     </div>
   )
