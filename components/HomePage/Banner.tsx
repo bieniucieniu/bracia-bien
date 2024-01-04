@@ -67,14 +67,14 @@ const panels: React.ReactNode[] = [
         Lavaza, Kunitex, Tejrax
       </sup>
     </article>
-    <ul className="grid grid-cols-4 gap-2">
+    <ul className="grid grid-cols-4 justify-center items-center gap-2">
       <li>
         <Image
           src="/logos/moraj.png"
           alt="moraj_logo"
           width={150}
           height={100}
-          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white mx-auto"
         />
       </li>
       <li>
@@ -83,7 +83,7 @@ const panels: React.ReactNode[] = [
           alt="gabriella_logo"
           width={150}
           height={100}
-          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white mx-auto"
         />
       </li>
       <li>
@@ -92,7 +92,7 @@ const panels: React.ReactNode[] = [
           alt="lama_logo"
           width={150}
           height={100}
-          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white mx-auto"
         />
       </li>
       <li>
@@ -101,7 +101,7 @@ const panels: React.ReactNode[] = [
           alt="szata_logo"
           width={150}
           height={100}
-          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white mx-auto"
         />
       </li>
       <li>
@@ -110,7 +110,7 @@ const panels: React.ReactNode[] = [
           alt="noviti_logo"
           width={150}
           height={100}
-          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white mx-auto"
         />
       </li>
       <li>
@@ -119,7 +119,7 @@ const panels: React.ReactNode[] = [
           alt="wik_logo"
           width={150}
           height={100}
-          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white mx-auto"
         />
       </li>
       <li>
@@ -128,7 +128,7 @@ const panels: React.ReactNode[] = [
           alt="m-max_logo"
           width={150}
           height={100}
-          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white mx-auto"
         />
       </li>
       <li>
@@ -137,7 +137,7 @@ const panels: React.ReactNode[] = [
           alt="martel_logo"
           width={150}
           height={100}
-          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white mx-auto"
         />
       </li>
       <li>
@@ -146,7 +146,7 @@ const panels: React.ReactNode[] = [
           alt="hodberg_logo"
           width={150}
           height={100}
-          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white mx-auto"
         />
       </li>
     </ul>
