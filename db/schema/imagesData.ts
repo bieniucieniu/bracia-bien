@@ -1,24 +1,22 @@
-import { pgTable, pgEnum, unique, varchar, text } from "drizzle-orm/pg-core"
+import { pgTable, pgEnum, varchar, text, integer } from "drizzle-orm/pg-core"
 
-export const imagesCategorieEnum = pgEnum("images_categorie", [
-  "gallery",
-  "main",
-  "current",
+export const prodCategorieEnum = pgEnum("product_categorie", [
+  "Pajamas",
+  "briefs",
+  "socks",
+  "gloves",
+  "tights",
+  "tops",
   "else",
 ])
 
-export const imagesData = pgTable(
-  "images_data",
-  {
-    key: varchar("key").primaryKey().notNull(),
-    categorie: imagesCategorieEnum("categorie").default("gallery").notNull(),
-    alt: varchar("alt").default("").notNull(),
-    description: text("description"),
-    link: text("link"),
-  },
-  (table) => {
-    return {
-      imagesKeyUnique: unique("images_key_unique").on(table.key),
-    }
-  },
-)
+export const genderEnum = pgEnum("gender", ["male", "female", "unisex"])
+
+export const productsData = pgTable("products_data", {
+  id: integer("id").primaryKey(),
+  categorie: prodCategorieEnum("categorie").default("else").notNull(),
+  name: varchar("name").default("").notNull(),
+  description: text("description"),
+  imgsKey: varchar("imgsKey").array().notNull(),
+  link: text("link"),
+})

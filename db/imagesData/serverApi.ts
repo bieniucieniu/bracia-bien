@@ -2,20 +2,23 @@ import { drizzle } from "drizzle-orm/vercel-postgres"
 import { sql } from "@vercel/postgres"
 import { InferInsertModel, eq, inArray } from "drizzle-orm"
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
-import { imagesData, imagesCategorieEnum } from "../schema/imagesData"
+import { productsData, prodCategorieEnum } from "../schema/imagesData"
 import { z } from "zod"
 import { utapi } from "uploadthing/server"
 
 export const db = drizzle(sql)
-export const insertImagesSchema = createInsertSchema(imagesData)
-export const selectImagesSchema = createSelectSchema(imagesData)
+export const insertProdSchema = createInsertSchema(productsData, {
+  imgsKey: z.string().array(),
+})
+export const selectProdSchema = createSelectSchema(productsData, {
+  imgsKey: z.string().array(),
+})
 
-export const uuidArraySchema = z.string().array()
-export const categorieSchema = z.enum(imagesCategorieEnum.enumValues)
+export const categorieSchema = z.enum(prodCategorieEnum.enumValues)
 
 type ValidationError = { error: any; status?: number; [key: string]: any }
 
-export async function getImagesDataByCategorie(
+export async function getProdByCategorie(
   categorie: z.infer<typeof categorieSchema>,
 ): Promise<ValidationError | { res: any }> {
   try {
@@ -23,8 +26,8 @@ export async function getImagesDataByCategorie(
 
     const res = await db
       .select()
-      .from(imagesData)
-      .where(eq(imagesData.categorie, categorie))
+      .from(productsData)
+      .where(eq(productsData.categorie, categorie))
     return { res }
   } catch (e) {
     return {
@@ -35,9 +38,9 @@ export async function getImagesDataByCategorie(
   }
 }
 
-export async function getAllImagesData() {
+export async function getAllProdData() {
   try {
-    const res = await db.select().from(imagesData)
+    const res = await db.select().from(productsData)
     return res
   } catch (e) {
     return {
@@ -48,30 +51,32 @@ export async function getAllImagesData() {
   }
 }
 
-export async function populateImagesDataWithLinks(
-  data: Awaited<ReturnType<typeof getAllImagesData>>,
+export async function populateProdDataWithImgLinks(
+  data: Awaited<ReturnType<typeof getAllProdData>>,
 ) {
   try {
     if (!(data instanceof Array)) return []
 
     const imgsUrls =
-      data.length > 0 ? await utapi.getFileUrls(data.map((k) => k.key)) : []
-
-    const imgsData: (InferInsertModel<typeof imagesData> & {
-      src?: string
-    })[] =
-      data && data.length
-        ? data
-            .map((e) => {
-              return {
-                src: imgsUrls.find((u) => e.key === u.key)?.url,
-                ...e,
-              }
-            })
-            .filter((e) => typeof e.src === "string")
+      data.length > 0
+        ? await utapi.getFileUrls(data.map((k) => k.imgsKey).flat() as string[])
         : []
 
-    return imgsData
+    const products: (InferInsertModel<typeof productsData> & {
+      imgs?: typeof imgsUrls
+    })[] =
+      data && data.length
+        ? data.map((e) => {
+            return {
+              imgs: e.imgsKey
+                ?.map((k) => imgsUrls.find((u) => k === u.key))
+                .filter((data) => data) as typeof imgsUrls,
+              ...e,
+            }
+          })
+        : []
+
+    return products
   } catch (e) {
     const r = [] as [] & { error?: any }
     r.error = e
@@ -79,13 +84,13 @@ export async function populateImagesDataWithLinks(
   }
 }
 
-export async function addImagesData(
-  data: z.infer<typeof insertImagesSchema>[],
+export async function addProdData(
+  data: z.infer<typeof insertProdSchema>[],
 ): Promise<ValidationError | { res: any }> {
   try {
-    insertImagesSchema.array().parse(data)
+    insertProdSchema.array().parse(data)
 
-    const res = await db.insert(imagesData).values(data).returning()
+    const res = await db.insert(productsData).values(data).returning()
     console.log(res)
 
     return { res }
@@ -99,24 +104,24 @@ export async function addImagesData(
   }
 }
 
-export const imagesOmitKey = insertImagesSchema.omit({ key: true })
+export const imagesOmitKey = insertProdSchema.omit({ imgsKey: true })
 
 export async function updateImagesData(
   update: {
-    keys: z.infer<typeof uuidArraySchema>
+    ids: number[]
     change: Partial<z.infer<typeof imagesOmitKey>>
   }[],
 ): Promise<ValidationError | { res: any }> {
   try {
     const res = await Promise.allSettled(
-      update.map(async ({ change, keys }) => {
+      update.map(async ({ change, ids }) => {
         imagesOmitKey.parse(change)
-        uuidArraySchema.parse(keys)
+        z.number().int().parse(ids)
 
         const r = await db
-          .update(imagesData)
+          .update(productsData)
           .set(change)
-          .where(inArray(imagesData.key, keys))
+          .where(inArray(productsData.id, ids))
         return r
       }),
     )
@@ -131,18 +136,18 @@ export async function updateImagesData(
   }
 }
 
-export async function deleteImagesData(
-  data: z.infer<typeof uuidArraySchema>,
+export async function deleteProdData(
+  ids: number[],
 ): Promise<ValidationError | { res: any; utRes: { success: boolean } }> {
   try {
-    uuidArraySchema.parse(data)
-    if (!data.length) throw new Error("empty keys array deleteImages")
+    z.number().int().parse(ids)
+    if (!ids.length) throw new Error("empty keys array deleteImages")
     const res = await db
-      .delete(imagesData)
-      .where(inArray(imagesData.key, data))
+      .delete(productsData)
+      .where(inArray(productsData.id, ids))
       .returning()
 
-    const utRes = await utapi.deleteFiles(res.map((e) => e.key))
+    const utRes = await utapi.deleteFiles(res.map((e) => e.imgsKey).flat())
 
     return { res, utRes }
   } catch (e) {
