@@ -24,13 +24,15 @@ export function ImageSlider({
         const d = data[i]
         if (!d.src) return null
         return (
-          <Image
-            alt={d.alt ?? `image-${i}`}
-            src={d.src}
-            width={width ?? 1920}
-            height={height ?? 800}
-            className="object-contain rounded-lg max-h-full w-auto"
-          />
+          <div className="h-full w-full flex justify-center items-center">
+            <Image
+              alt={d.alt ?? `image-${i}`}
+              src={d.src}
+              width={width ?? 1920}
+              height={height ?? 800}
+              className="object-contain rounded-lg max-h-full w-auto"
+            />
+          </div>
         )
       }}
       length={data.length}

@@ -5,7 +5,7 @@ import Slider from "../Slider"
 
 const panels: React.ReactNode[] = [
   <div key="panel-lama" className="h-full grid items-center relative">
-    <article className="sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 drop-shadow-xl backdrop-blur-md sm:py-6 px-8 rounded-xl flex flex-col items-center">
+    <article className="sm:absolute sm:top-3/4 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 drop-shadow-xl backdrop-blur-md sm:py-6 px-8 rounded-xl flex flex-col items-center">
       {" "}
       <h1 className="text-4xl font-bold pb-4">Lorem ipsum dolor sit amet</h1>
       <p>
@@ -23,7 +23,7 @@ const panels: React.ReactNode[] = [
     />
   </div>,
   <div key="panel-moraj" className="h-full grid items-center relative">
-    <article className="sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 drop-shadow-xl backdrop-blur-md sm:py-6 px-8 rounded-xl flex flex-col items-center">
+    <article className="sm:absolute sm:top-1/3 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 drop-shadow-xl backdrop-blur-md sm:py-6 px-8 rounded-xl flex flex-col items-center">
       <h1 className="text-lg sm:text-4xl font-bold pb-4">
         Lorem ipsum dolor sit amet
       </h1>
@@ -38,7 +38,7 @@ const panels: React.ReactNode[] = [
       src="/moraj.webp"
       width={1500}
       height={1080}
-      className="object-contain rounded-lg max-w-screen-2xl mx-auto pointer-events-none w-full h-auto  sm:max-w-[90vw]"
+      className="objeerr := c.BodyParser(body);ct-contain rounded-lg max-w-screen-2xl mx-auto pointer-events-none w-full h-auto  sm:max-w-[90vw]"
     />
   </div>,
   <div key="panel-gabriella" className="h-full grid items-center relative">

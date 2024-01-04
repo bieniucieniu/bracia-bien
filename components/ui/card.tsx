@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { playfair } from "@/lib/fonts"
 
 const Card = React.forwardRef<
   HTMLDivElement,
@@ -10,7 +11,7 @@ const Card = React.forwardRef<
     ref={ref}
     className={cn(
       "rounded-xl border bg-card text-card-foreground shadow",
-      className
+      className,
     )}
     {...props}
   />
@@ -35,7 +36,11 @@ const CardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn("font-semibold leading-none tracking-tight", className)}
+    className={cn(
+      playfair.className,
+      "text-2xl font-bold leading-none tracking-tight",
+      className,
+    )}
     {...props}
   />
 ))
