@@ -6,13 +6,7 @@ import {
 } from "@/db/imagesData/serverApi"
 import Image from "next/image"
 import Link from "next/link"
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { twMerge } from "tailwind-merge"
 import { AnimateContentMain } from "@/components/MainLayout/Animation"
 import Banner from "@/components/HomePage/Banner"
@@ -85,7 +79,7 @@ export default async function Home() {
         <div className="mx-auto px-20 flex flex-col sm:grid grid-cols-6 gap-x-3 gap-y-4">
           <div className="col-span-2 hidden lg:flex justify-center items-center">
             <Image
-              src="https://placehold.co/900x600/png"
+              src="/bracia_bien.jpg"
               alt="hurtownia"
               width={900}
               height={600}
@@ -94,7 +88,7 @@ export default async function Home() {
           </div>
           <Card className="col-start-2 col-span-3 lg:col-span-2 bg-orange-100 dark:bg-orange-950 pr-5">
             <CardHeader className={twMerge(playfair.className, "pb-2")}>
-              <CardTitle>title</CardTitle>
+              <CardTitle>Bracia Bien</CardTitle>
             </CardHeader>
             <CardContent>
               <p>
@@ -111,7 +105,6 @@ export default async function Home() {
                 , Prowadzimy zarowno sprzedaz hurtowa jak i detaliczna.
               </p>
             </CardContent>
-            <CardFooter>footer</CardFooter>
           </Card>
           <Card className="col-start-2 col-span-3">
             <CardTitle
