@@ -5,14 +5,11 @@ import Slider from "../Slider"
 
 const panels: React.ReactNode[] = [
   <div key="panel-lama" className="h-full grid items-center relative">
-    <article className="sm:absolute sm:top-3/4 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 drop-shadow-xl backdrop-blur-md sm:py-6 px-8 rounded-xl flex flex-col items-center">
-      {" "}
-      <h1 className="text-4xl font-bold pb-4">Lorem ipsum dolor sit amet</h1>
-      <p>
-        consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      </p>
+    <article className="sm:text-white sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 drop-shadow-xl backdrop-blur-md sm:py-6 px-8 rounded-xl flex flex-col items-center">
+      <h1 className="text-3xl font-bold pb-4">
+        Oferujemy szeroki wybór bielizny damskiej, jak i meskiej.
+      </h1>
+      <p className=" w-full">takich marek jak lama czy moraj</p>
     </article>
     <Image
       alt={`panel-lama`}
@@ -25,12 +22,11 @@ const panels: React.ReactNode[] = [
   <div key="panel-moraj" className="h-full grid items-center relative">
     <article className="sm:absolute sm:top-1/3 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 drop-shadow-xl backdrop-blur-md sm:py-6 px-8 rounded-xl flex flex-col items-center">
       <h1 className="text-lg sm:text-4xl font-bold pb-4">
-        Lorem ipsum dolor sit amet
+        U nas znajdzesz piżamę dla siebie
       </h1>
       <p className="text-sm">
-        consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Szeroka oferta piżam od Moraj, Lama, Martel, Szata, M-max i Kuba w wielu
+        rozmiarch (xs-6xl)
       </p>
     </article>{" "}
     <Image
@@ -43,11 +39,11 @@ const panels: React.ReactNode[] = [
   </div>,
   <div key="panel-gabriella" className="h-full grid items-center relative">
     <article className="sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 drop-shadow-xl backdrop-blur-md sm:py-6 px-8 rounded-xl flex flex-col items-center">
-      <h1 className="text-4xl font-bold pb-4">Lorem ipsum dolor sit amet</h1>
-      <p>
-        consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      <h1 className="text-4xl font-bold pb-4">
+        Posiadamy w ofercie szeroki wybór rajstop
+      </h1>
+      <p className="w-full">
+        Wiele wzorow, kolorow jak i matowe czy zpolyskiem
       </p>
     </article>
     <Image
@@ -63,22 +59,96 @@ const panels: React.ReactNode[] = [
     className="h-full flex flex-col gap-y-6 items-center justify-center"
   >
     <article>
-      <h1 className="text-4xl font-bold pb-4">Lorem ipsum dolor sit amet</h1>
-      consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-      dolore magna aliqua.
+      <h1 className="text-4xl font-bold pb-4">
+        Bielizne tych marek znajdziesz u nas
+      </h1>
+      <sup className="text-sm text-muted-foreground">
+        Moraj, Gabriella, Lama, Noviti, Szata, Wik, Martel, M-max, Hodberg,
+        Lavaza, Kunitex, Tejrax
+      </sup>
     </article>
     <ul className="grid grid-cols-4 gap-2">
-      {Array.from({ length: 10 }).map((_, i) => (
-        <li key={i}>
-          <Image
-            src="https://placehold.co/150x100/png"
-            alt="placehold"
-            width={150}
-            height={100}
-            className="object-contain rounded-lg pointer-events-none"
-          />
-        </li>
-      ))}
+      <li>
+        <Image
+          src="/logos/moraj.png"
+          alt="moraj_logo"
+          width={150}
+          height={100}
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+        />
+      </li>
+      <li>
+        <Image
+          src="/logos/gabriella.png"
+          alt="gabriella_logo"
+          width={150}
+          height={100}
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+        />
+      </li>
+      <li>
+        <Image
+          src="/logos/lama.png"
+          alt="lama_logo"
+          width={150}
+          height={100}
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+        />
+      </li>
+      <li>
+        <Image
+          src="/logos/szata.png"
+          alt="szata_logo"
+          width={150}
+          height={100}
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+        />
+      </li>
+      <li>
+        <Image
+          src="/logos/noviti.jpg"
+          alt="noviti_logo"
+          width={150}
+          height={100}
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+        />
+      </li>
+      <li>
+        <Image
+          src="/logos/wik.png"
+          alt="wik_logo"
+          width={150}
+          height={100}
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+        />
+      </li>
+      <li>
+        <Image
+          src="/logos/mmax.png"
+          alt="m-max_logo"
+          width={150}
+          height={100}
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+        />
+      </li>
+      <li>
+        <Image
+          src="/logos/martel.png"
+          alt="martel_logo"
+          width={150}
+          height={100}
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+        />
+      </li>
+      <li>
+        <Image
+          src="/logos/hodberg.jpeg"
+          alt="hodberg_logo"
+          width={150}
+          height={100}
+          className="object-contain rounded-lg pointer-events-none h-[100px] w-auto max-w-[150px] bg-white"
+        />
+      </li>
     </ul>
   </div>,
 ]
