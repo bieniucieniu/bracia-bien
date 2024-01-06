@@ -63,18 +63,19 @@ export default async function Home() {
               alt="hurtownia"
               width={900}
               height={600}
-              className="w-full h-auto rounded-xl object-contain"
+              className="w-full h-auto rounded-xl object-contain border-primary border-4 drop-shadow-md"
             />
           </div>
           <Card className="col-start-2 col-span-3 lg:col-span-2 bg-orange-100 dark:bg-orange-950 pr-5">
             <CardHeader className={twMerge(playfair.className, "pb-2")}>
-              <CardTitle>Bracia Bien</CardTitle>
+              <CardTitle>O nas</CardTitle>
             </CardHeader>
             <CardContent>
               <p>
-                Oferujemy bogaty asortyment bielizny, rajstop, skarpet i pizam
-                dla kobiet, mezczyzn i dzieci. <br /> Siedziba firmy zanjduje
-                sie w Kaliszu przy{" "}
+                Jestesmy rodzinna firma.
+                <br /> Oferujemy bogaty asortyment bielizny, rajstop, skarpet i
+                pizam dla kobiet, mezczyzn i dzieci. <br /> Siedziba firmy
+                zanjduje sie w Kaliszu przy <br />
                 <Link
                   href="https://goo.gl/maps/BfMbTwFQTeVjVR717"
                   target="_blank"
