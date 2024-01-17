@@ -35,7 +35,7 @@
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
     "drizzle-orm": "^0.29.3",
-    "eslint": "8.42.0",
+    "eslint": "^8.56.0",
     "eslint-config-next": "13.4.5",
     "framer-motion": "^10.16.5",
     "lucide-react": "^0.244.0",

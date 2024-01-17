@@ -12,7 +12,7 @@ export default function PhotoGalery({
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle>galley</CardTitle>
+        <CardTitle>galeria produktów</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-row w-full justify-around gap-3 flex-wrap">

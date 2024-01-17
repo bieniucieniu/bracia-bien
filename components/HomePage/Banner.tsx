@@ -51,7 +51,7 @@ const panels: React.ReactNode[] = [
       </CardHeader>
       <CardContent>
         <p className="text-sm">
-          Wiele wzorow, kolorow jak i matowe czy zpolyskiem
+          Wiele wzorów i kolorów jak i matowe czy z połyskiem
         </p>
       </CardContent>
     </Card>
@@ -69,7 +69,7 @@ const panels: React.ReactNode[] = [
   >
     <article>
       <h1 className="text-4xl font-bold pb-4">
-        Bielizne i pizamy tych marek znajdziesz u nas
+        Bieliznę i piżamy tych marek znajdziesz u nas
       </h1>
       <sup className="text-sm text-muted-foreground">
         Moraj, Gabriella, Lama, Noviti, Szata, Wik, Martel, M-max, Hodberg,
