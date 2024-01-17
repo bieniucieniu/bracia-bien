@@ -74,8 +74,9 @@ export default async function Home() {
               <p>
                 Jestesmy rodzinna firma.
                 <br /> Oferujemy bogaty asortyment bielizny, rajstop, skarpet i
-                pizam dla kobiet, mezczyzn i dzieci. <br /> Siedziba firmy
-                zanjduje sie w Kaliszu przy <br />
+                piżama dla kobiet, mężczyzn i dzieci. <br />
+                Siedziba firmy znajduje się w Kaliszu przy
+                <br />
                 <Link
                   href="https://goo.gl/maps/BfMbTwFQTeVjVR717"
                   target="_blank"
@@ -83,7 +84,7 @@ export default async function Home() {
                 >
                   ul. Stawiszyńskiej 125{" "}
                 </Link>
-                , Prowadzimy zarowno sprzedaz hurtowa jak i detaliczna.
+                , prowadzimy sprzedaż zarówno hurtową, jak i detaliczną.
               </p>
             </CardContent>
           </Card>
