@@ -33,7 +33,10 @@ export default function Navbar() {
       <NavigationMenu className="m-auto p-1 md:col-start-2">
         <NavigationMenuList className="flex flex-wrap justify-around sm:justify-normal sm:flex-nowrap">
           {items.map(({ title, href }, i) => (
-            <NavigationMenuItem key={title + i}>
+            <NavigationMenuItem
+              onLoad={() => console.log(title + i)}
+              key={title + i}
+            >
               <NavigationMenuLink
                 asChild
                 className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"

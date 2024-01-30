@@ -27,8 +27,7 @@ export default async function AdminLayout({
     <AdminContextProvider imagesData={[]}>
       <div className="fixed bottom-0 inset-x-0 bg-white z-50 flex justify-between items-center p-4 border-t shadow-inner">
         <span>
-          zalogowany jako{" "}
-          <mark className="px-1 rounded">{auth.user?.name}</mark>
+          zalogowany jako <mark className="px-1 rounded">{auth.name}</mark>
         </span>
         <AuthButton signed className="inline-block self-end" />
       </div>
