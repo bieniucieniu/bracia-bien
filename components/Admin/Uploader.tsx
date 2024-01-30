@@ -6,7 +6,7 @@ export default function Uploader() {
   return (
     <UploadButton
       endpoint="imageUploader"
-      onClientUploadComplete={(res) => {
+      onClientUploadComplete={() => {
         window.location.reload()
       }}
       onUploadError={(error: Error) => {
