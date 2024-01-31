@@ -1,4 +1,4 @@
-import { createRouteHandler } from "uploadthing/server"
+import { createRouteHandler } from "uploadthing/next"
 import { fileRouter } from "./core"
 
 // Export routes for Next App Router
