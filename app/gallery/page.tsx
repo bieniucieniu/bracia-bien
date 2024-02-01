@@ -5,10 +5,12 @@ export default async function Gallery() {
   const api = new UTApi()
   const list = await api.listFiles({})
   const data = (await api.getFileUrls(list.map((e) => e.key))).map((e) => {
-    const name = e.key.split("_")
+    let name = e.key.split("_")
     name.shift()
+    name = name.join("_").split(".")
+    if (name.length > 1) name.pop()
     return {
-      name: name.join("_"),
+      name: name.join("."),
       src: e.url,
     }
   })
