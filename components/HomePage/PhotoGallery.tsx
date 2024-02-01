@@ -5,7 +5,8 @@ export default function PhotoGalery({
   className,
 }: {
   data: {
-    src?: string
+    src: string
+    name?: string
   }[]
   className?: string
 }) {
@@ -16,14 +17,13 @@ export default function PhotoGalery({
       </CardHeader>
       <CardContent>
         <div className="flex flex-row w-full justify-around gap-3 flex-wrap">
-          {data.map(({ src }, i) => {
+          {data.map(({ src, name }, i) => {
             if (!src) return null
-            const alt = src.split("_")[0]
             return (
               <Image
-                key={alt}
+                key={name ?? `photo-${i}`}
                 src={src}
-                alt={alt ?? `photo-${i}`}
+                alt={name ?? `photo-${i}`}
                 height={800}
                 width={1920}
                 className="w-full h-auto lg:w-auto lg:h-[240px] xl:h-[300px] object-contain rounded-xl shadow-sm"
