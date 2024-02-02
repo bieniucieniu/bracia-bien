@@ -18,7 +18,7 @@ export const fileRouter = {
       if (!user) throw new Error("Unauthorized")
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { name: user.name ?? "" } as { [k: string]: any }
+      return { name: user.name ?? "unknown" } as { [k: string]: any }
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
