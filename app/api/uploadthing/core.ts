@@ -18,16 +18,16 @@ export const fileRouter = {
       if (!user) throw new Error("Unauthorized")
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { userName: user.name }
+      return { name: user.name ?? "" } as { [k: string]: any }
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
-      console.log("Upload complete for userName:", metadata.userName)
+      console.log("Upload complete for userName:", metadata.name)
 
       console.log("file url", file.url)
 
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-      return { uploadedBy: metadata.userName }
+      return { uploadedBy: metadata.name }
     }),
 } satisfies UploadthingFileRouter
 
