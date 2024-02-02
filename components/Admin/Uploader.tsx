@@ -10,7 +10,6 @@ export default function Uploader() {
         window.location.reload()
       }}
       onUploadError={(error: Error) => {
-        // Do something with the error.
         alert(`ERROR! ${error.message}`)
       }}
     />

@@ -1,7 +1,7 @@
 "use client"
 import { createContext, useContext, useState } from "react"
 
-type ImagesData = Map<string, { src?: string }>
+type ImagesData = { src: string; key: string }[]
 
 type AdminContext = {
   imagesData: ImagesData
@@ -14,18 +14,10 @@ export function AdminContextProvider({
   imagesData: newImagesData,
   children,
 }: {
-  imagesData: { src?: string }[] | undefined | null
+  imagesData: { src: string; key: string }[]
   children: React.ReactNode
 }) {
-  const [imagesData, setImagesData] = useState<ImagesData>(() => {
-    const map: ImagesData = new Map()
-    newImagesData?.forEach((img) => {
-      map.set(img.src?.split("_")[0] ?? "", {
-        ...img,
-      })
-    })
-    return map
-  })
+  const [imagesData, setImagesData] = useState<ImagesData>(() => newImagesData)
   return (
     <adminContext.Provider value={{ imagesData, setImagesData }}>
       {children}
