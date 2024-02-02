@@ -4,9 +4,10 @@ import { UTApi } from "uploadthing/server"
 export default async function Gallery() {
   const api = new UTApi()
   const list = await api.listFiles({})
-  const data = Array.isArray(list)
-    ? (await api.getFileUrls(list.map((e) => e.key))).map((e) => {
-  :   let name = e.key.split("_")
+  const urls = await api.getFileUrls(list.map((e) => e.key))
+  const data = Array.isArray(urls)
+    ? urls.map((e) => {
+        let name = e.key.split("_")
         name.shift()
         name = name.join("_").split(".")
         if (name.length > 1) name.pop()
@@ -14,7 +15,7 @@ export default async function Gallery() {
           name: name.join("."),
           src: e.url,
         }
-      })
+      }) ?? []
     : []
 
   return (
