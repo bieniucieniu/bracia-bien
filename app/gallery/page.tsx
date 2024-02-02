@@ -4,17 +4,18 @@ import { UTApi } from "uploadthing/server"
 export default async function Gallery() {
   const api = new UTApi()
   const list = await api.listFiles({})
-  const data =
-    (await api.getFileUrls(list.map((e) => e.key))).map((e) => {
-      let name = e.key.split("_")
-      name.shift()
-      name = name.join("_").split(".")
-      if (name.length > 1) name.pop()
-      return {
-        name: name.join("."),
-        src: e.url,
-      }
-    }) ?? []
+  const data = list
+    ? (await api.getFileUrls(list.map((e) => e.key))).map((e) => {
+        let name = e.key.split("_")
+        name.shift()
+        name = name.join("_").split(".")
+        if (name.length > 1) name.pop()
+        return {
+          name: name.join("."),
+          src: e.url,
+        }
+      })
+    : []
 
   return (
     <AnimateContentMain>
