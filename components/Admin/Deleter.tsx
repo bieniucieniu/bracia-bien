@@ -57,7 +57,7 @@ export default function Deleter() {
       <Button disabled={pending} onClick={submit}>
         submit
       </Button>
-      <ul>
+      <ul className="flex flex-wrap gap-1 max-w-screen-lg w-full m-1">
         {imagesData.map((img) => (
           <li key={img.key}>
             <Button
