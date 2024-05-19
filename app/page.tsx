@@ -28,12 +28,12 @@ const contactsData: LinkData = [
 
 const infoData: LinkData = [
   {
-    name: "Polityka prywatnosci",
+    name: "Polityka prywatności",
     href: "/pdf/polityka_prywatnosci.pdf",
     rel: "noopener noreferrer",
   },
   {
-    name: "Platnosc",
+    name: "Platność",
     href: "/pdf/platnosc.pdf",
     rel: "noopener noreferrer",
   },
@@ -44,7 +44,7 @@ const infoData: LinkData = [
   },
   {
     name: "wysylka",
-    href: "/pdf/wysylka.pdf",
+    href: "/pdf/wysyłka.pdf",
     rel: "noopener noreferrer",
   },
 ]
@@ -72,7 +72,7 @@ export default async function Home() {
             </CardHeader>
             <CardContent>
               <p>
-                Jestesmy rodzinna firma.
+                Jesteśmy rodzinna firma.
                 <br /> Oferujemy bogaty asortyment bielizny, rajstop, skarpet i
                 piżama dla kobiet, mężczyzn i dzieci. <br />
                 Siedziba firmy znajduje się w Kaliszu przy
@@ -95,7 +95,7 @@ export default async function Home() {
                 "px-10 py-6 flex flex-row justify-between items-center",
               )}
             >
-              Zapraszamy takze do naszych sklepow w Kaliszu{" "}
+              Zapraszamy także do naszych sklepów w Kaliszu{" "}
               <ArrowRight className="hidden sm:inline-block" />
             </CardTitle>
           </Card>
@@ -141,7 +141,7 @@ export default async function Home() {
                 borderRadius: "10px",
               }}
             >
-              <a href="/info">wiecej</a>
+              <a href="/info">więcej</a>
             </MenuItem>
           </div>
         </MenuRoot>
@@ -156,7 +156,7 @@ export default async function Home() {
                 " text-4xl font-bold z-10 mb-8 text-zinc-800"
               }
             >
-              informacje
+              informację
             </h1>
             {infoData.map(({ name, ...props }, i) => (
               <MenuItem
